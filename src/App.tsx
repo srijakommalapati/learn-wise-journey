@@ -17,7 +17,6 @@ import AiTutorSteve from "./pages/AiTutorSteve";
 import AiTutorLisa from "./pages/AiTutorLisa";
 import CareerGuide from "./pages/CareerGuide";
 import Reports from "./pages/Reports";
-import Calendar from "./pages/Calendar";
 
 import NotFound from "./pages/NotFound";
 
@@ -43,7 +42,6 @@ const App = () => (
           <Route path="/ai-tutor" element={<AiTutorSteve />} />
           <Route path="/career-guide" element={<CareerGuide />} />
           <Route path="/reports" element={<Reports />} />
-          <Route path="/calendar" element={<Calendar />} />
           
           {/* Catch-all route */}
           <Route path="*" element={<NotFound />} />
