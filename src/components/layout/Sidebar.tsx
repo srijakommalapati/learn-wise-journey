@@ -6,8 +6,8 @@ import {
   User, 
   Briefcase, 
   BarChart3, 
-  Calendar, 
-  Settings, 
+  CalendarDays, 
+  Settings2,
   ChevronLeft, 
   ChevronRight 
 } from "lucide-react";
@@ -24,8 +24,8 @@ const links: SidebarLink[] = [
   { icon: User, label: "AI Tutor", path: "/ai-tutor" },
   { icon: Briefcase, label: "Career Guide", path: "/career-guide" },
   { icon: BarChart3, label: "Reports", path: "/reports" },
-  { icon: Calendar, label: "Calendar", path: "/calendar" },
-  { icon: Settings, label: "Settings", path: "/settings" },
+  { icon: CalendarDays, label: "Calendar", path: "/calendar" },
+  { icon: Settings2, label: "Settings", path: "/settings" },
 ];
 
 interface SidebarProps {
