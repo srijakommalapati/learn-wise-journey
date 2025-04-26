@@ -37,7 +37,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           
-          {/* Protected Routes (In a real app, these would be protected by authentication) */}
+          {/* Protected Routes */}
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/ai-tutor/steve" element={<AiTutorSteve />} />
           <Route path="/ai-tutor/lisa" element={<AiTutorLisa />} />

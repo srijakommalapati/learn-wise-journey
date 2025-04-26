@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
@@ -50,8 +49,8 @@ const Sidebar = ({ className }: SidebarProps) => {
     >
       <div className="p-4 flex items-center justify-between border-b border-gray-200 dark:border-gray-800">
         {!collapsed && (
-          <Link to="/dashboard" className="font-bold text-lg text-blue-primary">
-            LearnWise
+          <Link to="/dashboard" className="font-bold text-lg text-blue-primary animate-fade-in">
+            SDE Hire
           </Link>
         )}
         <button
