@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
@@ -8,7 +9,9 @@ import {
   CalendarDays, 
   Settings2,
   ChevronLeft, 
-  ChevronRight 
+  ChevronRight,
+  ChevronDown,
+  Users
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -16,15 +19,44 @@ type SidebarLink = {
   icon: typeof LayoutDashboard;
   label: string;
   path: string;
+  sublinks?: { label: string; path: string }[];
 };
 
 const links: SidebarLink[] = [
-  { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard" },
-  { icon: User, label: "AI Tutor", path: "/ai-tutor" },
-  { icon: Briefcase, label: "Career Guide", path: "/career-guide" },
-  { icon: BarChart3, label: "Reports", path: "/reports" },
-  { icon: CalendarDays, label: "Calendar", path: "/calendar" },
-  { icon: Settings2, label: "Settings", path: "/settings" },
+  { 
+    icon: LayoutDashboard, 
+    label: "Dashboard", 
+    path: "/dashboard" 
+  },
+  { 
+    icon: Users, 
+    label: "AI Tutors", 
+    path: "/ai-tutor",
+    sublinks: [
+      { label: "Steve (Solutions)", path: "/ai-tutor/steve" },
+      { label: "Lisa (Guidance)", path: "/ai-tutor/lisa" },
+    ]
+  },
+  { 
+    icon: Briefcase, 
+    label: "Career Guide", 
+    path: "/career-guide" 
+  },
+  { 
+    icon: BarChart3, 
+    label: "Reports", 
+    path: "/reports" 
+  },
+  { 
+    icon: CalendarDays, 
+    label: "Calendar", 
+    path: "/calendar" 
+  },
+  { 
+    icon: Settings2, 
+    label: "Settings", 
+    path: "/settings" 
+  },
 ];
 
 interface SidebarProps {
@@ -33,10 +65,23 @@ interface SidebarProps {
 
 const Sidebar = ({ className }: SidebarProps) => {
   const [collapsed, setCollapsed] = useState(false);
+  const [expandedMenus, setExpandedMenus] = useState<string[]>(["/ai-tutor"]);
   const location = useLocation();
 
   const toggleCollapse = () => {
     setCollapsed(!collapsed);
+  };
+
+  const toggleSubmenu = (path: string) => {
+    setExpandedMenus((current) => 
+      current.includes(path)
+        ? current.filter(item => item !== path)
+        : [...current, path]
+    );
+  };
+
+  const isActive = (path: string) => {
+    return location.pathname === path || location.pathname.startsWith(path + '/');
   };
 
   return (
@@ -68,19 +113,68 @@ const Sidebar = ({ className }: SidebarProps) => {
       <nav className="flex-1 overflow-y-auto py-4">
         <ul className="space-y-1 px-2">
           {links.map((link) => (
-            <li key={link.path}>
-              <Link
-                to={link.path}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2 rounded-md transition-colors",
-                  location.pathname === link.path
-                    ? "bg-blue-50 text-blue-accent dark:bg-blue-900/20 dark:text-blue-400"
-                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
-                )}
-              >
-                <link.icon size={20} />
-                {!collapsed && <span>{link.label}</span>}
-              </Link>
+            <li key={link.path} className="animate-fade-in" style={{animationDelay: '100ms'}}>
+              {link.sublinks ? (
+                <>
+                  <button
+                    onClick={() => !collapsed && toggleSubmenu(link.path)}
+                    className={cn(
+                      "flex items-center w-full justify-between gap-3 px-3 py-2 rounded-md transition-colors",
+                      isActive(link.path)
+                        ? "bg-blue-50 text-blue-accent dark:bg-blue-900/20 dark:text-blue-400"
+                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    )}
+                  >
+                    <div className="flex items-center gap-3">
+                      <link.icon size={20} />
+                      {!collapsed && <span>{link.label}</span>}
+                    </div>
+                    {!collapsed && (
+                      <ChevronDown 
+                        size={16} 
+                        className={cn(
+                          "transition-transform", 
+                          expandedMenus.includes(link.path) ? "rotate-180" : ""
+                        )} 
+                      />
+                    )}
+                  </button>
+                  
+                  {/* Submenu */}
+                  {!collapsed && expandedMenus.includes(link.path) && (
+                    <ul className="mt-1 ml-6 space-y-1 border-l border-gray-200 dark:border-gray-700 animate-fade-in">
+                      {link.sublinks.map((sublink, index) => (
+                        <li key={sublink.path} className="animate-fade-in" style={{animationDelay: `${index * 75 + 100}ms`}}>
+                          <Link
+                            to={sublink.path}
+                            className={cn(
+                              "block px-3 py-1.5 rounded-md transition-colors text-sm",
+                              location.pathname === sublink.path
+                                ? "bg-blue-50 text-blue-accent dark:bg-blue-900/20 dark:text-blue-400"
+                                : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+                            )}
+                          >
+                            {sublink.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </>
+              ) : (
+                <Link
+                  to={link.path}
+                  className={cn(
+                    "flex items-center gap-3 px-3 py-2 rounded-md transition-colors",
+                    isActive(link.path)
+                      ? "bg-blue-50 text-blue-accent dark:bg-blue-900/20 dark:text-blue-400"
+                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                  )}
+                >
+                  <link.icon size={20} />
+                  {!collapsed && <span>{link.label}</span>}
+                </Link>
+              )}
             </li>
           ))}
         </ul>
