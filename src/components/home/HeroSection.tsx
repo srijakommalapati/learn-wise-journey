@@ -17,20 +17,20 @@ const HeroSection = () => {
           <div className="flex-1 text-center lg:text-left">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
               <span className="block">Ace your SDE interviews</span>
-              <span className="text-blue-accent">with AI-powered practice</span>
+              <span className="bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">with AI-powered practice</span>
             </h1>
             <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto lg:mx-0">
               Get personalized coding practice, career guidance, and interview preparation from our AI tutors, Steve and Lisa.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Link to="/register">
-                <Button size="lg" className="group btn-hover">
+                <Button size="lg" className="group bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all duration-200">
                   Start Practice with Steve
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Button>
               </Link>
               <Link to="/about">
-                <Button variant="outline" size="lg" className="btn-hover">
+                <Button variant="outline" size="lg" className="group border-2 hover:border-blue-600 hover:text-blue-600 transition-all duration-200">
                   Learn More
                 </Button>
               </Link>
@@ -38,7 +38,7 @@ const HeroSection = () => {
           </div>
           
           <div className="flex-1">
-            <div className="relative rounded-lg overflow-hidden shadow-2xl">
+            <div className="relative rounded-lg overflow-hidden shadow-2xl animate-fade-in">
               <div className="relative bg-blue-dark rounded-lg p-6 border border-blue-500/20 space-y-4">
                 <div className="flex items-center gap-2 mb-4">
                   <div className="w-3 h-3 bg-red-500 rounded-full"></div>
@@ -53,7 +53,7 @@ const HeroSection = () => {
                 
                 <div className="p-3 bg-gray-800 rounded-md">
                   <div className="font-mono text-sm text-green-400">
-                    <span className="text-blue-400">function</span> <span className="text-yellow-400">findMaxProfit</span>(prices) &#123;
+                    <span className="text-blue-400">function</span> <span className="text-yellow-400">findMaxProfit</span>(prices) {'{'}
                     <br />
                     &nbsp;&nbsp;<span className="text-blue-400">let</span> maxProfit = 0;
                     <br />
@@ -80,7 +80,7 @@ const HeroSection = () => {
                 </div>
                 
                 <div className="flex items-center gap-3 bg-gray-800 p-3 rounded-md">
-                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold">
                     S
                   </div>
                   <div className="text-gray-300">
