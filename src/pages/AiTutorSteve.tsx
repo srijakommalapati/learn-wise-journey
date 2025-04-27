@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/layout/DashboardLayout";
@@ -7,7 +6,7 @@ import ChatInterface from "@/components/ai-tutor/ChatInterface";
 import CodeEditor from "@/components/ai-tutor/CodeEditor";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { LayoutPanelLeft, FileChart } from "lucide-react";
+import { LayoutPanelLeft, FileHeart } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -20,14 +19,12 @@ const AiTutorSteve = () => {
     example: "Input: [7, 1, 5, 3, 6, 4]\nOutput: 5\nExplanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5."
   });
 
-  // Mock session completion handler - in a real app this would collect actual data
   const handleEndSession = () => {
     toast({
       title: "Session completed!",
       description: "Redirecting you to your session report...",
     });
 
-    // Mock data that would normally be collected during the session
     const sessionData = {
       title: currentQuestion.title,
       date: "Apr 27, 2025",
@@ -180,7 +177,7 @@ Then I'll iterate through the prices starting from the second price:
 - Calculate the potential profit as current price minus minPrice
 - Update maxProfit if the potential profit is greater
 
-This gives us O(n) time complexity with O(1) space, which is optimal for this problem.`,
+This gives us O(n) time complexity with O(1) space, which is optimal for this problem.",
       enhancedAnswer: `To find the maximum profit from stock prices, I need to identify the optimal buy and sell points that maximize the difference (profit).
 
 Approach:
@@ -199,7 +196,7 @@ Algorithm Implementation:
 Time complexity: O(n) where n is the number of days (single pass through prices)
 Space complexity: O(1) as we use only constant extra space
 
-This solution efficiently handles all cases including declining prices (return 0) and optimally finds the maximum possible profit in a single pass.`,
+This solution efficiently handles all cases including declining prices (return 0) and optimally finds the maximum possible profit in a single pass.",
       improvements: [
         "Added clear separation of approach, algorithm, and complexity analysis",
         "Provided more detailed explanation of the strategy",
@@ -208,7 +205,6 @@ This solution efficiently handles all cases including declining prices (return 0
       ]
     };
 
-    // Navigate to the session report page with the session data
     setTimeout(() => {
       navigate("/session-report", { state: { sessionData } });
     }, 1500);
@@ -252,16 +248,14 @@ This solution efficiently handles all cases including declining prices (return 0
               variant="default" 
               className="gap-2 bg-blue-600 hover:bg-blue-700"
             >
-              <FileChart className="h-4 w-4" />
+              <FileHeart className="h-4 w-4" />
               End Session
             </Button>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column - Problem Description (Mobile) and Tutor Video */}
           <div className="space-y-6">
-            {/* Problem Description Card (Mobile Only) */}
             <Card className="border border-gray-200 dark:border-gray-800 shadow-lg md:hidden animate-fade-in">
               <CardHeader>
                 <CardTitle className="text-lg">Current Problem</CardTitle>
@@ -280,14 +274,12 @@ This solution efficiently handles all cases including declining prices (return 0
               </CardContent>
             </Card>
             
-            {/* Tutor Video */}
             <div className="sticky top-6">
               <TutorVideo tutor="steve" />
               <ChatInterface tutor="steve" />
             </div>
           </div>
 
-          {/* Right Column - Code Editor */}
           <div className="lg:col-span-2 animate-slide-in-right">
             <CodeEditor />
           </div>

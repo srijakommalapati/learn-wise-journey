@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/layout/DashboardLayout";
@@ -7,7 +6,7 @@ import ChatInterface from "@/components/ai-tutor/ChatInterface";
 import CodeEditor from "@/components/ai-tutor/CodeEditor";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { LayoutPanelLeft, FileChart } from "lucide-react";
+import { LayoutPanelLeft, FileHeart } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -20,14 +19,12 @@ const AiTutorLisa = () => {
     example: "MyQueue queue = new MyQueue();\nqueue.push(1);\nqueue.push(2);\nqueue.peek(); // returns 1\nqueue.pop(); // returns 1\nqueue.empty(); // returns false"
   });
 
-  // Mock session completion handler - in a real app this would collect actual data
   const handleEndSession = () => {
     toast({
       title: "Session completed!",
       description: "Redirecting you to your session report...",
     });
 
-    // Mock data that would normally be collected during the session
     const sessionData = {
       title: currentQuestion.title,
       date: "Apr 27, 2025",
@@ -191,7 +188,7 @@ const AiTutorLisa = () => {
 3. For pop/peek: If stackPop is empty, transfer all elements from stackPush to stackPop by popping each element from stackPush and pushing it to stackPop, then perform the operation on stackPop
 4. This reverses the order, giving FIFO behavior
 
-This approach has O(1) amortized time complexity for all operations, since each element is moved from stackPush to stackPop at most once.`,
+This approach has O(1) amortized time complexity for all operations, since each element is moved from stackPush to stackPop at most once.",
       enhancedAnswer: `# Queue Implementation Using Two Stacks
 
 A queue follows First-In-First-Out (FIFO) ordering, while stacks follow Last-In-First-Out (LIFO). The key insight is that we can reverse the order of elements by transferring them between stacks.
@@ -229,7 +226,6 @@ This implementation efficiently simulates queue behavior using only stack operat
       ]
     };
 
-    // Navigate to the session report page with the session data
     setTimeout(() => {
       navigate("/session-report", { state: { sessionData } });
     }, 1500);
@@ -273,16 +269,14 @@ This implementation efficiently simulates queue behavior using only stack operat
               variant="default" 
               className="gap-2 bg-purple-600 hover:bg-purple-700"
             >
-              <FileChart className="h-4 w-4" />
+              <FileHeart className="h-4 w-4" />
               End Session
             </Button>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column - Problem Description (Mobile) and Tutor Video */}
           <div className="space-y-6">
-            {/* Problem Description Card (Mobile Only) */}
             <Card className="border border-gray-200 dark:border-gray-800 shadow-lg md:hidden animate-fade-in">
               <CardHeader>
                 <CardTitle className="text-lg">Current Problem</CardTitle>
@@ -301,14 +295,12 @@ This implementation efficiently simulates queue behavior using only stack operat
               </CardContent>
             </Card>
             
-            {/* Tutor Video */}
             <div className="sticky top-6">
               <TutorVideo tutor="lisa" />
               <ChatInterface tutor="lisa" />
             </div>
           </div>
 
-          {/* Right Column - Code Editor */}
           <div className="lg:col-span-2 animate-slide-in-right">
             <CodeEditor />
           </div>

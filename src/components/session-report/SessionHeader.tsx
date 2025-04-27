@@ -16,6 +16,17 @@ interface SessionHeaderProps {
 }
 
 const SessionHeader = ({ sessionData }: SessionHeaderProps) => {
+  const getDifficultyColorClass = (difficulty: string): string => {
+    switch (difficulty) {
+      case "Easy":
+        return "bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400 border-green-200 dark:border-green-800";
+      case "Medium":
+        return "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800";
+      default:
+        return "bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400 border-red-200 dark:border-red-800";
+    }
+  };
+
   return (
     <Card className="border border-gray-200 dark:border-gray-800">
       <CardContent className="p-6">
@@ -28,8 +39,7 @@ const SessionHeader = ({ sessionData }: SessionHeaderProps) => {
           </div>
           
           <div className="flex items-start gap-2">
-            <Badge variant={sessionData.difficulty === "Easy" ? "success" : 
-                           sessionData.difficulty === "Medium" ? "warning" : "destructive"}>
+            <Badge variant="outline" className={getDifficultyColorClass(sessionData.difficulty)}>
               {sessionData.difficulty}
             </Badge>
             <Badge variant="outline" className="flex items-center">
