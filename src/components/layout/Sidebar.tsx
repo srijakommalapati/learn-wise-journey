@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
@@ -14,6 +13,7 @@ import {
   Users
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { UserButton } from "@clerk/clerk-react";
 
 type SidebarLink = {
   icon: typeof LayoutDashboard;
@@ -182,13 +182,11 @@ const Sidebar = ({ className }: SidebarProps) => {
 
       <div className="p-4 border-t border-gray-200 dark:border-gray-800">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-blue-accent flex items-center justify-center text-white">
-            <span className="text-xs font-medium">JD</span>
-          </div>
+          <UserButton afterSignOutUrl="/login" />
           {!collapsed && (
             <div className="truncate">
-              <p className="text-sm font-medium">Jane Doe</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">jane@example.com</p>
+              <p className="text-sm font-medium">K Srija</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">srija@example.com</p>
             </div>
           )}
         </div>

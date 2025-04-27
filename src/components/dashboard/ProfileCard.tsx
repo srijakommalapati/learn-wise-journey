@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Book, Star, Award } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { UserButton } from "@clerk/clerk-react";
 
 const ProfileCard = () => {
   return (
@@ -13,12 +14,12 @@ const ProfileCard = () => {
       <CardContent>
         <div className="flex flex-col items-center text-center">
           <Avatar className="h-24 w-24 border-4 border-blue-accent">
-            <AvatarImage src="https://github.com/shadcn.png" alt="Jane Doe" />
-            <AvatarFallback className="text-2xl">JD</AvatarFallback>
+            <AvatarImage src="https://github.com/shadcn.png" alt="K Srija" />
+            <AvatarFallback className="text-2xl">KS</AvatarFallback>
           </Avatar>
           
           <div className="mt-4">
-            <h3 className="text-xl font-semibold">Jane Doe</h3>
+            <h3 className="text-xl font-semibold">K Srija</h3>
             <p className="text-gray-500 dark:text-gray-400 text-sm">Frontend Developer</p>
             
             <div className="flex items-center gap-1 mt-1 justify-center">

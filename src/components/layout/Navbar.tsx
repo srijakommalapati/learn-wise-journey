@@ -10,8 +10,10 @@ import {
   BookOpen, 
   BarChart3,
   Briefcase,
-  ChevronRight
+  ChevronRight,
+  LogOut  // Add LogOut icon
 } from "lucide-react";
+import { UserButton } from "@clerk/clerk-react";  // Import UserButton
 import {
   Dialog,
   DialogContent,
@@ -107,17 +109,7 @@ const Navbar = () => {
             </div>
             
             <div className="flex items-center gap-2">
-              <Link to="/login">
-                <Button variant="outline" size="sm" className="btn-hover">
-                  <LogIn className="h-4 w-4 mr-2" />
-                  Login
-                </Button>
-              </Link>
-              <Link to="/register">
-                <Button size="sm" className="bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all duration-200">
-                  Sign Up
-                </Button>
-              </Link>
+              <UserButton afterSignOutUrl="/login" />
             </div>
           </div>
           
@@ -165,17 +157,7 @@ const Navbar = () => {
             ))}
             
             <div className="flex flex-col sm:flex-row gap-2 py-3">
-              <Link to="/login" className="w-full sm:w-auto">
-                <Button variant="outline" className="w-full">
-                  <LogIn className="h-4 w-4 mr-2" />
-                  Login
-                </Button>
-              </Link>
-              <Link to="/register" className="w-full sm:w-auto">
-                <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white shadow-lg hover:shadow-xl transition-all duration-200">
-                  Sign Up
-                </Button>
-              </Link>
+              <UserButton afterSignOutUrl="/login" />
             </div>
           </div>
         </div>
