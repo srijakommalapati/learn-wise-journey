@@ -181,43 +181,8 @@ const AiTutorLisa = () => {
         ],
         nextSteps: "Work on more complex data structure implementations such as LRU Cache or Min Stack. Practice explaining the time complexity analysis in more detail."
       },
-      userAnswer: `To implement a queue using two stacks, I'll use one stack for pushing elements and another for popping/peeking. Here's my approach:
-
-1. Create two stacks: stackPush and stackPop
-2. For push operation: Add element to stackPush
-3. For pop/peek: If stackPop is empty, transfer all elements from stackPush to stackPop by popping each element from stackPush and pushing it to stackPop, then perform the operation on stackPop
-4. This reverses the order, giving FIFO behavior
-
-This approach has O(1) amortized time complexity for all operations, since each element is moved from stackPush to stackPop at most once.",
-      enhancedAnswer: `# Queue Implementation Using Two Stacks
-
-A queue follows First-In-First-Out (FIFO) ordering, while stacks follow Last-In-First-Out (LIFO). The key insight is that we can reverse the order of elements by transferring them between stacks.
-
-## Approach:
-I'll use two stacks with specialized roles:
-- **Input Stack**: For enqueue operations (push)
-- **Output Stack**: For dequeue operations (pop, peek)
-
-## Implementation Details:
-
-1. **push(x)**: Simply push the element onto the input stack - O(1) time
-2. **pop() / peek()**: 
-   - If the output stack is empty: Transfer all elements from input to output stack
-   - This reverses their order, converting LIFO to FIFO
-   - Then pop/peek from the output stack
-3. **empty()**: Return true if both stacks are empty
-
-## Time Complexity Analysis:
-- **push**: O(1) - constant time
-- **pop/peek**: 
-   - Amortized O(1) time
-   - Worst case O(n) when we need to transfer elements
-   - But each element is transferred at most once between operations
-
-## Space Complexity:
-- O(n) where n is the number of elements in the queue
-
-This implementation efficiently simulates queue behavior using only stack operations, preserving the FIFO ordering required for a queue.`,
+      userAnswer: "To implement a queue using two stacks, I'll use one stack for pushing elements and another for popping/peeking. Here's my approach:\n\n1. Create two stacks: stackPush and stackPop\n2. For push operation: Add element to stackPush\n3. For pop/peek: If stackPop is empty, transfer all elements from stackPush to stackPop by popping each element from stackPush and pushing it to stackPop, then perform the operation on stackPop\n4. This reverses the order, giving FIFO behavior\n\nThis approach has O(1) amortized time complexity for all operations, since each element is moved from stackPush to stackPop at most once.",
+      enhancedAnswer: "Queue Implementation Using Two Stacks\n\nA queue follows First-In-First-Out (FIFO) ordering, while stacks follow Last-In-First-Out (LIFO). The key insight is that we can reverse the order of elements by transferring them between stacks.\n\nApproach:\nI'll use two stacks with specialized roles:\n- Input Stack: For enqueue operations (push)\n- Output Stack: For dequeue operations (pop, peek)\n\nImplementation Details:\n\n1. push(x): Simply push the element onto the input stack - O(1) time\n2. pop() / peek(): \n   - If the output stack is empty: Transfer all elements from input to output stack\n   - This reverses their order, converting LIFO to FIFO\n   - Then pop/peek from the output stack\n3. empty(): Return true if both stacks are empty\n\nTime Complexity Analysis:\n- push: O(1) - constant time\n- pop/peek: \n   - Amortized O(1) time\n   - Worst case O(n) when we need to transfer elements\n   - But each element is transferred at most once between operations\n\nSpace Complexity:\n- O(n) where n is the number of elements in the queue\n\nThis implementation efficiently simulates queue behavior using only stack operations, preserving the FIFO ordering required for a queue.",
       improvements: [
         "Added clear section headings for improved readability",
         "Provided more detailed explanation of the time complexity analysis",

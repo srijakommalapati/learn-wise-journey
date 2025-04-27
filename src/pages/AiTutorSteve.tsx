@@ -166,37 +166,8 @@ const AiTutorSteve = () => {
         ],
         nextSteps: "Practice more medium-difficulty array problems with a focus on optimizing your initial approach. Consider using the sliding window technique for similar problems."
       },
-      userAnswer: `To find the maximum profit from stock prices, I need to find the greatest difference between a later price and an earlier price.
-
-First, I'll initialize variables to track the minimum price seen so far and the maximum profit.
-- Set minPrice to the first price in the array
-- Set maxProfit to 0
-
-Then I'll iterate through the prices starting from the second price:
-- Update minPrice if the current price is lower
-- Calculate the potential profit as current price minus minPrice
-- Update maxProfit if the potential profit is greater
-
-This gives us O(n) time complexity with O(1) space, which is optimal for this problem.",
-      enhancedAnswer: `To find the maximum profit from stock prices, I need to identify the optimal buy and sell points that maximize the difference (profit).
-
-Approach:
-1. Track the lowest price seen so far (potential buy point)
-2. At each price, calculate profit if we were to sell at that price
-3. Keep track of the maximum profit possible
-
-Algorithm Implementation:
-- Initialize minPrice = prices[0] (first day's price)
-- Initialize maxProfit = 0 (in case we can't make any profit)
-- Iterate through prices starting from index 1:
-  - Update minPrice if current price is lower: minPrice = min(minPrice, prices[i])
-  - Calculate potential profit: currentProfit = prices[i] - minPrice
-  - Update maximum profit: maxProfit = max(maxProfit, currentProfit)
-
-Time complexity: O(n) where n is the number of days (single pass through prices)
-Space complexity: O(1) as we use only constant extra space
-
-This solution efficiently handles all cases including declining prices (return 0) and optimally finds the maximum possible profit in a single pass.",
+      userAnswer: "To find the maximum profit from stock prices, I need to find the greatest difference between a later price and an earlier price.\n\nFirst, I'll initialize variables to track the minimum price seen so far and the maximum profit.\n- Set minPrice to the first price in the array\n- Set maxProfit to 0\n\nThen I'll iterate through the prices starting from the second price:\n- Update minPrice if the current price is lower\n- Calculate the potential profit as current price minus minPrice\n- Update maxProfit if the potential profit is greater\n\nThis gives us O(n) time complexity with O(1) space, which is optimal for this problem.",
+      enhancedAnswer: "To find the maximum profit from stock prices, I need to identify the optimal buy and sell points that maximize the difference (profit).\n\nApproach:\n1. Track the lowest price seen so far (potential buy point)\n2. At each price, calculate profit if we were to sell at that price\n3. Keep track of the maximum profit possible\n\nAlgorithm Implementation:\n- Initialize minPrice = prices[0] (first day's price)\n- Initialize maxProfit = 0 (in case we can't make any profit)\n- Iterate through prices starting from index 1:\n  - Update minPrice if current price is lower: minPrice = min(minPrice, prices[i])\n  - Calculate potential profit: currentProfit = prices[i] - minPrice\n  - Update maximum profit: maxProfit = max(maxProfit, currentProfit)\n\nTime complexity: O(n) where n is the number of days (single pass through prices)\nSpace complexity: O(1) as we use only constant extra space\n\nThis solution efficiently handles all cases including declining prices (return 0) and optimally finds the maximum possible profit in a single pass.",
       improvements: [
         "Added clear separation of approach, algorithm, and complexity analysis",
         "Provided more detailed explanation of the strategy",
