@@ -4,10 +4,12 @@ import ProfileCard from "@/components/dashboard/ProfileCard";
 import ProgressChart from "@/components/dashboard/ProgressChart";
 import WeeklyTargets from "@/components/dashboard/WeeklyTargets";
 import CalendarView from "@/components/dashboard/CalendarView";
-import InterestingTopics from "@/components/dashboard/InterestingTopics";
 import SalaryTrends from "@/components/dashboard/SalaryTrends";
 import ProfileStats from "@/components/dashboard/ProfileStats";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { User } from "lucide-react";
 
 const Dashboard = () => {
   return (
@@ -20,6 +22,12 @@ const Dashboard = () => {
               Here's what's happening with your learning journey
             </p>
           </div>
+          <Link to="/profile">
+            <Button variant="outline" className="gap-2">
+              <User className="h-4 w-4" />
+              View Full Profile
+            </Button>
+          </Link>
         </div>
 
         <ProfileStats />
@@ -45,9 +53,8 @@ const Dashboard = () => {
           <SalaryTrends />
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
           <CalendarView />
-          <InterestingTopics />
         </div>
       </div>
     </DashboardLayout>

@@ -6,17 +6,35 @@ import ChatInterface from "@/components/ai-tutor/ChatInterface";
 import CodeEditor from "@/components/ai-tutor/CodeEditor";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { LayoutPanelLeft, FileHeart } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { LayoutPanelLeft, FileHeart, Check, Clock, AlertCircle } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
+import { Badge } from "@/components/ui/badge";
 
 const AiTutorLisa = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [activeTab, setActiveTab] = useState("problem");
+  
   const [currentQuestion, setCurrentQuestion] = useState({
     title: "Implement a Queue using Stacks",
     description: "Implement a first-in-first-out (FIFO) queue using only two stacks. The queue should support all functions of a normal queue: push, peek, pop, and empty.",
-    example: "MyQueue queue = new MyQueue();\nqueue.push(1);\nqueue.push(2);\nqueue.peek(); // returns 1\nqueue.pop(); // returns 1\nqueue.empty(); // returns false"
+    example: "MyQueue queue = new MyQueue();\nqueue.push(1);\nqueue.push(2);\nqueue.peek(); // returns 1\nqueue.pop(); // returns 1\nqueue.empty(); // returns false",
+    constraints: "1 <= x <= 9\nAt most 100 calls will be made to push, pop, peek, and empty.\nAll the calls to pop and peek are valid.",
+    difficulty: "Medium",
+    testCases: [
+      {
+        input: "push(1), push(2), peek(), pop(), empty()",
+        output: "1, 1, false",
+        explanation: "The queue behaves as expected for these operations."
+      },
+      {
+        input: "push(1), pop(), empty()",
+        output: "1, true",
+        explanation: "After pushing and popping, the queue is empty."
+      }
+    ]
   });
 
   const handleEndSession = () => {
@@ -207,28 +225,6 @@ const AiTutorLisa = () => {
             </p>
           </div>
           <div className="flex gap-3">
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline" className="hidden md:flex">
-                  <LayoutPanelLeft className="mr-2 h-4 w-4" />
-                  View Problem Description
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[500px]">
-                <Card className="shadow-none border-0">
-                  <CardHeader className="pb-3">
-                    <CardTitle>{currentQuestion.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-700 dark:text-gray-300 mb-4">{currentQuestion.description}</p>
-                    <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded-md">
-                      <p className="text-sm font-mono whitespace-pre-wrap">{currentQuestion.example}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </DialogContent>
-            </Dialog>
-            
             <Button 
               onClick={handleEndSession}
               variant="default" 
@@ -242,21 +238,100 @@ const AiTutorLisa = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="space-y-6">
-            <Card className="border border-gray-200 dark:border-gray-800 shadow-lg md:hidden animate-fade-in">
-              <CardHeader>
-                <CardTitle className="text-lg">Current Problem</CardTitle>
+            <Card className="border border-gray-200 dark:border-gray-800 shadow-lg">
+              <CardHeader className="pb-3 bg-gray-50 dark:bg-gray-800/50">
+                <CardTitle className="text-lg">Problem Statement</CardTitle>
               </CardHeader>
-              <CardContent>
-                <h3 className="font-bold text-xl mb-2">{currentQuestion.title}</h3>
-                <p className="text-gray-700 dark:text-gray-300 mb-4">{currentQuestion.description}</p>
-                <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded-md">
-                  <p className="text-sm font-mono whitespace-pre-wrap">{currentQuestion.example}</p>
-                </div>
-                <div className="flex gap-2 mt-4">
-                  <Button variant="outline" size="sm" className="text-xs">Easy</Button>
-                  <Button variant="outline" size="sm" className="text-xs">Medium</Button>
-                  <Button variant="outline" size="sm" className="text-xs">Hard</Button>
-                </div>
+              <CardContent className="p-0">
+                <Tabs defaultValue="problem" className="w-full" onValueChange={setActiveTab}>
+                  <TabsList className="grid grid-cols-3 w-full rounded-none border-b border-gray-200 dark:border-gray-700">
+                    <TabsTrigger value="problem">Problem</TabsTrigger>
+                    <TabsTrigger value="examples">Examples</TabsTrigger>
+                    <TabsTrigger value="hints">Hints</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="problem" className="p-4">
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <h3 className="font-bold text-xl">{currentQuestion.title}</h3>
+                        <Badge className="bg-yellow-500">{currentQuestion.difficulty}</Badge>
+                      </div>
+                      <p className="text-gray-700 dark:text-gray-300">{currentQuestion.description}</p>
+                      
+                      <div>
+                        <h4 className="font-semibold mb-1">Constraints:</h4>
+                        <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded-md">
+                          <p className="text-sm font-mono whitespace-pre-wrap">{currentQuestion.constraints}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="examples" className="p-4">
+                    <div className="space-y-6">
+                      {currentQuestion.testCases.map((testCase, idx) => (
+                        <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-4">
+                          <h4 className="font-semibold mb-2">Example {idx + 1}</h4>
+                          <div className="space-y-2">
+                            <div className="flex">
+                              <span className="font-mono font-medium w-16">Input:</span>
+                              <span className="font-mono text-gray-700 dark:text-gray-300">{testCase.input}</span>
+                            </div>
+                            <div className="flex">
+                              <span className="font-mono font-medium w-16">Output:</span>
+                              <span className="font-mono text-gray-700 dark:text-gray-300">{testCase.output}</span>
+                            </div>
+                            <div>
+                              <span className="font-mono font-medium block">Explanation:</span>
+                              <span className="text-gray-700 dark:text-gray-300">{testCase.explanation}</span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="hints" className="p-4">
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3 p-3 rounded-md bg-purple-50 dark:bg-purple-900/20 border border-purple-100 dark:border-purple-800">
+                        <div className="mt-0.5">
+                          <Check className="h-5 w-5 text-purple-500" />
+                        </div>
+                        <div>
+                          <h4 className="font-medium">Hint 1: Basic Properties</h4>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">Think about the difference between stack (LIFO) and queue (FIFO) operations.</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start gap-3 p-3 rounded-md bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                        <div className="mt-0.5">
+                          <Clock className="h-5 w-5 text-gray-500" />
+                        </div>
+                        <div>
+                          <h4 className="font-medium">Hint 2: Locked</h4>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">Continue working to unlock more hints...</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start gap-3 p-3 rounded-md bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                        <div className="mt-0.5">
+                          <Clock className="h-5 w-5 text-gray-500" />
+                        </div>
+                        <div>
+                          <h4 className="font-medium">Hint 3: Locked</h4>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">Continue working to unlock more hints...</p>
+                        </div>
+                      </div>
+                      
+                      <div className="mt-4">
+                        <Button variant="outline" size="sm">
+                          <AlertCircle className="h-4 w-4 mr-2" />
+                          Ask for a hint
+                        </Button>
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
               </CardContent>
             </Card>
             

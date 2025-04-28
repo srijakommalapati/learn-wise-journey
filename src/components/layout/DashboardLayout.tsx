@@ -1,6 +1,7 @@
 
 import { ReactNode } from "react";
 import Sidebar from "./Sidebar";
+import FloatingAIAssistant from "../ai-assistant/FloatingAIAssistant";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -14,6 +15,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         <div className="container mx-auto px-4 py-6">
           {children}
         </div>
+        <FloatingAIAssistant />
       </main>
     </div>
   );
