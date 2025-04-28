@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
@@ -10,10 +11,10 @@ import {
   ChevronLeft, 
   ChevronRight,
   ChevronDown,
-  Users
+  Users,
+  LogOut
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { UserButton } from "@clerk/clerk-react";
 
 type SidebarLink = {
   icon: typeof LayoutDashboard;
@@ -182,7 +183,9 @@ const Sidebar = ({ className }: SidebarProps) => {
 
       <div className="p-4 border-t border-gray-200 dark:border-gray-800">
         <div className="flex items-center gap-3">
-          <UserButton afterSignOutUrl="/login" />
+          <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+            <User size={18} className="text-gray-600 dark:text-gray-400" />
+          </div>
           {!collapsed && (
             <div className="truncate">
               <p className="text-sm font-medium">K Srija</p>

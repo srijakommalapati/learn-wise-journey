@@ -11,9 +11,8 @@ import {
   BarChart3,
   Briefcase,
   ChevronRight,
-  LogOut  // Add LogOut icon
+  LogOut
 } from "lucide-react";
-import { UserButton } from "@clerk/clerk-react";  // Import UserButton
 import {
   Dialog,
   DialogContent,
@@ -109,7 +108,10 @@ const Navbar = () => {
             </div>
             
             <div className="flex items-center gap-2">
-              <UserButton afterSignOutUrl="/login" />
+              <Button variant="outline" className="flex items-center gap-2" onClick={() => navigate('/login')}>
+                <LogIn className="w-4 h-4" />
+                Sign In
+              </Button>
             </div>
           </div>
           
@@ -157,7 +159,10 @@ const Navbar = () => {
             ))}
             
             <div className="flex flex-col sm:flex-row gap-2 py-3">
-              <UserButton afterSignOutUrl="/login" />
+              <Button variant="outline" className="flex items-center gap-2 w-full sm:w-auto justify-center" onClick={() => navigate('/login')}>
+                <LogIn className="w-4 h-4" />
+                Sign In
+              </Button>
             </div>
           </div>
         </div>

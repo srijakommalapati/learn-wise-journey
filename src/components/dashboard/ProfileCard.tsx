@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Book, Star, Award } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { UserButton } from "@clerk/clerk-react";
 
 const ProfileCard = () => {
   return (
