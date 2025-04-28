@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,6 +16,7 @@ interface ProblemProps {
   constraints: string;
   difficulty: string;
   testCases: TestCase[];
+  showHints?: boolean;
 }
 
 const ProblemStatementCard = ({ 
@@ -24,7 +24,8 @@ const ProblemStatementCard = ({
   description, 
   constraints, 
   difficulty, 
-  testCases 
+  testCases,
+  showHints = true 
 }: ProblemProps) => {
   return (
     <Card className="border border-gray-200 dark:border-gray-800 shadow-lg">
@@ -33,10 +34,10 @@ const ProblemStatementCard = ({
       </CardHeader>
       <CardContent className="p-0">
         <Tabs defaultValue="problem" className="w-full">
-          <TabsList className="grid grid-cols-3 w-full rounded-none border-b border-gray-200 dark:border-gray-700">
+          <TabsList className="grid w-full rounded-none border-b border-gray-200 dark:border-gray-700">
             <TabsTrigger value="problem">Problem</TabsTrigger>
             <TabsTrigger value="examples">Examples</TabsTrigger>
-            <TabsTrigger value="hints">Hints</TabsTrigger>
+            {showHints && <TabsTrigger value="hints">Hints</TabsTrigger>}
           </TabsList>
           
           <TabsContent value="problem" className="p-4">
@@ -80,36 +81,38 @@ const ProblemStatementCard = ({
             </div>
           </TabsContent>
           
-          <TabsContent value="hints" className="p-4">
-            <div className="space-y-4">
-              <div className="flex items-start gap-3 p-3 rounded-md bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800">
-                <div className="mt-0.5">
-                  <Check className="h-5 w-5 text-blue-500" />
+          {showHints && (
+            <TabsContent value="hints">
+              <div className="space-y-4">
+                <div className="flex items-start gap-3 p-3 rounded-md bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800">
+                  <div className="mt-0.5">
+                    <Check className="h-5 w-5 text-blue-500" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium">Hint 1: Think about tracking values</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">What values would be helpful to keep track of as you scan through the array?</p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-medium">Hint 1: Think about tracking values</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">What values would be helpful to keep track of as you scan through the array?</p>
+                
+                <div className="flex items-start gap-3 p-3 rounded-md bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                  <div className="mt-0.5">
+                    <Clock className="h-5 w-5 text-gray-500" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium">Hint 2: Locked</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Continue working to unlock more hints...</p>
+                  </div>
+                </div>
+                
+                <div className="mt-4">
+                  <Button variant="outline" size="sm">
+                    <AlertCircle className="h-4 w-4 mr-2" />
+                    Ask for a hint
+                  </Button>
                 </div>
               </div>
-              
-              <div className="flex items-start gap-3 p-3 rounded-md bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                <div className="mt-0.5">
-                  <Clock className="h-5 w-5 text-gray-500" />
-                </div>
-                <div>
-                  <h4 className="font-medium">Hint 2: Locked</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Continue working to unlock more hints...</p>
-                </div>
-              </div>
-              
-              <div className="mt-4">
-                <Button variant="outline" size="sm">
-                  <AlertCircle className="h-4 w-4 mr-2" />
-                  Ask for a hint
-                </Button>
-              </div>
-            </div>
-          </TabsContent>
+            </TabsContent>
+          )}
         </Tabs>
       </CardContent>
     </Card>

@@ -230,20 +230,20 @@ const AiTutorLisa = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-6">
-          <div className="flex gap-6 items-start">
-            <div className="w-1/3 sticky top-6">
+          <div className="grid grid-cols-12 gap-6">
+            <div className="col-span-12">
+              <ProblemStatementCard {...currentQuestion} showHints={false} />
+            </div>
+            <div className="col-span-3">
               <InterviewerSection tutor="lisa" />
             </div>
-            
-            <div className="w-2/3">
-              <ProblemStatementCard {...currentQuestion} />
+            <div className="col-span-9">
+              <CodeEditorSection 
+                language={language}
+                onLanguageChange={setLanguage}
+              />
             </div>
           </div>
-
-          <CodeEditorSection 
-            language={language}
-            onLanguageChange={setLanguage}
-          />
         </div>
       </div>
     </DashboardLayout>
