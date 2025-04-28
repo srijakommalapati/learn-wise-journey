@@ -1,6 +1,6 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle, XCircle } from "lucide-react";
-import { ResponsiveContainer, LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Line } from "recharts";
 
 interface TestCase {
   id: number;
@@ -17,14 +17,54 @@ interface TestCasesReportProps {
 }
 
 const TestCasesReport = ({ testCases }: TestCasesReportProps) => {
-  const data = testCases || [];
-  
-  const chartData = data.map((test, index) => ({
-    id: index + 1,
-    name: test.name,
-    status: test.passed ? 1 : 0,
-    executionTime: parseInt(test.executionTime)
-  }));
+  // In case no data is provided, use sample data
+  const data = testCases || [
+    {
+      id: 1,
+      name: "Basic Case",
+      input: "[7, 1, 5, 3, 6, 4]",
+      expectedOutput: "5",
+      actualOutput: "5",
+      passed: true,
+      executionTime: "5ms"
+    },
+    {
+      id: 2,
+      name: "No Profit",
+      input: "[7, 6, 5, 4, 3, 1]",
+      expectedOutput: "0",
+      actualOutput: "0",
+      passed: true,
+      executionTime: "3ms"
+    },
+    {
+      id: 3,
+      name: "Increasing Array",
+      input: "[1, 2, 3, 4, 5]",
+      expectedOutput: "4",
+      actualOutput: "4",
+      passed: true,
+      executionTime: "2ms"
+    },
+    {
+      id: 4,
+      name: "Edge Case - Empty Array",
+      input: "[]",
+      expectedOutput: "0",
+      actualOutput: "0",
+      passed: true,
+      executionTime: "1ms"
+    },
+    {
+      id: 5,
+      name: "Large Input",
+      input: "[...100 values]",
+      expectedOutput: "56",
+      actualOutput: "56",
+      passed: true,
+      executionTime: "12ms"
+    }
+  ];
 
   const passedCount = data.filter(test => test.passed).length;
   const passRate = (passedCount / data.length) * 100;
@@ -42,31 +82,7 @@ const TestCasesReport = ({ testCases }: TestCasesReportProps) => {
           </div>
         </div>
       </CardHeader>
-      <CardContent>
-        <div className="h-[200px] mb-6">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="id" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line 
-                type="monotone" 
-                dataKey="status" 
-                stroke="#10B981" 
-                name="Pass Status"
-              />
-              <Line 
-                type="monotone" 
-                dataKey="executionTime" 
-                stroke="#6366F1" 
-                name="Execution Time (ms)"
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-        
+      <CardContent className="pt-0">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>

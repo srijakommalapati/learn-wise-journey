@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   ChartContainer, 
@@ -25,6 +26,7 @@ interface EmotionalAnalysisReportProps {
 }
 
 const EmotionalAnalysisReport = ({ emotionData }: EmotionalAnalysisReportProps) => {
+  // In case no data is provided, use sample data
   const data = emotionData || [
     { time: "00:00", confidence: 80, frustration: 20, excitement: 75 },
     { time: "05:00", confidence: 75, frustration: 30, excitement: 70 },
@@ -34,6 +36,21 @@ const EmotionalAnalysisReport = ({ emotionData }: EmotionalAnalysisReportProps) 
     { time: "25:00", confidence: 90, frustration: 10, excitement: 95 },
     { time: "30:00", confidence: 95, frustration: 5, excitement: 90 }
   ];
+  
+  const chartConfig = {
+    confidence: {
+      label: "Confidence",
+      theme: { light: "#3B82F6", dark: "#60A5FA" },
+    },
+    frustration: {
+      label: "Frustration",
+      theme: { light: "#EF4444", dark: "#F87171" },
+    },
+    excitement: {
+      label: "Excitement",
+      theme: { light: "#10B981", dark: "#34D399" },
+    },
+  };
 
   return (
     <Card className="border border-gray-200 dark:border-gray-800">
@@ -47,39 +64,41 @@ const EmotionalAnalysisReport = ({ emotionData }: EmotionalAnalysisReportProps) 
       </CardHeader>
       <CardContent className="pt-0">
         <div className="h-[250px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} />
-              <XAxis dataKey="time" />
-              <YAxis unit="%" />
-              <Tooltip />
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey="confidence"
-                stroke="#3B82F6"
-                strokeWidth={2}
-                dot={{ r: 2 }}
-                name="Confidence"
-              />
-              <Line
-                type="monotone"
-                dataKey="frustration"
-                stroke="#EF4444"
-                strokeWidth={2}
-                dot={{ r: 2 }}
-                name="Frustration"
-              />
-              <Line
-                type="monotone"
-                dataKey="excitement"
-                stroke="#10B981"
-                strokeWidth={2}
-                dot={{ r: 2 }}
-                name="Excitement"
-              />
-            </LineChart>
-          </ResponsiveContainer>
+          <ChartContainer config={chartConfig}>
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={data}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis dataKey="time" />
+                <YAxis unit="%" />
+                <Tooltip content={<ChartTooltipContent />} />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="confidence"
+                  stroke="var(--color-confidence)"
+                  strokeWidth={2}
+                  dot={{ r: 0 }}
+                  activeDot={{ r: 4 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="frustration"
+                  stroke="var(--color-frustration)"
+                  strokeWidth={2}
+                  dot={{ r: 0 }}
+                  activeDot={{ r: 4 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="excitement"
+                  stroke="var(--color-excitement)"
+                  strokeWidth={2}
+                  dot={{ r: 0 }}
+                  activeDot={{ r: 4 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </ChartContainer>
         </div>
         
         <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-md">
