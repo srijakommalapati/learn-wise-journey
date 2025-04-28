@@ -1,27 +1,21 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import TutorVideo from "@/components/ai-tutor/TutorVideo";
-import ChatInterface from "@/components/ai-tutor/ChatInterface";
-import CodeEditor from "@/components/ai-tutor/CodeEditor";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileHeart, Check, Clock, AlertCircle } from "lucide-react";
+import { FileHeart } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { Badge } from "@/components/ui/badge";
+import ProblemStatementCard from "@/components/ai-tutor/ProblemStatementCard";
+import InterviewerSection from "@/components/ai-tutor/InterviewerSection";
+import CodeEditorSection from "@/components/ai-tutor/CodeEditorSection";
 
 const AiTutorSteve = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState("problem");
   const [language, setLanguage] = useState("javascript");
   
-  const [currentQuestion, setCurrentQuestion] = useState({
+  const [currentQuestion] = useState({
     title: "Find Maximum Stock Profit",
     description: "Given an array of prices where prices[i] is the price of a stock on the ith day, find the maximum profit you can achieve by buying and selling once. You can only sell after you buy.",
-    example: "Input: [7, 1, 5, 3, 6, 4]\nOutput: 5\nExplanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.",
     constraints: "1 <= prices.length <= 10^5\n0 <= prices[i] <= 10^4",
     difficulty: "Medium",
     testCases: [
@@ -222,127 +216,19 @@ const AiTutorSteve = () => {
 
         <div className="grid grid-cols-1 gap-6">
           <div className="flex gap-6 items-start">
-            <div className="w-1/3">
-              <TutorVideo tutor="steve" />
-              <ChatInterface tutor="steve" />
+            <div className="w-1/3 sticky top-6">
+              <InterviewerSection tutor="steve" />
             </div>
             
             <div className="w-2/3">
-              <Card className="border border-gray-200 dark:border-gray-800 shadow-lg">
-                <CardHeader className="pb-3 bg-gray-50 dark:bg-gray-800/50">
-                  <CardTitle className="text-lg">Problem Statement</CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <Tabs defaultValue="problem" className="w-full" onValueChange={setActiveTab}>
-                    <TabsList className="grid grid-cols-3 w-full rounded-none border-b border-gray-200 dark:border-gray-700">
-                      <TabsTrigger value="problem">Problem</TabsTrigger>
-                      <TabsTrigger value="examples">Examples</TabsTrigger>
-                      <TabsTrigger value="hints">Hints</TabsTrigger>
-                    </TabsList>
-                    
-                    <TabsContent value="problem" className="p-4">
-                      <div className="space-y-4">
-                        <div className="flex justify-between items-center">
-                          <h3 className="font-bold text-xl">{currentQuestion.title}</h3>
-                          <Badge className="bg-yellow-500">{currentQuestion.difficulty}</Badge>
-                        </div>
-                        <p className="text-gray-700 dark:text-gray-300">{currentQuestion.description}</p>
-                        
-                        <div>
-                          <h4 className="font-semibold mb-1">Constraints:</h4>
-                          <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded-md">
-                            <p className="text-sm font-mono whitespace-pre-wrap">{currentQuestion.constraints}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </TabsContent>
-                    
-                    <TabsContent value="examples" className="p-4">
-                      <div className="space-y-6">
-                        {currentQuestion.testCases.map((testCase, idx) => (
-                          <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-4">
-                            <h4 className="font-semibold mb-2">Example {idx + 1}</h4>
-                            <div className="space-y-2">
-                              <div className="flex">
-                                <span className="font-mono font-medium w-16">Input:</span>
-                                <span className="font-mono text-gray-700 dark:text-gray-300">{testCase.input}</span>
-                              </div>
-                              <div className="flex">
-                                <span className="font-mono font-medium w-16">Output:</span>
-                                <span className="font-mono text-gray-700 dark:text-gray-300">{testCase.output}</span>
-                              </div>
-                              <div>
-                                <span className="font-mono font-medium block">Explanation:</span>
-                                <span className="text-gray-700 dark:text-gray-300">{testCase.explanation}</span>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </TabsContent>
-                    
-                    <TabsContent value="hints" className="p-4">
-                      <div className="space-y-4">
-                        <div className="flex items-start gap-3 p-3 rounded-md bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800">
-                          <div className="mt-0.5">
-                            <Check className="h-5 w-5 text-blue-500" />
-                          </div>
-                          <div>
-                            <h4 className="font-medium">Hint 1: Think about tracking values</h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">What values would be helpful to keep track of as you scan through the array?</p>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-start gap-3 p-3 rounded-md bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                          <div className="mt-0.5">
-                            <Clock className="h-5 w-5 text-gray-500" />
-                          </div>
-                          <div>
-                            <h4 className="font-medium">Hint 2: Locked</h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Continue working to unlock more hints...</p>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-start gap-3 p-3 rounded-md bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                          <div className="mt-0.5">
-                            <Clock className="h-5 w-5 text-gray-500" />
-                          </div>
-                          <div>
-                            <h4 className="font-medium">Hint 3: Locked</h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Continue working to unlock more hints...</p>
-                          </div>
-                        </div>
-                        
-                        <div className="mt-4">
-                          <Button variant="outline" size="sm">
-                            <AlertCircle className="h-4 w-4 mr-2" />
-                            Ask for a hint
-                          </Button>
-                        </div>
-                      </div>
-                    </TabsContent>
-                  </Tabs>
-                </CardContent>
-              </Card>
+              <ProblemStatementCard {...currentQuestion} />
             </div>
           </div>
 
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <Select value={language} onValueChange={setLanguage}>
-                <SelectTrigger className="w-[200px]">
-                  <SelectValue placeholder="Select Language" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="javascript">JavaScript</SelectItem>
-                  <SelectItem value="typescript">TypeScript</SelectItem>
-                  <SelectItem value="python">Python</SelectItem>
-                  <SelectItem value="java">Java</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <CodeEditor language={language} />
-          </div>
+          <CodeEditorSection 
+            language={language}
+            onLanguageChange={setLanguage}
+          />
         </div>
       </div>
     </DashboardLayout>

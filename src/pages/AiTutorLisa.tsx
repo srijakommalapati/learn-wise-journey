@@ -1,26 +1,21 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import TutorVideo from "@/components/ai-tutor/TutorVideo";
-import ChatInterface from "@/components/ai-tutor/ChatInterface";
-import CodeEditor from "@/components/ai-tutor/CodeEditor";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutPanelLeft, FileHeart, Check, Clock, AlertCircle } from "lucide-react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { FileHeart } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { Badge } from "@/components/ui/badge";
+import ProblemStatementCard from "@/components/ai-tutor/ProblemStatementCard";
+import InterviewerSection from "@/components/ai-tutor/InterviewerSection";
+import CodeEditorSection from "@/components/ai-tutor/CodeEditorSection";
 
 const AiTutorLisa = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState("problem");
+  const [language, setLanguage] = useState("javascript");
   
-  const [currentQuestion, setCurrentQuestion] = useState({
+  const [currentQuestion] = useState({
     title: "Implement a Queue using Stacks",
     description: "Implement a first-in-first-out (FIFO) queue using only two stacks. The queue should support all functions of a normal queue: push, peek, pop, and empty.",
-    example: "MyQueue queue = new MyQueue();\nqueue.push(1);\nqueue.push(2);\nqueue.peek(); // returns 1\nqueue.pop(); // returns 1\nqueue.empty(); // returns false",
     constraints: "1 <= x <= 9\nAt most 100 calls will be made to push, pop, peek, and empty.\nAll the calls to pop and peek are valid.",
     difficulty: "Medium",
     testCases: [
@@ -219,131 +214,36 @@ const AiTutorLisa = () => {
       <div className="container mx-auto px-4 animate-fade-in">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Practice with Lisa</h1>
+            <h1 className="text-3xl font-bold mb-2">Practice with Senior SDE</h1>
             <p className="text-gray-600 dark:text-gray-400">
               Lisa focuses on guiding you through problems with hints and questions, helping you learn independently.
             </p>
           </div>
-          <div className="flex gap-3">
-            <Button 
-              onClick={handleEndSession}
-              variant="default" 
-              className="gap-2 bg-purple-600 hover:bg-purple-700"
-            >
-              <FileHeart className="h-4 w-4" />
-              End Session
-            </Button>
-          </div>
+          <Button 
+            onClick={handleEndSession}
+            variant="default" 
+            className="gap-2 bg-purple-600 hover:bg-purple-700"
+          >
+            <FileHeart className="h-4 w-4" />
+            End Session
+          </Button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="space-y-6">
-            <Card className="border border-gray-200 dark:border-gray-800 shadow-lg">
-              <CardHeader className="pb-3 bg-gray-50 dark:bg-gray-800/50">
-                <CardTitle className="text-lg">Problem Statement</CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <Tabs defaultValue="problem" className="w-full" onValueChange={setActiveTab}>
-                  <TabsList className="grid grid-cols-3 w-full rounded-none border-b border-gray-200 dark:border-gray-700">
-                    <TabsTrigger value="problem">Problem</TabsTrigger>
-                    <TabsTrigger value="examples">Examples</TabsTrigger>
-                    <TabsTrigger value="hints">Hints</TabsTrigger>
-                  </TabsList>
-                  
-                  <TabsContent value="problem" className="p-4">
-                    <div className="space-y-4">
-                      <div className="flex justify-between items-center">
-                        <h3 className="font-bold text-xl">{currentQuestion.title}</h3>
-                        <Badge className="bg-yellow-500">{currentQuestion.difficulty}</Badge>
-                      </div>
-                      <p className="text-gray-700 dark:text-gray-300">{currentQuestion.description}</p>
-                      
-                      <div>
-                        <h4 className="font-semibold mb-1">Constraints:</h4>
-                        <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded-md">
-                          <p className="text-sm font-mono whitespace-pre-wrap">{currentQuestion.constraints}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="examples" className="p-4">
-                    <div className="space-y-6">
-                      {currentQuestion.testCases.map((testCase, idx) => (
-                        <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-4">
-                          <h4 className="font-semibold mb-2">Example {idx + 1}</h4>
-                          <div className="space-y-2">
-                            <div className="flex">
-                              <span className="font-mono font-medium w-16">Input:</span>
-                              <span className="font-mono text-gray-700 dark:text-gray-300">{testCase.input}</span>
-                            </div>
-                            <div className="flex">
-                              <span className="font-mono font-medium w-16">Output:</span>
-                              <span className="font-mono text-gray-700 dark:text-gray-300">{testCase.output}</span>
-                            </div>
-                            <div>
-                              <span className="font-mono font-medium block">Explanation:</span>
-                              <span className="text-gray-700 dark:text-gray-300">{testCase.explanation}</span>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="hints" className="p-4">
-                    <div className="space-y-4">
-                      <div className="flex items-start gap-3 p-3 rounded-md bg-purple-50 dark:bg-purple-900/20 border border-purple-100 dark:border-purple-800">
-                        <div className="mt-0.5">
-                          <Check className="h-5 w-5 text-purple-500" />
-                        </div>
-                        <div>
-                          <h4 className="font-medium">Hint 1: Basic Properties</h4>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Think about the difference between stack (LIFO) and queue (FIFO) operations.</p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start gap-3 p-3 rounded-md bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                        <div className="mt-0.5">
-                          <Clock className="h-5 w-5 text-gray-500" />
-                        </div>
-                        <div>
-                          <h4 className="font-medium">Hint 2: Locked</h4>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Continue working to unlock more hints...</p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start gap-3 p-3 rounded-md bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                        <div className="mt-0.5">
-                          <Clock className="h-5 w-5 text-gray-500" />
-                        </div>
-                        <div>
-                          <h4 className="font-medium">Hint 3: Locked</h4>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">Continue working to unlock more hints...</p>
-                        </div>
-                      </div>
-                      
-                      <div className="mt-4">
-                        <Button variant="outline" size="sm">
-                          <AlertCircle className="h-4 w-4 mr-2" />
-                          Ask for a hint
-                        </Button>
-                      </div>
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </CardContent>
-            </Card>
+        <div className="grid grid-cols-1 gap-6">
+          <div className="flex gap-6 items-start">
+            <div className="w-1/3 sticky top-6">
+              <InterviewerSection tutor="lisa" />
+            </div>
             
-            <div className="sticky top-6">
-              <TutorVideo tutor="lisa" />
-              <ChatInterface tutor="lisa" />
+            <div className="w-2/3">
+              <ProblemStatementCard {...currentQuestion} />
             </div>
           </div>
 
-          <div className="lg:col-span-2 animate-slide-in-right">
-            <CodeEditor />
-          </div>
+          <CodeEditorSection 
+            language={language}
+            onLanguageChange={setLanguage}
+          />
         </div>
       </div>
     </DashboardLayout>
