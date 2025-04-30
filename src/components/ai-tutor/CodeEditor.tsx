@@ -18,7 +18,8 @@ const CodeEditor = ({ language = "javascript" }: CodeEditorProps) => {
       style={{
         fontFamily: "monospace",
         lineHeight: "1.5",
-        overflowY: "auto"
+        overflowY: "auto",
+        minHeight: "400px" // Added minimum height for better display
       }}
     />
   );

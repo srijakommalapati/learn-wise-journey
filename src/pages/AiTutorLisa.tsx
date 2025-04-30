@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/layout/DashboardLayout";
@@ -232,31 +231,21 @@ const AiTutorLisa = () => {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-200px)]">
           {/* Left Panel - Interviewer */}
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-3 flex flex-col">
             <InterviewerSection tutor="lisa" />
           </div>
 
           {/* Center Panel - Code Area */}
-          <div className="lg:col-span-8 space-y-6">
-            {/* Problem Statement */}
-            <Card className="border border-gray-200 dark:border-gray-800 shadow-lg">
-              <CardContent className="p-4">
-                <ProblemStatementCard {...currentQuestion} showHints={false} />
-              </CardContent>
-            </Card>
-
-            {/* Code Editor Section */}
-            <div>
-              <CodeEditorSection 
-                language={language}
-                onLanguageChange={setLanguage}
-              />
-            </div>
+          <div className="lg:col-span-5 flex flex-col">
+            <CodeEditorSection 
+              language={language}
+              onLanguageChange={setLanguage}
+            />
 
             {/* Bottom Panel - Tabs for Test Cases, Output, etc. */}
-            <Card className="border border-gray-200 dark:border-gray-800 shadow-lg">
+            <Card className="border border-gray-200 dark:border-gray-800 shadow-lg mt-6">
               <CardContent className="p-0">
                 <Tabs defaultValue="testCases" className="w-full">
                   <TabsList className="grid grid-cols-5 w-full rounded-none border-b border-gray-200 dark:border-gray-700">
@@ -267,7 +256,7 @@ const AiTutorLisa = () => {
                     <TabsTrigger value="metrics">Performance Metrics</TabsTrigger>
                   </TabsList>
                   
-                  <TabsContent value="testCases" className="p-4">
+                  <TabsContent value="testCases" className="p-4 max-h-64 overflow-y-auto">
                     <div className="space-y-2">
                       <h3 className="font-medium">Test Cases</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -322,6 +311,15 @@ const AiTutorLisa = () => {
                     </div>
                   </TabsContent>
                 </Tabs>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Right Panel - Problem Statement */}
+          <div className="lg:col-span-4 flex flex-col">
+            <Card className="border border-gray-200 dark:border-gray-800 shadow-lg h-full overflow-hidden">
+              <CardContent className="p-4 h-full">
+                <ProblemStatementCard {...currentQuestion} showHints={true} />
               </CardContent>
             </Card>
           </div>

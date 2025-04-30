@@ -9,15 +9,15 @@ interface InterviewerSectionProps {
 
 const InterviewerSection = ({ tutor }: InterviewerSectionProps) => {
   return (
-    <div className="space-y-4">
-      <Card className="border border-gray-200 dark:border-gray-800 shadow-lg">
+    <div className="flex flex-col h-full space-y-4">
+      <Card className="border border-gray-200 dark:border-gray-800 shadow-lg flex-shrink-0">
         <CardContent className="p-4">
-          <div className="mb-4">
-            <TutorVideo tutor={tutor} />
-          </div>
-          <div>
-            <ChatInterface tutor={tutor} />
-          </div>
+          <TutorVideo tutor={tutor} />
+        </CardContent>
+      </Card>
+      <Card className="border border-gray-200 dark:border-gray-800 shadow-lg flex-grow overflow-hidden">
+        <CardContent className="p-4 h-full">
+          <ChatInterface tutor={tutor} />
         </CardContent>
       </Card>
     </div>
