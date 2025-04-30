@@ -9,7 +9,7 @@ interface InterviewerSectionProps {
 const InterviewerSection = ({ tutor }: InterviewerSectionProps) => {
   return (
     <div className="space-y-4">
-      <div className="mb-4">
+      <div>
         <TutorVideo tutor={tutor} />
       </div>
       <div>

@@ -230,23 +230,26 @@ const AiTutorLisa = () => {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 gap-6">
-          {/* Problem Statement Section */}
-          <div>
-            <ProblemStatementCard {...currentQuestion} showHints={false} />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Interviewer Section - Top left */}
+          <div className="lg:col-span-1">
+            <InterviewerSection tutor="lisa" />
           </div>
 
-          {/* Code Editor Section */}
-          <div>
-            <CodeEditorSection 
-              language={language}
-              onLanguageChange={setLanguage}
-            />
-          </div>
-          
-          {/* Interviewer Section - Moved to bottom */}
-          <div className="grid grid-cols-1 gap-4">
-            <InterviewerSection tutor="lisa" />
+          {/* Problem and Code Section - Right side */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Problem Statement */}
+            <div>
+              <ProblemStatementCard {...currentQuestion} showHints={false} />
+            </div>
+
+            {/* Code Editor Section */}
+            <div>
+              <CodeEditorSection 
+                language={language}
+                onLanguageChange={setLanguage}
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/layout/DashboardLayout";
@@ -214,23 +215,26 @@ const AiTutorSteve = () => {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 gap-6">
-          {/* Problem Statement Section */}
-          <div>
-            <ProblemStatementCard {...currentQuestion} showHints={true} />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Interviewer Section - Top left */}
+          <div className="lg:col-span-1">
+            <InterviewerSection tutor="steve" />
           </div>
 
-          {/* Code Editor Section */}
-          <div>
-            <CodeEditorSection 
-              language={language}
-              onLanguageChange={setLanguage}
-            />
-          </div>
-          
-          {/* Interviewer Section - Moved to bottom */}
-          <div className="grid grid-cols-1 gap-4">
-            <InterviewerSection tutor="steve" />
+          {/* Problem and Code Section - Right side */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Problem Statement */}
+            <div>
+              <ProblemStatementCard {...currentQuestion} showHints={true} />
+            </div>
+
+            {/* Code Editor Section */}
+            <div>
+              <CodeEditorSection 
+                language={language}
+                onLanguageChange={setLanguage}
+              />
+            </div>
           </div>
         </div>
       </div>
