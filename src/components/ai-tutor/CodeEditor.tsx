@@ -37,7 +37,12 @@ const CodeEditor = ({ language = "javascript" }: CodeEditorProps) => {
     <Card className="border border-gray-200 dark:border-gray-800 shadow-lg">
       <CardHeader className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700 px-4 py-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg">Code Editor</CardTitle>
+          <div className="flex items-center">
+            <CardTitle className="text-base mr-4">Code</CardTitle>
+            <div className="text-xs px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">
+              {language.charAt(0).toUpperCase() + language.slice(1)}
+            </div>
+          </div>
           <div className="flex space-x-2">
             <Button variant="outline" size="sm" onClick={getHint}>
               <Lightbulb className="h-4 w-4 mr-1" />
@@ -54,19 +59,21 @@ const CodeEditor = ({ language = "javascript" }: CodeEditorProps) => {
           </div>
         </div>
       </CardHeader>
-      <CardContent className="p-0 grid grid-rows-2 h-[600px]">
+      <CardContent className="p-0 grid grid-rows-2 h-[500px]">
         <div className="border-b border-gray-200 dark:border-gray-700">
-          <div className="flex items-center justify-between px-4 py-2 bg-gray-50 dark:bg-gray-800/30">
+          <div className="px-4 py-2 bg-gray-50 dark:bg-gray-800/30 border-b border-gray-200 dark:border-gray-700 flex items-center space-x-2">
             <span className="text-sm font-medium">main.{getFileExtension(language)}</span>
-            <span className="text-xs text-gray-500 dark:text-gray-400 px-2 py-1 rounded-md bg-gray-100 dark:bg-gray-800">
-              {language.charAt(0).toUpperCase() + language.slice(1)}
-            </span>
           </div>
           <Textarea
             value={code}
             onChange={(e) => setCode(e.target.value)}
-            className="w-full h-[calc(100%-36px)] p-4 font-mono text-sm resize-none focus:outline-none bg-white dark:bg-gray-900 border-0"
+            className="w-full h-[calc(100%-36px)] p-4 font-mono text-sm resize-none focus:outline-none bg-white dark:bg-gray-900 border-0 rounded-none"
             spellCheck={false}
+            style={{
+              fontFamily: "monospace",
+              lineHeight: "1.5",
+              overflowY: "auto"
+            }}
           />
         </div>
         
@@ -121,17 +128,15 @@ function getInitialCode(language: string): string {
   return maxProfit;
 }`;
     case 'python':
-      return `def find_max_profit(prices):
-    max_profit = 0
-    min_price = float('inf')
-    
-    for price in prices:
-        if price < min_price:
-            min_price = price
-        elif price - min_price > max_profit:
-            max_profit = price - min_price
-    
-    return max_profit`;
+      return `class Solution(object):
+    def divide(self, dividend, divisor):
+        """
+        :type dividend: int
+        :type divisor: int
+        :rtype: int
+        """
+        # Your solution here
+        pass`;
     case 'java':
       return `public class Solution {
     public int findMaxProfit(int[] prices) {

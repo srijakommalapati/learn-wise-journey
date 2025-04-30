@@ -9,8 +9,12 @@ interface InterviewerSectionProps {
 const InterviewerSection = ({ tutor }: InterviewerSectionProps) => {
   return (
     <div className="space-y-4">
-      <TutorVideo tutor={tutor} />
-      <ChatInterface tutor={tutor} />
+      <div className="mb-4">
+        <TutorVideo tutor={tutor} />
+      </div>
+      <div>
+        <ChatInterface tutor={tutor} />
+      </div>
     </div>
   );
 };

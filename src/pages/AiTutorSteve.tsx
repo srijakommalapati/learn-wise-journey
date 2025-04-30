@@ -215,20 +215,23 @@ const AiTutorSteve = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-6">
-          <div className="flex gap-6 items-start">
-            <div className="w-1/3 sticky top-6">
-              <InterviewerSection tutor="steve" />
-            </div>
-            
-            <div className="w-2/3">
-              <ProblemStatementCard {...currentQuestion} />
-            </div>
+          {/* Problem Statement Section */}
+          <div>
+            <ProblemStatementCard {...currentQuestion} showHints={true} />
           </div>
 
-          <CodeEditorSection 
-            language={language}
-            onLanguageChange={setLanguage}
-          />
+          {/* Code Editor Section */}
+          <div>
+            <CodeEditorSection 
+              language={language}
+              onLanguageChange={setLanguage}
+            />
+          </div>
+          
+          {/* Interviewer Section - Moved to bottom */}
+          <div className="grid grid-cols-1 gap-4">
+            <InterviewerSection tutor="steve" />
+          </div>
         </div>
       </div>
     </DashboardLayout>
