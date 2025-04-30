@@ -8,6 +8,8 @@ import { useToast } from "@/components/ui/use-toast";
 import ProblemStatementCard from "@/components/ai-tutor/ProblemStatementCard";
 import InterviewerSection from "@/components/ai-tutor/InterviewerSection";
 import CodeEditorSection from "@/components/ai-tutor/CodeEditorSection";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
 
 const AiTutorSteve = () => {
   const navigate = useNavigate();
@@ -215,18 +217,20 @@ const AiTutorSteve = () => {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Interviewer Section - Top left */}
-          <div className="lg:col-span-1">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Left Panel - Interviewer */}
+          <div className="lg:col-span-4">
             <InterviewerSection tutor="steve" />
           </div>
 
-          {/* Problem and Code Section - Right side */}
-          <div className="lg:col-span-2 space-y-6">
+          {/* Center Panel - Code Area */}
+          <div className="lg:col-span-8 space-y-6">
             {/* Problem Statement */}
-            <div>
-              <ProblemStatementCard {...currentQuestion} showHints={true} />
-            </div>
+            <Card className="border border-gray-200 dark:border-gray-800 shadow-lg">
+              <CardContent className="p-4">
+                <ProblemStatementCard {...currentQuestion} showHints={true} />
+              </CardContent>
+            </Card>
 
             {/* Code Editor Section */}
             <div>
@@ -235,6 +239,76 @@ const AiTutorSteve = () => {
                 onLanguageChange={setLanguage}
               />
             </div>
+
+            {/* Bottom Panel - Tabs for Test Cases, Output, etc. */}
+            <Card className="border border-gray-200 dark:border-gray-800 shadow-lg">
+              <CardContent className="p-0">
+                <Tabs defaultValue="testCases" className="w-full">
+                  <TabsList className="grid grid-cols-5 w-full rounded-none border-b border-gray-200 dark:border-gray-700">
+                    <TabsTrigger value="testCases">Test Cases</TabsTrigger>
+                    <TabsTrigger value="outputLogs">Output Logs</TabsTrigger>
+                    <TabsTrigger value="aiFeedback">AI Feedback</TabsTrigger>
+                    <TabsTrigger value="summary">Submit Summary</TabsTrigger>
+                    <TabsTrigger value="metrics">Performance Metrics</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="testCases" className="p-4">
+                    <div className="space-y-2">
+                      <h3 className="font-medium">Test Cases</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {currentQuestion.testCases.map((testCase, idx) => (
+                          <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-3">
+                            <div className="font-mono text-sm space-y-1">
+                              <div><span className="font-semibold">Input:</span> {testCase.input}</div>
+                              <div><span className="font-semibold">Output:</span> {testCase.output}</div>
+                              <div className="text-green-500">✓ Passed</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="outputLogs" className="p-4">
+                    <div className="font-mono text-sm bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
+                      <p>[12:45:32] Running test case 1...</p>
+                      <p>[12:45:33] Test passed: Expected 5, got 5</p>
+                      <p>[12:45:33] Running test case 2...</p>
+                      <p>[12:45:34] Test passed: Expected 0, got 0</p>
+                      <p>[12:45:35] All tests passed!</p>
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="aiFeedback" className="p-4">
+                    <p className="text-gray-800 dark:text-gray-200">
+                      Your solution has good time complexity (O(n)) and space complexity (O(1)).
+                      Consider adding more comments to explain your approach and edge cases.
+                    </p>
+                  </TabsContent>
+                  
+                  <TabsContent value="summary" className="p-4">
+                    <p className="text-gray-800 dark:text-gray-200">
+                      Solution submitted successfully. All test cases passed.
+                    </p>
+                  </TabsContent>
+                  
+                  <TabsContent value="metrics" className="p-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="border border-gray-200 dark:border-gray-700 rounded-md p-4">
+                        <h3 className="font-medium mb-2">Execution Time</h3>
+                        <p className="text-2xl font-bold">12ms</p>
+                        <p className="text-gray-500 text-sm">Faster than 85% of submissions</p>
+                      </div>
+                      <div className="border border-gray-200 dark:border-gray-700 rounded-md p-4">
+                        <h3 className="font-medium mb-2">Memory Usage</h3>
+                        <p className="text-2xl font-bold">42.3MB</p>
+                        <p className="text-gray-500 text-sm">Less than 65% of submissions</p>
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
