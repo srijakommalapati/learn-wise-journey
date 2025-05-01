@@ -1,17 +1,47 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/use-toast";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [mobile, setMobile] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+  const navigate = useNavigate();
   
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+  
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    
+    // Demo login - in a real app, this would be an API call
+    setTimeout(() => {
+      // Demo credentials - mobile: "1234567890", password: "password123"
+      if (mobile === "1234567890" && password === "password123") {
+        toast({
+          title: "Login successful",
+          description: "Welcome back to LearnWise!",
+        });
+        navigate("/dashboard");
+      } else {
+        toast({
+          title: "Login failed",
+          description: "Demo credentials: mobile: 1234567890, password: password123",
+          variant: "destructive",
+        });
+      }
+      setIsLoading(false);
+    }, 1000);
   };
   
   return (
@@ -24,39 +54,51 @@ const LoginForm = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="mobile">Mobile Number</Label>
-            <Input id="mobile" type="tel" placeholder="Enter your mobile number" />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <div className="relative">
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="mobile">Mobile Number</Label>
               <Input 
-                id="password" 
-                type={showPassword ? "text" : "password"} 
-                placeholder="Enter your password"
+                id="mobile" 
+                type="tel" 
+                placeholder="Enter your mobile number"
+                value={mobile}
+                onChange={(e) => setMobile(e.target.value)}
+                required
               />
-              <button 
-                type="button" 
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
-                onClick={togglePasswordVisibility}
-                aria-label={showPassword ? "Hide password" : "Show password"}
-              >
-                {showPassword ? <EyeOffIcon size={18} /> : <EyeIcon size={18} />}
-              </button>
             </div>
-          </div>
-          <div className="flex items-center justify-end">
-            <Link 
-              to="/forgot-password" 
-              className="text-sm text-blue-accent hover:underline"
-            >
-              Forgot Password?
-            </Link>
-          </div>
-          <Button className="w-full btn-hover" size="lg">
-            Login
-          </Button>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <div className="relative">
+                <Input 
+                  id="password" 
+                  type={showPassword ? "text" : "password"} 
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <button 
+                  type="button" 
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                  onClick={togglePasswordVisibility}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOffIcon size={18} /> : <EyeIcon size={18} />}
+                </button>
+              </div>
+            </div>
+            <div className="flex items-center justify-end">
+              <Link 
+                to="/forgot-password" 
+                className="text-sm text-blue-accent hover:underline"
+              >
+                Forgot Password?
+              </Link>
+            </div>
+            <Button type="submit" className="w-full btn-hover" size="lg" disabled={isLoading}>
+              {isLoading ? "Logging in..." : "Login"}
+            </Button>
+          </form>
           
           <div className="relative flex items-center justify-center my-4">
             <div className="w-full border-t border-gray-300 dark:border-gray-700"></div>
