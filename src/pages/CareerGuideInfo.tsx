@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { ArrowRight, Briefcase, CheckCircle, BarChart3 } from "lucide-react";
+import { ArrowRight, Briefcase, CheckCircle, BarChart3, BookOpen } from "lucide-react";
 import MainLayout from "@/components/layout/MainLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
