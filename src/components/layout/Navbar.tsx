@@ -32,12 +32,7 @@ const Navbar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   const handleNavigation = (path: string) => {
-    toast({
-      title: "Authentication Required",
-      description: "Please login to access this feature.",
-      variant: "default",
-    });
-    navigate('/login');
+    navigate(path);
   };
   
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -46,19 +41,19 @@ const Navbar = () => {
     {
       title: "AI Tutoring",
       description: "Get personalized coding practice with our AI tutors Steve and Lisa. Master algorithms, data structures, and system design.",
-      path: "/ai-tutor",
+      path: "/ai-tutoring",
       icon: <User className="h-5 w-5 text-blue-500" />
     },
     {
       title: "Career Guide",
       description: "Explore tailored career paths, salary insights, and job market trends for software development roles.",
-      path: "/career-guide",
+      path: "/career-guide-info",
       icon: <Briefcase className="h-5 w-5 text-green-500" />
     },
     {
       title: "Performance Reports",
       description: "Track your progress with detailed analytics, practice history, and improvement metrics.",
-      path: "/reports",
+      path: "/performance-reports-info",
       icon: <BarChart3 className="h-5 w-5 text-purple-500" />
     }
   ];
@@ -96,7 +91,7 @@ const Navbar = () => {
                         {feature.description}
                         <div className="mt-4 flex justify-end">
                           <Button onClick={() => handleNavigation(feature.path)}>
-                            Get Started
+                            Learn More
                             <ChevronRight className="ml-2 h-4 w-4" />
                           </Button>
                         </div>
@@ -148,7 +143,7 @@ const Navbar = () => {
                       {feature.description}
                       <div className="mt-4 flex justify-end">
                         <Button onClick={() => handleNavigation(feature.path)}>
-                          Get Started
+                          Learn More
                           <ChevronRight className="ml-2 h-4 w-4" />
                         </Button>
                       </div>

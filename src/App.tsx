@@ -10,6 +10,9 @@ import Index from "./pages/Index";
 import About from "./pages/About";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import AiTutoringInfo from "./pages/AiTutoringInfo";
+import CareerGuideInfo from "./pages/CareerGuideInfo";
+import PerformanceReportsInfo from "./pages/PerformanceReportsInfo";
 
 // Protected pages
 import Dashboard from "./pages/Dashboard";
@@ -37,12 +40,14 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/ai-tutoring" element={<AiTutoringInfo />} />
+          <Route path="/career-guide-info" element={<CareerGuideInfo />} />
+          <Route path="/performance-reports-info" element={<PerformanceReportsInfo />} />
           
           {/* Protected Routes */}
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/ai-tutor/steve" element={<AiTutorSteve />} />
           <Route path="/ai-tutor/lisa" element={<AiTutorLisa />} />
-          <Route path="/ai-tutor" element={<AiTutorSteve />} />
           <Route path="/career-guide" element={<CareerGuide />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/settings" element={<Settings />} />
