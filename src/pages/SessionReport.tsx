@@ -47,17 +47,19 @@ const SessionReport = () => {
       <div className="space-y-6">
         <SessionHeader sessionData={sessionData} />
         
+        {/* Moved CodeComplexity and OverallAssessment to the top */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <CodeComplexityReport codeData={sessionData.codeData} />
+          <OverallAssessment assessment={sessionData.assessment} />
+        </div>
+        
+        {/* Moved EmotionalAnalysis and AudioAnalysis to replace them */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <EmotionalAnalysisReport emotionData={sessionData.emotionData} />
           <AudioAnalysisReport audioData={sessionData.audioData} />
         </div>
         
         <TestCasesReport testCases={sessionData.testCases} />
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <CodeComplexityReport codeData={sessionData.codeData} />
-          <OverallAssessment assessment={sessionData.assessment} />
-        </div>
         
         <Card>
           <CardHeader className="pb-3">

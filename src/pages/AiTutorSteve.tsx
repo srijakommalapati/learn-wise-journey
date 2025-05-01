@@ -228,38 +228,39 @@ const AiTutorSteve = () => {
               </div>
 
               {/* Center Panel - Code Area */}
-              <div className="lg:col-span-5 flex flex-col">
+              <div className="lg:col-span-6 flex flex-col">
                 {/* Problem Statement */}
-                <Card className="border border-gray-200 dark:border-gray-800 shadow-lg">
+                <Card className="border border-gray-200 dark:border-gray-800 shadow-lg mb-4">
                   <CardContent className="p-4">
                     <ProblemStatementCard {...currentQuestion} showHints={true} />
                   </CardContent>
                 </Card>
 
                 {/* Code Editor Section */}
-                <div>
+                <div className="flex-grow">
                   <CodeEditorSection 
                     language={language}
                     onLanguageChange={setLanguage}
                   />
                 </div>
+              </div>
 
-                {/* Bottom Panel - Tabs for Test Cases, Output, etc. */}
-                <Card className="border border-gray-200 dark:border-gray-800 shadow-lg mt-6">
-                  <CardContent className="p-0">
-                    <Tabs defaultValue="testCases" className="w-full">
-                      <TabsList className="grid grid-cols-5 w-full rounded-none border-b border-gray-200 dark:border-gray-700">
-                        <TabsTrigger value="testCases">Test Cases</TabsTrigger>
-                        <TabsTrigger value="outputLogs">Output Logs</TabsTrigger>
-                        <TabsTrigger value="aiFeedback">AI Feedback</TabsTrigger>
-                        <TabsTrigger value="summary">Submit Summary</TabsTrigger>
-                        <TabsTrigger value="metrics">Performance Metrics</TabsTrigger>
+              {/* Right Panel - Test Cases & Tabs */}
+              <div className="lg:col-span-3 flex flex-col">
+                <Card className="border border-gray-200 dark:border-gray-800 shadow-lg h-full">
+                  <CardContent className="p-0 h-full">
+                    <Tabs defaultValue="testCases" className="w-full h-full">
+                      <TabsList className="grid grid-cols-4 w-full rounded-none border-b border-gray-200 dark:border-gray-700">
+                        <TabsTrigger value="testCases">Tests</TabsTrigger>
+                        <TabsTrigger value="outputLogs">Output</TabsTrigger>
+                        <TabsTrigger value="aiFeedback">Feedback</TabsTrigger>
+                        <TabsTrigger value="metrics">Metrics</TabsTrigger>
                       </TabsList>
                       
-                      <TabsContent value="testCases" className="p-4 max-h-64 overflow-y-auto">
+                      <TabsContent value="testCases" className="p-4 max-h-[calc(100vh-300px)] overflow-y-auto">
                         <div className="space-y-2">
                           <h3 className="font-medium">Test Cases</h3>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="grid grid-cols-1 gap-4">
                             {currentQuestion.testCases.map((testCase, idx) => (
                               <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-3">
                                 <div className="font-mono text-sm space-y-1">
@@ -273,7 +274,7 @@ const AiTutorSteve = () => {
                         </div>
                       </TabsContent>
                       
-                      <TabsContent value="outputLogs" className="p-4">
+                      <TabsContent value="outputLogs" className="p-4 max-h-[calc(100vh-300px)] overflow-y-auto">
                         <div className="font-mono text-sm bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
                           <p>[12:45:32] Running test case 1...</p>
                           <p>[12:45:33] Test passed: Expected 5, got 5</p>
@@ -283,21 +284,15 @@ const AiTutorSteve = () => {
                         </div>
                       </TabsContent>
                       
-                      <TabsContent value="aiFeedback" className="p-4">
+                      <TabsContent value="aiFeedback" className="p-4 max-h-[calc(100vh-300px)] overflow-y-auto">
                         <p className="text-gray-800 dark:text-gray-200">
                           Your solution has good time complexity (O(n)) and space complexity (O(1)).
                           Consider adding more comments to explain your approach and edge cases.
                         </p>
                       </TabsContent>
                       
-                      <TabsContent value="summary" className="p-4">
-                        <p className="text-gray-800 dark:text-gray-200">
-                          Solution submitted successfully. All test cases passed.
-                        </p>
-                      </TabsContent>
-                      
-                      <TabsContent value="metrics" className="p-4">
-                        <div className="grid grid-cols-2 gap-4">
+                      <TabsContent value="metrics" className="p-4 max-h-[calc(100vh-300px)] overflow-y-auto">
+                        <div className="grid grid-cols-1 gap-4">
                           <div className="border border-gray-200 dark:border-gray-700 rounded-md p-4">
                             <h3 className="font-medium mb-2">Execution Time</h3>
                             <p className="text-2xl font-bold">12ms</p>
@@ -311,15 +306,6 @@ const AiTutorSteve = () => {
                         </div>
                       </TabsContent>
                     </Tabs>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Right Panel - Problem Statement */}
-              <div className="lg:col-span-4 flex flex-col">
-                <Card className="border border-gray-200 dark:border-gray-800 shadow-lg h-full overflow-hidden">
-                  <CardContent className="p-4 h-full">
-                    <ProblemStatementCard {...currentQuestion} showHints={true} />
                   </CardContent>
                 </Card>
               </div>
@@ -352,38 +338,39 @@ const AiTutorSteve = () => {
             </div>
 
             {/* Center Panel - Code Area */}
-            <div className="lg:col-span-5 flex flex-col">
+            <div className="lg:col-span-6 flex flex-col">
               {/* Problem Statement */}
-              <Card className="border border-gray-200 dark:border-gray-800 shadow-lg">
+              <Card className="border border-gray-200 dark:border-gray-800 shadow-lg mb-4">
                 <CardContent className="p-4">
                   <ProblemStatementCard {...currentQuestion} showHints={true} />
                 </CardContent>
               </Card>
 
               {/* Code Editor Section */}
-              <div>
+              <div className="flex-grow">
                 <CodeEditorSection 
                   language={language}
                   onLanguageChange={setLanguage}
                 />
               </div>
+            </div>
 
-              {/* Bottom Panel - Tabs for Test Cases, Output, etc. */}
-              <Card className="border border-gray-200 dark:border-gray-800 shadow-lg mt-6">
-                <CardContent className="p-0">
-                  <Tabs defaultValue="testCases" className="w-full">
-                    <TabsList className="grid grid-cols-5 w-full rounded-none border-b border-gray-200 dark:border-gray-700">
-                      <TabsTrigger value="testCases">Test Cases</TabsTrigger>
-                      <TabsTrigger value="outputLogs">Output Logs</TabsTrigger>
-                      <TabsTrigger value="aiFeedback">AI Feedback</TabsTrigger>
-                      <TabsTrigger value="summary">Submit Summary</TabsTrigger>
-                      <TabsTrigger value="metrics">Performance Metrics</TabsTrigger>
+            {/* Right Panel - Test Cases & Tabs */}
+            <div className="lg:col-span-3 flex flex-col">
+              <Card className="border border-gray-200 dark:border-gray-800 shadow-lg h-full">
+                <CardContent className="p-0 h-full">
+                  <Tabs defaultValue="testCases" className="w-full h-full">
+                    <TabsList className="grid grid-cols-4 w-full rounded-none border-b border-gray-200 dark:border-gray-700">
+                      <TabsTrigger value="testCases">Tests</TabsTrigger>
+                      <TabsTrigger value="outputLogs">Output</TabsTrigger>
+                      <TabsTrigger value="aiFeedback">Feedback</TabsTrigger>
+                      <TabsTrigger value="metrics">Metrics</TabsTrigger>
                     </TabsList>
                     
-                    <TabsContent value="testCases" className="p-4 max-h-64 overflow-y-auto">
+                    <TabsContent value="testCases" className="p-4 max-h-[calc(100vh-300px)] overflow-y-auto">
                       <div className="space-y-2">
                         <h3 className="font-medium">Test Cases</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 gap-4">
                           {currentQuestion.testCases.map((testCase, idx) => (
                             <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-3">
                               <div className="font-mono text-sm space-y-1">
@@ -397,7 +384,7 @@ const AiTutorSteve = () => {
                       </div>
                     </TabsContent>
                     
-                    <TabsContent value="outputLogs" className="p-4">
+                    <TabsContent value="outputLogs" className="p-4 max-h-[calc(100vh-300px)] overflow-y-auto">
                       <div className="font-mono text-sm bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
                         <p>[12:45:32] Running test case 1...</p>
                         <p>[12:45:33] Test passed: Expected 5, got 5</p>
@@ -407,21 +394,15 @@ const AiTutorSteve = () => {
                       </div>
                     </TabsContent>
                     
-                    <TabsContent value="aiFeedback" className="p-4">
+                    <TabsContent value="aiFeedback" className="p-4 max-h-[calc(100vh-300px)] overflow-y-auto">
                       <p className="text-gray-800 dark:text-gray-200">
                         Your solution has good time complexity (O(n)) and space complexity (O(1)).
                         Consider adding more comments to explain your approach and edge cases.
                       </p>
                     </TabsContent>
                     
-                    <TabsContent value="summary" className="p-4">
-                      <p className="text-gray-800 dark:text-gray-200">
-                        Solution submitted successfully. All test cases passed.
-                      </p>
-                    </TabsContent>
-                    
-                    <TabsContent value="metrics" className="p-4">
-                      <div className="grid grid-cols-2 gap-4">
+                    <TabsContent value="metrics" className="p-4 max-h-[calc(100vh-300px)] overflow-y-auto">
+                      <div className="grid grid-cols-1 gap-4">
                         <div className="border border-gray-200 dark:border-gray-700 rounded-md p-4">
                           <h3 className="font-medium mb-2">Execution Time</h3>
                           <p className="text-2xl font-bold">12ms</p>
@@ -435,15 +416,6 @@ const AiTutorSteve = () => {
                       </div>
                     </TabsContent>
                   </Tabs>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Right Panel - Problem Statement */}
-            <div className="lg:col-span-4 flex flex-col">
-              <Card className="border border-gray-200 dark:border-gray-800 shadow-lg h-full overflow-hidden">
-                <CardContent className="p-4 h-full">
-                  <ProblemStatementCard {...currentQuestion} showHints={true} />
                 </CardContent>
               </Card>
             </div>
