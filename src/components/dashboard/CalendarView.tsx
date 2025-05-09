@@ -1,6 +1,8 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar as CalendarIcon, Clock } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 // Mock events
 const events = [
@@ -9,21 +11,24 @@ const events = [
     title: "Mock Interview",
     date: "2025-04-26",
     time: "10:00 AM",
-    type: "interview" // interview, practice, tutorial
+    type: "interview", // interview, practice, tutorial
+    tutor: "steve"
   },
   {
     id: 2,
     title: "System Design Practice",
     date: "2025-04-27",
     time: "2:00 PM",
-    type: "practice"
+    type: "practice",
+    tutor: "lisa"
   },
   {
     id: 3,
     title: "Algorithm Tutorial with Steve",
     date: "2025-04-28",
     time: "11:00 AM",
-    type: "tutorial"
+    type: "tutorial",
+    tutor: "steve"
   }
 ];
 
@@ -56,9 +61,9 @@ const CalendarView = () => {
     <Card className="border border-gray-200 dark:border-gray-800">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-xl">Upcoming Sessions</CardTitle>
-        <button className="text-blue-accent hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium">
+        <Link to="/calendar" className="text-blue-accent hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium">
           View All
-        </button>
+        </Link>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -81,18 +86,22 @@ const CalendarView = () => {
                     </div>
                   </div>
                 </div>
-                <button className="text-sm font-medium hover:underline">
-                  Join
-                </button>
+                <Link to={event.tutor === "steve" ? "/ai-tutor/steve" : "/ai-tutor/lisa"}>
+                  <Button size="sm" className="text-sm font-medium">
+                    Join
+                  </Button>
+                </Link>
               </div>
             </div>
           ))}
         </div>
         
         <div className="mt-6">
-          <button className="w-full py-2 border border-dashed border-gray-300 dark:border-gray-700 rounded-lg text-gray-500 dark:text-gray-400 hover:border-blue-accent hover:text-blue-accent transition-colors">
-            + Schedule New Session
-          </button>
+          <Link to="/calendar">
+            <button className="w-full py-2 border border-dashed border-gray-300 dark:border-gray-700 rounded-lg text-gray-500 dark:text-gray-400 hover:border-blue-accent hover:text-blue-accent transition-colors">
+              + Schedule New Session
+            </button>
+          </Link>
         </div>
       </CardContent>
     </Card>

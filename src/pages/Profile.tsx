@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,10 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Book, Award, Star, Trophy, Code, Timer, Calendar, BarChart3, FileText, Briefcase } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Book, Award, Star, Trophy, Code, Timer, Calendar, BarChart3, FileText, Briefcase, Building, GraduationCap, Phone, Mail } from "lucide-react";
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -69,6 +71,10 @@ const Profile = () => {
                       <span>srija@example.com</span>
                     </p>
                     <p className="flex justify-between">
+                      <span className="text-gray-500 dark:text-gray-400">Phone:</span>
+                      <span>+91 98765 43210</span>
+                    </p>
+                    <p className="flex justify-between">
                       <span className="text-gray-500 dark:text-gray-400">Joined:</span>
                       <span>March 2024</span>
                     </p>
@@ -85,11 +91,12 @@ const Profile = () => {
           {/* Main Content Area */}
           <div className="md:col-span-3 space-y-6">
             <Tabs defaultValue="overview" className="w-full" onValueChange={setActiveTab}>
-              <TabsList className="grid grid-cols-4 mb-6">
+              <TabsList className="grid grid-cols-5 mb-6">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="progress">Learning Progress</TabsTrigger>
+                <TabsTrigger value="education">Education</TabsTrigger>
+                <TabsTrigger value="work">Work Experience</TabsTrigger>
                 <TabsTrigger value="achievements">Achievements</TabsTrigger>
-                <TabsTrigger value="sessions">Past Sessions</TabsTrigger>
               </TabsList>
               
               <TabsContent value="overview" className="space-y-6">
@@ -240,6 +247,169 @@ const Profile = () => {
                             <span className="block text-2xl font-bold text-red-600 dark:text-red-400">40</span>
                             <span className="text-sm text-red-600 dark:text-red-400">Hard</span>
                           </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              
+              <TabsContent value="education">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Educational Background</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-6">
+                      <div className="border-b border-gray-200 dark:border-gray-700 pb-6 space-y-4">
+                        <div className="flex items-start">
+                          <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 mr-4">
+                            <GraduationCap className="h-6 w-6" />
+                          </div>
+                          <div>
+                            <h3 className="font-medium">Bachelor of Technology - Computer Science</h3>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">IIT Hyderabad</p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">2020 - 2024</p>
+                            <div className="mt-2">
+                              <span className="px-2 py-1 text-xs rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">GPA: 3.8/4.0</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="border-b border-gray-200 dark:border-gray-700 pb-6 space-y-4">
+                        <div className="flex items-start">
+                          <div className="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 mr-4">
+                            <Building className="h-6 w-6" />
+                          </div>
+                          <div>
+                            <h3 className="font-medium">Higher Secondary Education</h3>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Delhi Public School, Hyderabad</p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">2018 - 2020</p>
+                            <div className="mt-2">
+                              <span className="px-2 py-1 text-xs rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">92.8%</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <div className="flex items-start">
+                          <div className="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400 mr-4">
+                            <Building className="h-6 w-6" />
+                          </div>
+                          <div>
+                            <h3 className="font-medium">Secondary Education</h3>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Delhi Public School, Hyderabad</p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">2016 - 2018</p>
+                            <div className="mt-2">
+                              <span className="px-2 py-1 text-xs rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300">94.2%</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card className="mt-6">
+                  <CardHeader>
+                    <CardTitle>Certifications</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {["AWS Cloud Practitioner", "React Advanced Certification", "Data Structures & Algorithms", "Machine Learning Basics"].map((cert, i) => (
+                        <div key={cert} className="flex items-center p-4 rounded-lg border border-gray-200 dark:border-gray-800">
+                          <div className="w-10 h-10 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-amber-600 dark:text-amber-400 mr-4">
+                            <Award className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <h3 className="font-medium">{cert}</h3>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              {["Amazon Web Services", "Meta", "Stanford Online", "Google"][i]} • {["Feb 2024", "Dec 2023", "Aug 2023", "May 2023"][i]}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              
+              <TabsContent value="work">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Work Experience</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-6">
+                      <div className="border-b border-gray-200 dark:border-gray-700 pb-6 space-y-4">
+                        <div className="flex items-start">
+                          <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 mr-4">
+                            <Briefcase className="h-6 w-6" />
+                          </div>
+                          <div>
+                            <h3 className="font-medium">Frontend Developer Intern</h3>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">TechCorp Solutions, Hyderabad</p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Jun 2023 - Aug 2023</p>
+                            <div className="mt-2 text-sm">
+                              <ul className="list-disc pl-5 space-y-1">
+                                <li>Implemented responsive UI components using React and Tailwind CSS</li>
+                                <li>Collaborated with backend developers to integrate API services</li>
+                                <li>Participated in daily stand-up meetings and sprint planning</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <div className="flex items-start">
+                          <div className="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400 mr-4">
+                            <Briefcase className="h-6 w-6" />
+                          </div>
+                          <div>
+                            <h3 className="font-medium">Web Development Volunteer</h3>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">College Tech Fest</p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Sep 2022 - Oct 2022</p>
+                            <div className="mt-2 text-sm">
+                              <ul className="list-disc pl-5 space-y-1">
+                                <li>Designed and developed the tech fest website</li>
+                                <li>Implemented event registration and payment system</li>
+                                <li>Ensured cross-browser compatibility and mobile responsiveness</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card className="mt-6">
+                  <CardHeader>
+                    <CardTitle>Skills</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <h3 className="text-sm font-medium mb-3">Programming Languages</h3>
+                        <div className="flex flex-wrap gap-2">
+                          {["JavaScript", "TypeScript", "Python", "Java", "C++"].map((skill) => (
+                            <span key={skill} className="px-2 py-1 text-xs rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-medium mb-3">Frameworks & Libraries</h3>
+                        <div className="flex flex-wrap gap-2">
+                          {["React", "Next.js", "Tailwind CSS", "Node.js", "Express"].map((skill) => (
+                            <span key={skill} className="px-2 py-1 text-xs rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">
+                              {skill}
+                            </span>
+                          ))}
                         </div>
                       </div>
                     </div>

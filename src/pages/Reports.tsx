@@ -7,6 +7,7 @@ import AudioConfidenceChart from "@/components/reports/AudioConfidenceChart";
 import OverallAssessment from "@/components/session-report/OverallAssessment";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { FileHeart } from "lucide-react";
 import { Link } from "react-router-dom";
 
