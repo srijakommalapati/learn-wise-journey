@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { ArrowRight, BookOpen, CheckCircle, User } from "lucide-react";
+import { ArrowRight, CheckCircle, User } from "lucide-react";
 import MainLayout from "@/components/layout/MainLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -128,12 +128,20 @@ const AiTutoringInfo = () => {
           </div>
           
           <div className="text-center">
-            <Link to="/register">
-              <Button size="lg" className="group">
-                Start Your Learning Journey
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Button>
-            </Link>
+            <div className="flex justify-center gap-4">
+              <Link to="/ai-tutor/steve">
+                <Button size="lg" className="group">
+                  Start with Steve
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </Link>
+              <Link to="/ai-tutor/lisa">
+                <Button size="lg" className="group" variant="outline">
+                  Start with Lisa
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // Public pages
 import Index from "./pages/Index";
@@ -55,6 +55,9 @@ const App = () => (
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/session-report" element={<SessionReport />} />
           <Route path="/profile" element={<Profile />} />
+          
+          {/* Redirects */}
+          <Route path="/ai-tutor" element={<Navigate to="/ai-tutoring" replace />} />
           
           {/* Catch-all route */}
           <Route path="*" element={<NotFound />} />

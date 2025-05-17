@@ -1,7 +1,6 @@
 
 import { ReactNode, useState } from "react";
 import Sidebar from "./Sidebar";
-import NavigationBar from "./NavigationBar";
 import FloatingAIAssistant from "../ai-assistant/FloatingAIAssistant";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -15,7 +14,6 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   
   return (
     <div className="flex flex-col min-h-screen">
-      <NavigationBar />
       <div className="flex flex-1">
         <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
         <main 

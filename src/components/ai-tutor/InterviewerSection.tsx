@@ -16,7 +16,7 @@ const InterviewerSection = ({ tutor }: InterviewerSectionProps) => {
         </CardContent>
       </Card>
       <Card className="border border-gray-200 dark:border-gray-800 shadow-lg flex-grow overflow-hidden">
-        <CardContent className="p-4 h-full">
+        <CardContent className="p-0 h-full">
           <ChatInterface tutor={tutor} />
         </CardContent>
       </Card>

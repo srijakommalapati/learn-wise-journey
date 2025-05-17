@@ -1,7 +1,6 @@
 
 import { useState, useEffect } from "react";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface CodeEditorProps {
   language?: string;
@@ -18,6 +17,13 @@ const CodeEditor = ({ language = "javascript", value, onChange }: CodeEditorProp
     }
   }, [value]);
 
+  useEffect(() => {
+    // Update code when language changes
+    if (!value) {
+      setCode(getInitialCode(language));
+    }
+  }, [language]);
+
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCode(e.target.value);
     if (onChange) {
@@ -26,28 +32,39 @@ const CodeEditor = ({ language = "javascript", value, onChange }: CodeEditorProp
   };
   
   return (
-    <div className="flex flex-col h-full">
-      <Textarea
-        value={code}
-        onChange={handleChange}
-        className="w-full h-full p-4 font-mono text-sm resize-none focus:outline-none bg-white dark:bg-gray-900 border-0 rounded-none"
-        spellCheck={false}
-        style={{
-          fontFamily: "monospace",
-          lineHeight: "1.5",
-          overflowY: "auto",
-          minHeight: "400px" 
-        }}
-      />
-    </div>
+    <Textarea
+      value={code}
+      onChange={handleChange}
+      className="w-full h-full p-4 font-mono text-sm resize-none focus:outline-none bg-white dark:bg-gray-900 border rounded-md"
+      spellCheck={false}
+      style={{
+        fontFamily: "monospace",
+        lineHeight: "1.5",
+        minHeight: "400px" 
+      }}
+    />
   );
 };
 
 function getInitialCode(language: string): string {
   switch (language.toLowerCase()) {
     case 'javascript':
-    case 'typescript':
       return `function findMaxProfit(prices) {
+  let maxProfit = 0;
+  let minPrice = Infinity;
+  
+  for (let i = 0; i < prices.length; i++) {
+    if (prices[i] < minPrice) {
+      minPrice = prices[i];
+    } else if (prices[i] - minPrice > maxProfit) {
+      maxProfit = prices[i] - minPrice;
+    }
+  }
+  
+  return maxProfit;
+}`;
+    case 'typescript':
+      return `function findMaxProfit(prices: number[]): number {
   let maxProfit = 0;
   let minPrice = Infinity;
   

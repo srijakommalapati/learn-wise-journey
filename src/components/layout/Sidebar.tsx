@@ -24,7 +24,7 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
   const isMobile = useIsMobile();
   
   const isActive = (href: string) => {
-    return location.pathname === href;
+    return location.pathname === href || location.pathname.startsWith(href + '/');
   };
   
   const mainNavItems = [
@@ -36,7 +36,17 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
     {
       title: "AI Tutoring",
       href: "/ai-tutoring",
-      icon: <BookOpen className="h-5 w-5" />
+      icon: <BookOpen className="h-5 w-5" />,
+      subItems: [
+        {
+          title: "Practice with Steve",
+          href: "/ai-tutor/steve",
+        },
+        {
+          title: "Practice with Lisa",
+          href: "/ai-tutor/lisa",
+        }
+      ]
     },
     {
       title: "Career Guide",
@@ -97,12 +107,12 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
       <nav className="flex-1 overflow-y-auto py-4 px-2">
         <ul className="space-y-1.5">
           {mainNavItems.map((item) => (
-            <li key={item.title}>
+            <li key={item.title} className="space-y-1">
               <Link
                 to={item.href}
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2 transition-all",
-                  isActive(item.href)
+                  isActive(item.href) && !item.subItems
                     ? "bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-300"
                     : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
                 )}
@@ -110,6 +120,27 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
                 {item.icon}
                 {!collapsed && <span>{item.title}</span>}
               </Link>
+              
+              {!collapsed && item.subItems && (
+                <ul className="ml-6 mt-1 space-y-1">
+                  {item.subItems.map((subItem) => (
+                    <li key={subItem.title}>
+                      <Link
+                        to={subItem.href}
+                        className={cn(
+                          "flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-all",
+                          isActive(subItem.href)
+                            ? "bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-300"
+                            : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                        )}
+                      >
+                        <div className="w-1 h-1 rounded-full bg-current"></div>
+                        <span>{subItem.title}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           ))}
         </ul>

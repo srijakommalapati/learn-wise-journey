@@ -33,7 +33,7 @@ const CodeEditorSection = ({ language, onLanguageChange, value = '', onChange }:
   };
   
   return (
-    <div className="flex flex-col h-full space-y-4">
+    <div className="flex flex-col space-y-4">
       <div className="flex items-center justify-between">
         <Select value={language} onValueChange={onLanguageChange}>
           <SelectTrigger className="w-[180px]">
@@ -55,8 +55,8 @@ const CodeEditorSection = ({ language, onLanguageChange, value = '', onChange }:
           {isRunning ? "Running..." : "Run Code"}
         </Button>
       </div>
-      <Card className="border border-gray-200 dark:border-gray-800 shadow-lg flex-grow overflow-hidden">
-        <CardContent className="p-4 h-full">
+      <Card className="border border-gray-200 dark:border-gray-800 shadow-lg flex-grow">
+        <CardContent className="p-4">
           <CodeEditor 
             language={language} 
             value={value !== internalValue ? value : internalValue}

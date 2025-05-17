@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/layout/DashboardLayout";
@@ -194,14 +195,7 @@ const AiTutorSteve = () => {
         ],
         nextSteps: "Practice more medium-difficulty array problems with a focus on optimizing your initial approach. Consider using the sliding window technique for similar problems."
       },
-      userAnswer: "To find the maximum profit from stock prices, I need to find the greatest difference between a later price and an earlier price.\n\nFirst, I'll initialize variables to track the minimum price seen so far and the maximum profit.\n- Set minPrice to the first price in the array\n- Set maxProfit to 0\n\nThen I'll iterate through the prices starting from the second price:\n- Update minPrice if the current price is lower\n- Calculate the potential profit as current price minus minPrice\n- Update maxProfit if the potential profit is greater\n\nThis gives us O(n) time complexity with O(1) space, which is optimal for this problem.",
-      enhancedAnswer: "To find the maximum profit from stock prices, I need to identify the optimal buy and sell points that maximize the difference (profit).\n\nApproach:\n1. Track the lowest price seen so far (potential buy point)\n2. At each price, calculate profit if we were to sell at that price\n3. Keep track of the maximum profit possible\n\nAlgorithm Implementation:\n- Initialize minPrice = prices[0] (first day's price)\n- Initialize maxProfit = 0 (in case we can't make any profit)\n- Iterate through prices starting from index 1:\n  - Update minPrice if current price is lower: minPrice = min(minPrice, prices[i])\n  - Calculate potential profit: currentProfit = prices[i] - minPrice\n  - Update maximum profit: maxProfit = max(maxProfit, currentProfit)\n\nTime complexity: O(n) where n is the number of days (single pass through prices)\nSpace complexity: O(1) as we use only constant extra space\n\nThis solution efficiently handles all cases including declining prices (return 0) and optimally finds the maximum possible profit in a single pass.",
-      improvements: [
-        "Added clear separation of approach, algorithm, and complexity analysis",
-        "Provided more detailed explanation of the strategy",
-        "Included specific handling of edge cases",
-        "Clarified why the solution is optimal"
-      ]
+      userAnswer: "To find the maximum profit from stock prices, I need to find the greatest difference between a later price and an earlier price.\n\nFirst, I'll initialize variables to track the minimum price seen so far and the maximum profit.\n- Set minPrice to the first price in the array\n- Set maxProfit to 0\n\nThen I'll iterate through the prices starting from the second price:\n- Update minPrice if the current price is lower\n- Calculate the potential profit as current price minus minPrice\n- Update maxProfit if the potential profit is greater\n\nThis gives us O(n) time complexity with O(1) space, which is optimal for this problem."
     };
 
     setTimeout(() => {
@@ -224,12 +218,7 @@ const AiTutorSteve = () => {
         <DashboardLayout>
           <div className="container mx-auto px-4 animate-fade-in">
             <div className="flex items-center justify-between mb-6">
-              <div>
-                <h1 className="text-3xl font-bold mb-2">Practice with Senior SDE</h1>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Interactive coding practice with an experienced Senior Software Development Engineer.
-                </p>
-              </div>
+              <h1 className="text-3xl font-bold">Steve</h1>
               <Button 
                 onClick={handleEndSession}
                 variant="default" 
@@ -240,7 +229,7 @@ const AiTutorSteve = () => {
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-200px)] overflow-y-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-140px)] overflow-y-auto">
               {/* Left Panel - Interviewer */}
               <div className="lg:col-span-3 flex flex-col">
                 <InterviewerSection tutor="steve" />
@@ -255,70 +244,56 @@ const AiTutorSteve = () => {
                   onChange={setCodeEditorValue}
                 />
                 
-                {/* Code Changes Section */}
+                {/* Code Changes and Test Cases */}
                 <div className="mt-6">
-                  <CodeChangesEditor onAddToCode={handleAddToCode} />
-                </div>
-                
-                {/* Run tests button */}
-                <div className="mt-4 flex justify-end">
-                  <Button 
-                    onClick={handleRunTests}
-                    className="gap-2"
-                    disabled={isRunning}
-                  >
-                    {isRunning ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
-                    {isRunning ? "Running Tests..." : "Run Tests"}
-                  </Button>
-                </div>
-                
-                {/* Bottom Panel - Tabs for Test Cases, Output, etc. */}
-                <Card className="border border-gray-200 dark:border-gray-800 shadow-lg mt-6">
-                  <CardContent className="p-0">
-                    <Tabs defaultValue="testCases" className="w-full">
-                      <TabsList className="grid grid-cols-3 w-full rounded-none border-b border-gray-200 dark:border-gray-700">
-                        <TabsTrigger value="testCases">Test Cases</TabsTrigger>
-                        <TabsTrigger value="outputLogs">Output Logs</TabsTrigger>
-                        <TabsTrigger value="aiFeedback">AI Feedback</TabsTrigger>
-                      </TabsList>
-                      
-                      <TabsContent value="testCases" className="p-4 max-h-64 overflow-y-auto">
-                        <div className="space-y-2">
-                          <h3 className="font-medium">Test Cases</h3>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {currentQuestion.testCases.map((testCase, idx) => (
-                              <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-3">
-                                <div className="font-mono text-sm space-y-1">
-                                  <div><span className="font-semibold">Input:</span> {testCase.input}</div>
-                                  <div><span className="font-semibold">Output:</span> {testCase.output}</div>
-                                  <div className="text-green-500">✓ Passed</div>
-                                </div>
+                  <Tabs defaultValue="codeChanges" className="w-full">
+                    <TabsList className="grid grid-cols-3 w-full">
+                      <TabsTrigger value="codeChanges">Code Changes</TabsTrigger>
+                      <TabsTrigger value="testCases">Test Cases</TabsTrigger>
+                      <TabsTrigger value="aiFeedback">AI Feedback</TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="codeChanges" className="p-0">
+                      <CodeChangesEditor onAddToCode={handleAddToCode} />
+                    </TabsContent>
+                    
+                    <TabsContent value="testCases" className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
+                      <div className="space-y-2">
+                        <h3 className="font-medium">Test Cases</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {currentQuestion.testCases.map((testCase, idx) => (
+                            <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-3">
+                              <div className="font-mono text-sm space-y-1">
+                                <div><span className="font-semibold">Input:</span> {testCase.input}</div>
+                                <div><span className="font-semibold">Output:</span> {testCase.output}</div>
+                                <div className="text-green-500">✓ Passed</div>
                               </div>
-                            ))}
-                          </div>
-                        </div>
-                      </TabsContent>
-                      
-                      <TabsContent value="outputLogs" className="p-4">
-                        <div className="font-mono text-sm bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
-                          {testResults.map((result) => (
-                            <p key={result.id} className={result.passed ? "text-green-500" : "text-red-500"}>
-                              [12:45:3{result.id}] {result.message}
-                            </p>
+                            </div>
                           ))}
-                          {testResults.every(r => r.passed) && <p>[12:45:35] All tests passed!</p>}
                         </div>
-                      </TabsContent>
-                      
-                      <TabsContent value="aiFeedback" className="p-4">
-                        <p className="text-gray-800 dark:text-gray-200">
-                          Your solution has good time complexity (O(n)) and space complexity (O(1)).
-                          Consider adding more comments to explain your approach and edge cases.
-                        </p>
-                      </TabsContent>
-                    </Tabs>
-                  </CardContent>
-                </Card>
+                        
+                        <div className="flex justify-end mt-4">
+                          <Button 
+                            onClick={handleRunTests}
+                            className="gap-2"
+                            disabled={isRunning}
+                          >
+                            {isRunning ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
+                            {isRunning ? "Running Tests..." : "Run Tests"}
+                          </Button>
+                        </div>
+                      </div>
+                    </TabsContent>
+                    
+                    <TabsContent value="aiFeedback" className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
+                      <p className="text-gray-800 dark:text-gray-200">
+                        Your solution has good time complexity (O(n)) and space complexity (O(1)).
+                        Consider adding more comments to explain your approach and edge cases.
+                        The code follows best practices, but you could make the variable names even clearer.
+                      </p>
+                    </TabsContent>
+                  </Tabs>
+                </div>
               </div>
 
               {/* Right Panel - Problem Statement */}
@@ -339,14 +314,9 @@ const AiTutorSteve = () => {
           </div>
         </DashboardLayout>
       ) : (
-        <div className="container mx-auto px-4 py-6 animate-fade-in overflow-y-auto">
+        <div className="container mx-auto px-4 py-6 animate-fade-in overflow-y-auto h-screen">
           <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">Practice with Senior SDE</h1>
-              <p className="text-gray-600 dark:text-gray-400">
-                Interactive coding practice with an experienced Senior Software Development Engineer.
-              </p>
-            </div>
+            <h1 className="text-3xl font-bold">Steve</h1>
             <Button 
               onClick={handleEndSession}
               variant="default" 
@@ -357,7 +327,7 @@ const AiTutorSteve = () => {
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-140px)] overflow-y-auto">
             {/* Left Panel - Interviewer */}
             <div className="lg:col-span-3 flex flex-col">
               <InterviewerSection tutor="steve" />
@@ -372,9 +342,55 @@ const AiTutorSteve = () => {
                 onChange={setCodeEditorValue}
               />
               
-              {/* Code Changes Section */}
+              {/* Code Changes and Test Cases */}
               <div className="mt-6">
-                <CodeChangesEditor onAddToCode={handleAddToCode} />
+                <Tabs defaultValue="codeChanges" className="w-full">
+                  <TabsList className="grid grid-cols-3 w-full">
+                    <TabsTrigger value="codeChanges">Code Changes</TabsTrigger>
+                    <TabsTrigger value="testCases">Test Cases</TabsTrigger>
+                    <TabsTrigger value="aiFeedback">AI Feedback</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="codeChanges" className="p-0">
+                    <CodeChangesEditor onAddToCode={handleAddToCode} />
+                  </TabsContent>
+                  
+                  <TabsContent value="testCases" className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
+                    <div className="space-y-2">
+                      <h3 className="font-medium">Test Cases</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {currentQuestion.testCases.map((testCase, idx) => (
+                          <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-3">
+                            <div className="font-mono text-sm space-y-1">
+                              <div><span className="font-semibold">Input:</span> {testCase.input}</div>
+                              <div><span className="font-semibold">Output:</span> {testCase.output}</div>
+                              <div className="text-green-500">✓ Passed</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      
+                      <div className="flex justify-end mt-4">
+                        <Button 
+                          onClick={handleRunTests}
+                          className="gap-2"
+                          disabled={isRunning}
+                        >
+                          {isRunning ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
+                          {isRunning ? "Running Tests..." : "Run Tests"}
+                        </Button>
+                      </div>
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="aiFeedback" className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
+                    <p className="text-gray-800 dark:text-gray-200">
+                      Your solution has good time complexity (O(n)) and space complexity (O(1)).
+                      Consider adding more comments to explain your approach and edge cases.
+                      The code follows best practices, but you could make the variable names even clearer.
+                    </p>
+                  </TabsContent>
+                </Tabs>
               </div>
             </div>
 
