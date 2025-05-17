@@ -1,3 +1,4 @@
+
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -34,7 +35,7 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
     },
     {
       title: "AI Tutoring",
-      href: "/dashboard", // This is a dropdown in the actual app
+      href: "/ai-tutoring",
       icon: <BookOpen className="h-5 w-5" />
     },
     {
@@ -72,7 +73,8 @@ const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
     <aside
       className={cn(
         "fixed inset-y-0 left-0 z-40 flex flex-col border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 transition-all duration-300",
-        collapsed ? "w-[70px]" : "w-64"
+        collapsed ? "w-[70px]" : "w-64",
+        isMobile ? "absolute" : ""
       )}
     >
       <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200 dark:border-gray-800">

@@ -1,9 +1,11 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { FileHeart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProblemStatementCard from "@/components/ai-tutor/ProblemStatementCard";
 import InterviewerSection from "@/components/ai-tutor/InterviewerSection";
 import CodeEditorSection from "@/components/ai-tutor/CodeEditorSection";

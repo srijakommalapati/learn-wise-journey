@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
-import { FileHeart } from "lucide-react";
+import { FileHeart, Play, RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ProblemStatementCard from "@/components/ai-tutor/ProblemStatementCard";
 import InterviewerSection from "@/components/ai-tutor/InterviewerSection";
@@ -46,6 +46,13 @@ const AiTutorSteve = () => {
     ]
   });
 
+  const [testResults, setTestResults] = useState([
+    { id: 1, name: "Basic Case", passed: true, message: "Test passed! Expected 5, got 5." },
+    { id: 2, name: "Edge Case", passed: true, message: "Test passed! Expected 0, got 0." }
+  ]);
+  
+  const [isRunning, setIsRunning] = useState(false);
+  
   const handleToggleCheckPoint = (id) => {
     setCheckPoints(checkPoints.map(cp => 
       cp.id === id ? { ...cp, completed: !cp.completed } : cp
@@ -202,6 +209,15 @@ const AiTutorSteve = () => {
     }, 1500);
   };
 
+  const handleRunTests = () => {
+    setIsRunning(true);
+    // Simulating test execution
+    setTimeout(() => {
+      setIsRunning(false);
+      setTestResults([...testResults]);
+    }, 1000);
+  };
+
   return (
     <div className={showNavigation ? "" : "h-screen w-screen fixed top-0 left-0 bg-background overflow-y-auto"}>
       {showNavigation ? (
@@ -224,7 +240,7 @@ const AiTutorSteve = () => {
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-200px)]">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-200px)] overflow-y-auto">
               {/* Left Panel - Interviewer */}
               <div className="lg:col-span-3 flex flex-col">
                 <InterviewerSection tutor="steve" />
@@ -244,16 +260,26 @@ const AiTutorSteve = () => {
                   <CodeChangesEditor onAddToCode={handleAddToCode} />
                 </div>
                 
+                {/* Run tests button */}
+                <div className="mt-4 flex justify-end">
+                  <Button 
+                    onClick={handleRunTests}
+                    className="gap-2"
+                    disabled={isRunning}
+                  >
+                    {isRunning ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
+                    {isRunning ? "Running Tests..." : "Run Tests"}
+                  </Button>
+                </div>
+                
                 {/* Bottom Panel - Tabs for Test Cases, Output, etc. */}
                 <Card className="border border-gray-200 dark:border-gray-800 shadow-lg mt-6">
                   <CardContent className="p-0">
                     <Tabs defaultValue="testCases" className="w-full">
-                      <TabsList className="grid grid-cols-5 w-full rounded-none border-b border-gray-200 dark:border-gray-700">
+                      <TabsList className="grid grid-cols-3 w-full rounded-none border-b border-gray-200 dark:border-gray-700">
                         <TabsTrigger value="testCases">Test Cases</TabsTrigger>
                         <TabsTrigger value="outputLogs">Output Logs</TabsTrigger>
                         <TabsTrigger value="aiFeedback">AI Feedback</TabsTrigger>
-                        <TabsTrigger value="summary">Submit Summary</TabsTrigger>
-                        <TabsTrigger value="metrics">Performance Metrics</TabsTrigger>
                       </TabsList>
                       
                       <TabsContent value="testCases" className="p-4 max-h-64 overflow-y-auto">
@@ -275,11 +301,12 @@ const AiTutorSteve = () => {
                       
                       <TabsContent value="outputLogs" className="p-4">
                         <div className="font-mono text-sm bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
-                          <p>[12:45:32] Running test case 1...</p>
-                          <p>[12:45:33] Test passed: Expected 5, got 5</p>
-                          <p>[12:45:33] Running test case 2...</p>
-                          <p>[12:45:34] Test passed: Expected 0, got 0</p>
-                          <p>[12:45:35] All tests passed!</p>
+                          {testResults.map((result) => (
+                            <p key={result.id} className={result.passed ? "text-green-500" : "text-red-500"}>
+                              [12:45:3{result.id}] {result.message}
+                            </p>
+                          ))}
+                          {testResults.every(r => r.passed) && <p>[12:45:35] All tests passed!</p>}
                         </div>
                       </TabsContent>
                       
@@ -288,27 +315,6 @@ const AiTutorSteve = () => {
                           Your solution has good time complexity (O(n)) and space complexity (O(1)).
                           Consider adding more comments to explain your approach and edge cases.
                         </p>
-                      </TabsContent>
-                      
-                      <TabsContent value="summary" className="p-4">
-                        <p className="text-gray-800 dark:text-gray-200">
-                          Solution submitted successfully. All test cases passed.
-                        </p>
-                      </TabsContent>
-                      
-                      <TabsContent value="metrics" className="p-4">
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="border border-gray-200 dark:border-gray-700 rounded-md p-4">
-                            <h3 className="font-medium mb-2">Execution Time</h3>
-                            <p className="text-2xl font-bold">12ms</p>
-                            <p className="text-gray-500 text-sm">Faster than 85% of submissions</p>
-                          </div>
-                          <div className="border border-gray-200 dark:border-gray-700 rounded-md p-4">
-                            <h3 className="font-medium mb-2">Memory Usage</h3>
-                            <p className="text-2xl font-bold">42.3MB</p>
-                            <p className="text-gray-500 text-sm">Less than 65% of submissions</p>
-                          </div>
-                        </div>
                       </TabsContent>
                     </Tabs>
                   </CardContent>

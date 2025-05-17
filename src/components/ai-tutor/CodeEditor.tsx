@@ -1,27 +1,45 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface CodeEditorProps {
   language?: string;
+  value?: string;
+  onChange?: (value: string) => void;
 }
 
-const CodeEditor = ({ language = "javascript" }: CodeEditorProps) => {
-  const [code, setCode] = useState(getInitialCode(language));
+const CodeEditor = ({ language = "javascript", value, onChange }: CodeEditorProps) => {
+  const [code, setCode] = useState(value || getInitialCode(language));
+  
+  useEffect(() => {
+    if (value !== undefined) {
+      setCode(value);
+    }
+  }, [value]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCode(e.target.value);
+    if (onChange) {
+      onChange(e.target.value);
+    }
+  };
   
   return (
-    <Textarea
-      value={code}
-      onChange={(e) => setCode(e.target.value)}
-      className="w-full h-full p-4 font-mono text-sm resize-none focus:outline-none bg-white dark:bg-gray-900 border-0 rounded-none"
-      spellCheck={false}
-      style={{
-        fontFamily: "monospace",
-        lineHeight: "1.5",
-        overflowY: "auto",
-        minHeight: "400px" // Added minimum height for better display
-      }}
-    />
+    <div className="flex flex-col h-full">
+      <Textarea
+        value={code}
+        onChange={handleChange}
+        className="w-full h-full p-4 font-mono text-sm resize-none focus:outline-none bg-white dark:bg-gray-900 border-0 rounded-none"
+        spellCheck={false}
+        style={{
+          fontFamily: "monospace",
+          lineHeight: "1.5",
+          overflowY: "auto",
+          minHeight: "400px" 
+        }}
+      />
+    </div>
   );
 };
 
