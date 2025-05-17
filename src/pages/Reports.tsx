@@ -1,4 +1,3 @@
-
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import SessionSelector from "@/components/reports/SessionSelector";
 import TestCaseChart from "@/components/reports/TestCaseChart";
@@ -8,8 +7,9 @@ import OverallAssessment from "@/components/session-report/OverallAssessment";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { FileHeart } from "lucide-react";
+import { FileHeart, Download } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const Reports = () => {
   // Sample session data
@@ -23,44 +23,52 @@ const Reports = () => {
     tutor: "Steve",
   };
 
+  const { toast } = useToast();
+  
+  const handleExportReport = () => {
+    toast({
+      title: "Report downloaded",
+      description: "The report has been downloaded as a PDF",
+      duration: 2000,
+    });
+  };
+
   return (
     <DashboardLayout>
-      <div className="mb-6 flex justify-between items-center">
+      <div className="mb-4 flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold mb-2">Performance Reports</h1>
           <p className="text-gray-600 dark:text-gray-400">
             Comprehensive analysis of your learning journey and progress
           </p>
         </div>
-        <Link to="/session-report">
-          <Button variant="outline" className="gap-2">
-            <FileHeart className="h-4 w-4" />
-            Full Session Report
-          </Button>
-        </Link>
+        <Button variant="outline" className="gap-2" onClick={handleExportReport}>
+          <Download className="h-4 w-4" />
+          Export Report
+        </Button>
       </div>
       
-      <div className="grid grid-cols-1 gap-6">
+      <div className="grid grid-cols-1 gap-4">
         <SessionSelector />
       </div>
       
-      <Card className="mt-6">
-        <CardHeader className="pb-3">
+      <Card className="mt-4">
+        <CardHeader className="pb-2">
           <CardTitle>Overall Progress Summary</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md text-center">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-md text-center">
               <h3 className="text-lg font-medium mb-2">Sessions Completed</h3>
               <p className="text-3xl font-bold">12</p>
               <p className="text-sm text-gray-500 dark:text-gray-400">Last 30 days</p>
             </div>
-            <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md text-center">
+            <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-md text-center">
               <h3 className="text-lg font-medium mb-2">Average Score</h3>
               <p className="text-3xl font-bold">B+</p>
               <p className="text-sm text-gray-500 dark:text-gray-400">Last 5 sessions</p>
             </div>
-            <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md text-center">
+            <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-md text-center">
               <h3 className="text-lg font-medium mb-2">Test Pass Rate</h3>
               <p className="text-3xl font-bold">87%</p>
               <p className="text-sm text-gray-500 dark:text-gray-400">All sessions</p>
@@ -69,16 +77,16 @@ const Reports = () => {
         </CardContent>
       </Card>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         <TestCaseChart />
         <EmotionalAnalysis />
       </div>
       
-      <div className="grid grid-cols-1 mt-6">
+      <div className="grid grid-cols-1 mt-4">
         <AudioConfidenceChart />
       </div>
 
-      <div className="mt-6">
+      <div className="mt-4">
         <OverallAssessment
           assessment={{
             overallGrade: "A-",
@@ -114,16 +122,16 @@ const Reports = () => {
         />
       </div>
 
-      <Card className="mt-6">
-        <CardHeader className="pb-3">
+      <Card className="mt-4 mb-4">
+        <CardHeader className="pb-2">
           <CardTitle>Recent Sessions</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
+          <div className="space-y-3">
             {Array(3).fill(sessionData).map((session, index) => (
               <div 
                 key={index}
-                className="border border-gray-200 dark:border-gray-700 rounded-md p-4 flex justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                className="border border-gray-200 dark:border-gray-700 rounded-md p-3 flex justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
               >
                 <div>
                   <h3 className="font-medium">{session.title}</h3>
@@ -139,7 +147,7 @@ const Reports = () => {
                   <span className="px-2 py-1 text-xs rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400">
                     {session.difficulty}
                   </span>
-                  <Link to="/session-report">
+                  <Link to="/reports">
                     <Button size="sm" variant="outline">View Report</Button>
                   </Link>
                 </div>

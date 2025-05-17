@@ -1,9 +1,8 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
-import { FileHeart, Play, RefreshCw } from "lucide-react";
+import { FileHeart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProblemStatementCard from "@/components/ai-tutor/ProblemStatementCard";
@@ -222,253 +221,132 @@ const AiTutorLisa = () => {
     };
 
     setTimeout(() => {
-      navigate("/session-report", { state: { sessionData } });
+      navigate("/reports", { state: { sessionData } });
     }, 1500);
   };
+
+  const renderContent = () => (
+    <>
+      <div className="flex items-center justify-between mb-2">
+        <h1 className="text-2xl font-bold">Lisa</h1>
+        <Button 
+          onClick={handleEndSession}
+          variant="default" 
+          className="gap-2 bg-purple-600 hover:bg-purple-700"
+        >
+          <FileHeart className="h-4 w-4" />
+          End Session
+        </Button>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 h-[calc(100vh-100px)] overflow-y-auto pb-0">
+        {/* Left Panel - Interviewer */}
+        <div className="lg:col-span-3 flex flex-col">
+          <InterviewerSection tutor="lisa" />
+        </div>
+
+        {/* Center Panel - Code Area */}
+        <div className="lg:col-span-5 flex flex-col">
+          <CodeEditorSection 
+            language={language}
+            onLanguageChange={setLanguage}
+            value={codeEditorValue}
+            onChange={setCodeEditorValue}
+          />
+
+          {/* Test Cases */}
+          <div className="mt-3">
+            <Tabs defaultValue="testCases" className="w-full">
+              <TabsList className="grid grid-cols-3 w-full">
+                <TabsTrigger value="testCases">Test Cases</TabsTrigger>
+                <TabsTrigger value="outputLogs">Output Logs</TabsTrigger>
+                <TabsTrigger value="aiFeedback">AI Feedback</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="testCases" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
+                <div className="space-y-2">
+                  <h3 className="font-medium">Test Cases</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {currentQuestion.testCases.map((testCase, idx) => (
+                      <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-2">
+                        <div className="font-mono text-sm space-y-1">
+                          <div><span className="font-semibold">Input:</span> {testCase.input}</div>
+                          <div><span className="font-semibold">Output:</span> {testCase.output}</div>
+                          <div className="text-green-500">✓ Passed</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mt-3 border-t pt-2">
+                  <h3 className="font-medium mb-1">Test Results</h3>
+                  <div className="space-y-2">
+                    {testResults.map((result) => (
+                      <div 
+                        key={result.id}
+                        className={`p-2 rounded-md text-sm ${
+                          result.passed 
+                            ? "bg-green-50 border border-green-200 dark:bg-green-900/20 dark:border-green-800" 
+                            : "bg-red-50 border border-red-200 dark:bg-red-900/20 dark:border-red-800"
+                        }`}
+                      >
+                        <div className="flex items-center">
+                          <span className={`mr-2 text-lg ${result.passed ? "text-green-500" : "text-red-500"}`}>
+                            {result.passed ? "✓" : "✗"}
+                          </span>
+                          <span className="font-medium">{result.name}</span>
+                        </div>
+                        <p className="ml-6 text-gray-700 dark:text-gray-300">{result.message}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="outputLogs" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
+                <div className="font-mono text-sm">
+                  <p>[12:45:32] Running test case 1...</p>
+                  <p>[12:45:33] Test passed: Expected "1, 1, false", got "1, 1, false"</p>
+                  <p>[12:45:33] Running test case 2...</p>
+                  <p>[12:45:34] Test passed: Expected "1, true", got "1, true"</p>
+                  <p>[12:45:35] All tests passed!</p>
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="aiFeedback" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
+                <p className="text-gray-800 dark:text-gray-200">
+                  Your implementation of a queue using two stacks is correct. The amortized time complexity is O(1) for all operations.
+                  Good job on implementing the helper method to transfer elements between stacks.
+                </p>
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
+
+        {/* Right Panel - Problem Statement */}
+        <div className="lg:col-span-4 flex flex-col">
+          <Card className="border border-gray-200 dark:border-gray-800 shadow-lg h-full overflow-hidden">
+            <CardContent className="p-2 h-full">
+              <ProblemStatementCard {...currentQuestion} showHints={true} />
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </>
+  );
 
   return (
     <div className={showNavigation ? "" : "h-screen w-screen fixed top-0 left-0 bg-background overflow-y-auto"}>
       {showNavigation ? (
         <DashboardLayout>
-          <div className="container mx-auto px-4 animate-fade-in">
-            <div className="flex items-center justify-between mb-4">
-              <h1 className="text-2xl font-bold">Lisa</h1>
-              <Button 
-                onClick={handleEndSession}
-                variant="default" 
-                className="gap-2 bg-purple-600 hover:bg-purple-700"
-              >
-                <FileHeart className="h-4 w-4" />
-                End Session
-              </Button>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 h-[calc(100vh-140px)] overflow-y-auto">
-              {/* Left Panel - Interviewer */}
-              <div className="lg:col-span-3 flex flex-col">
-                <InterviewerSection tutor="lisa" />
-              </div>
-
-              {/* Center Panel - Code Area */}
-              <div className="lg:col-span-5 flex flex-col">
-                <CodeEditorSection 
-                  language={language}
-                  onLanguageChange={setLanguage}
-                  value={codeEditorValue}
-                  onChange={setCodeEditorValue}
-                />
-
-                {/* Test Cases */}
-                <div className="mt-4">
-                  <Tabs defaultValue="testCases" className="w-full">
-                    <TabsList className="grid grid-cols-3 w-full">
-                      <TabsTrigger value="testCases">Test Cases</TabsTrigger>
-                      <TabsTrigger value="outputLogs">Output Logs</TabsTrigger>
-                      <TabsTrigger value="aiFeedback">AI Feedback</TabsTrigger>
-                    </TabsList>
-                    
-                    <TabsContent value="testCases" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
-                      <div className="space-y-2">
-                        <h3 className="font-medium">Test Cases</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          {currentQuestion.testCases.map((testCase, idx) => (
-                            <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-2">
-                              <div className="font-mono text-sm space-y-1">
-                                <div><span className="font-semibold">Input:</span> {testCase.input}</div>
-                                <div><span className="font-semibold">Output:</span> {testCase.output}</div>
-                                <div className="text-green-500">✓ Passed</div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="mt-3 border-t pt-3">
-                        <h3 className="font-medium mb-2">Test Results</h3>
-                        <div className="space-y-2">
-                          {testResults.map((result) => (
-                            <div 
-                              key={result.id}
-                              className={`p-2 rounded-md text-sm ${
-                                result.passed 
-                                  ? "bg-green-50 border border-green-200 dark:bg-green-900/20 dark:border-green-800" 
-                                  : "bg-red-50 border border-red-200 dark:bg-red-900/20 dark:border-red-800"
-                              }`}
-                            >
-                              <div className="flex items-center">
-                                <span className={`mr-2 text-lg ${result.passed ? "text-green-500" : "text-red-500"}`}>
-                                  {result.passed ? "✓" : "✗"}
-                                </span>
-                                <span className="font-medium">{result.name}</span>
-                              </div>
-                              <p className="ml-6 text-gray-700 dark:text-gray-300">{result.message}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="flex justify-end mt-3">
-                        <Button 
-                          onClick={handleRunTests}
-                          className="gap-2"
-                          disabled={isRunning}
-                        >
-                          {isRunning ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
-                          {isRunning ? "Running Tests..." : "Run Tests"}
-                        </Button>
-                      </div>
-                    </TabsContent>
-                    
-                    <TabsContent value="outputLogs" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
-                      <div className="font-mono text-sm">
-                        <p>[12:45:32] Running test case 1...</p>
-                        <p>[12:45:33] Test passed: Expected "1, 1, false", got "1, 1, false"</p>
-                        <p>[12:45:33] Running test case 2...</p>
-                        <p>[12:45:34] Test passed: Expected "1, true", got "1, true"</p>
-                        <p>[12:45:35] All tests passed!</p>
-                      </div>
-                    </TabsContent>
-                    
-                    <TabsContent value="aiFeedback" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
-                      <p className="text-gray-800 dark:text-gray-200">
-                        Your implementation of a queue using two stacks is correct. The amortized time complexity is O(1) for all operations.
-                        Good job on implementing the helper method to transfer elements between stacks.
-                      </p>
-                    </TabsContent>
-                  </Tabs>
-                </div>
-              </div>
-
-              {/* Right Panel - Problem Statement */}
-              <div className="lg:col-span-4 flex flex-col">
-                <Card className="border border-gray-200 dark:border-gray-800 shadow-lg h-full overflow-hidden">
-                  <CardContent className="p-3 h-full">
-                    <ProblemStatementCard {...currentQuestion} showHints={true} />
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
+          <div className="animate-fade-in">
+            {renderContent()}
           </div>
         </DashboardLayout>
       ) : (
-        <div className="container mx-auto px-4 py-4 animate-fade-in overflow-y-auto h-screen">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-2xl font-bold">Lisa</h1>
-            <Button 
-              onClick={handleEndSession}
-              variant="default" 
-              className="gap-2 bg-purple-600 hover:bg-purple-700"
-            >
-              <FileHeart className="h-4 w-4" />
-              End Session
-            </Button>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 h-[calc(100vh-140px)] overflow-y-auto">
-            {/* Left Panel - Interviewer */}
-            <div className="lg:col-span-3 flex flex-col">
-              <InterviewerSection tutor="lisa" />
-            </div>
-
-            {/* Center Panel - Code Area */}
-            <div className="lg:col-span-5 flex flex-col">
-              <CodeEditorSection 
-                language={language}
-                onLanguageChange={setLanguage}
-                value={codeEditorValue}
-                onChange={setCodeEditorValue}
-              />
-
-              {/* Test Cases */}
-              <div className="mt-4">
-                <Tabs defaultValue="testCases" className="w-full">
-                  <TabsList className="grid grid-cols-3 w-full">
-                    <TabsTrigger value="testCases">Test Cases</TabsTrigger>
-                    <TabsTrigger value="outputLogs">Output Logs</TabsTrigger>
-                    <TabsTrigger value="aiFeedback">AI Feedback</TabsTrigger>
-                  </TabsList>
-                  
-                  <TabsContent value="testCases" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
-                    <div className="space-y-2">
-                      <h3 className="font-medium">Test Cases</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {currentQuestion.testCases.map((testCase, idx) => (
-                          <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-2">
-                            <div className="font-mono text-sm space-y-1">
-                              <div><span className="font-semibold">Input:</span> {testCase.input}</div>
-                              <div><span className="font-semibold">Output:</span> {testCase.output}</div>
-                              <div className="text-green-500">✓ Passed</div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="mt-3 border-t pt-3">
-                      <h3 className="font-medium mb-2">Test Results</h3>
-                      <div className="space-y-2">
-                        {testResults.map((result) => (
-                          <div 
-                            key={result.id}
-                            className={`p-2 rounded-md text-sm ${
-                              result.passed 
-                                ? "bg-green-50 border border-green-200 dark:bg-green-900/20 dark:border-green-800" 
-                                : "bg-red-50 border border-red-200 dark:bg-red-900/20 dark:border-red-800"
-                            }`}
-                          >
-                            <div className="flex items-center">
-                              <span className={`mr-2 text-lg ${result.passed ? "text-green-500" : "text-red-500"}`}>
-                                {result.passed ? "✓" : "✗"}
-                              </span>
-                              <span className="font-medium">{result.name}</span>
-                            </div>
-                            <p className="ml-6 text-gray-700 dark:text-gray-300">{result.message}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="flex justify-end mt-3">
-                      <Button 
-                        onClick={handleRunTests}
-                        className="gap-2"
-                        disabled={isRunning}
-                      >
-                        {isRunning ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
-                        {isRunning ? "Running Tests..." : "Run Tests"}
-                      </Button>
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="outputLogs" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
-                    <div className="font-mono text-sm">
-                      <p>[12:45:32] Running test case 1...</p>
-                      <p>[12:45:33] Test passed: Expected "1, 1, false", got "1, 1, false"</p>
-                      <p>[12:45:33] Running test case 2...</p>
-                      <p>[12:45:34] Test passed: Expected "1, true", got "1, true"</p>
-                      <p>[12:45:35] All tests passed!</p>
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="aiFeedback" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
-                    <p className="text-gray-800 dark:text-gray-200">
-                      Your implementation of a queue using two stacks is correct. The amortized time complexity is O(1) for all operations.
-                      Good job on implementing the helper method to transfer elements between stacks.
-                    </p>
-                  </TabsContent>
-                </Tabs>
-              </div>
-            </div>
-
-            {/* Right Panel - Problem Statement */}
-            <div className="lg:col-span-4 flex flex-col">
-              <Card className="border border-gray-200 dark:border-gray-800 shadow-lg h-full overflow-hidden">
-                <CardContent className="p-3 h-full">
-                  <ProblemStatementCard {...currentQuestion} showHints={true} />
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+        <div className="container mx-auto px-2 py-2 animate-fade-in overflow-y-auto h-screen">
+          {renderContent()}
         </div>
       )}
     </div>
