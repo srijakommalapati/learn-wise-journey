@@ -38,11 +38,17 @@ const AiTutorLisa = () => {
     ]
   });
 
+  const [testResults, setTestResults] = useState([
+    { id: 1, name: "Basic Operations", passed: true, message: "Test passed! Expected: 1, 1, false. Got: 1, 1, false." },
+    { id: 2, name: "Empty Queue", passed: true, message: "Test passed! Expected: true. Got: true." },
+  ]);
+
   const handleRunTests = () => {
     setIsRunning(true);
     // Simulating test execution
     setTimeout(() => {
       setIsRunning(false);
+      setTestResults([...testResults]);
     }, 1000);
   };
 
@@ -212,7 +218,7 @@ const AiTutorLisa = () => {
         nextSteps: "Work on more complex data structure implementations such as LRU Cache or Min Stack. Practice explaining the time complexity analysis in more detail."
       },
       userAnswer: "To implement a queue using two stacks, I'll use one stack for enqueue operations and another for dequeue operations.\n\nClass MyQueue:\n  - Constructor initializes stackIn and stackOut\n  - push(x): Add elements to stackIn\n  - pop(): If stackOut is empty, transfer all elements from stackIn to stackOut (reversing their order), then pop from stackOut\n  - peek(): Similar to pop, but return the top element without removing it\n  - empty(): Return true if both stacks are empty\n  - Helper method transferStacks(): Move all elements from stackIn to stackOut\n\nThe amortized time complexity is O(1) for all operations because each element is pushed and popped exactly once from each stack across multiple operations.",
-      enhancedAnswer: "# Queue Implementation with Two Stacks\n\n## Core Insight\nA queue follows FIFO (First-In-First-Out) order, while a stack follows LIFO (Last-In-First-Out). The key insight is that two LIFO structures can simulate FIFO behavior when used together.\n\n## Implementation Strategy\n1. Use `stackIn` for all push operations\n2. Use `stackOut` for all pop/peek operations\n3. When popping/peeking and `stackOut` is empty, transfer all elements from `stackIn` to `stackOut`\n\n## Time Complexity Analysis\n- **push**: O(1) - Just adding to stackIn\n- **pop/peek**: \n  - Amortized O(1) - Elements are transferred at most once\n  - Worst case O(n) - When stackOut is empty and transfer is needed\n- **empty**: O(1) - Just checking lengths\n\n## Space Complexity: O(n)\nWe store each element exactly once (either in stackIn or stackOut).\n\n## Edge Cases Handled\n- Empty queue checks\n- Ensuring elements are in correct order when accessed\n\n## Key Optimization\nLazy transfer - only transfer elements when needed for pop/peek operations, not on every operation.\n\nThis implementation efficiently simulates queue behavior using only stack operations, demonstrating how data structures can be composed to create new behaviors."
+      enhancedAnswer: "# Queue Implementation with Two Stacks\n\n## Core Insight\nA queue follows FIFO (First-In-First-Out) order, while a stack follows LIFO (Last-In-First-Out). The key insight is that two LIFO structures can simulate FIFO behavior when used together.\n\n## Implementation Strategy\n1. Use `stackIn` for all push operations\n2. Use `stackOut` for all pop/peek operations\n3. When popping/peeking and `stackOut` is empty, transfer all elements from `stackIn` to `stackOut`\n\n## Time Complexity Analysis\n- **push**: O(1) - Just adding to stackIn\n- **pop/peek**: \n  - Amortized O(1) - Elements are transferred at most once\n  - Worst case O(n) - When stackOut is empty and transfer is needed\n- **empty**: O(1) - Just checking lengths\n\n## Space Complexity: O(n)\nWe store each element exactly once (either in stackIn or stackOut).\n\n## Edge Cases Handled\n- Empty queue checks\n- Ensuring elements are in correct order when accessed\n\n## Key Optimization\nLazy transfer - only transfer elements when needed for pop/peek operations, not on every operation."
     };
 
     setTimeout(() => {
@@ -225,8 +231,8 @@ const AiTutorLisa = () => {
       {showNavigation ? (
         <DashboardLayout>
           <div className="container mx-auto px-4 animate-fade-in">
-            <div className="flex items-center justify-between mb-6">
-              <h1 className="text-3xl font-bold">Lisa</h1>
+            <div className="flex items-center justify-between mb-4">
+              <h1 className="text-2xl font-bold">Lisa</h1>
               <Button 
                 onClick={handleEndSession}
                 variant="default" 
@@ -237,7 +243,7 @@ const AiTutorLisa = () => {
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-140px)] overflow-y-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 h-[calc(100vh-140px)] overflow-y-auto">
               {/* Left Panel - Interviewer */}
               <div className="lg:col-span-3 flex flex-col">
                 <InterviewerSection tutor="lisa" />
@@ -253,7 +259,7 @@ const AiTutorLisa = () => {
                 />
 
                 {/* Test Cases */}
-                <div className="mt-6">
+                <div className="mt-4">
                   <Tabs defaultValue="testCases" className="w-full">
                     <TabsList className="grid grid-cols-3 w-full">
                       <TabsTrigger value="testCases">Test Cases</TabsTrigger>
@@ -261,12 +267,12 @@ const AiTutorLisa = () => {
                       <TabsTrigger value="aiFeedback">AI Feedback</TabsTrigger>
                     </TabsList>
                     
-                    <TabsContent value="testCases" className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
+                    <TabsContent value="testCases" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
                       <div className="space-y-2">
                         <h3 className="font-medium">Test Cases</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                           {currentQuestion.testCases.map((testCase, idx) => (
-                            <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-3">
+                            <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-2">
                               <div className="font-mono text-sm space-y-1">
                                 <div><span className="font-semibold">Input:</span> {testCase.input}</div>
                                 <div><span className="font-semibold">Output:</span> {testCase.output}</div>
@@ -277,7 +283,31 @@ const AiTutorLisa = () => {
                         </div>
                       </div>
 
-                      <div className="flex justify-end mt-4">
+                      <div className="mt-3 border-t pt-3">
+                        <h3 className="font-medium mb-2">Test Results</h3>
+                        <div className="space-y-2">
+                          {testResults.map((result) => (
+                            <div 
+                              key={result.id}
+                              className={`p-2 rounded-md text-sm ${
+                                result.passed 
+                                  ? "bg-green-50 border border-green-200 dark:bg-green-900/20 dark:border-green-800" 
+                                  : "bg-red-50 border border-red-200 dark:bg-red-900/20 dark:border-red-800"
+                              }`}
+                            >
+                              <div className="flex items-center">
+                                <span className={`mr-2 text-lg ${result.passed ? "text-green-500" : "text-red-500"}`}>
+                                  {result.passed ? "✓" : "✗"}
+                                </span>
+                                <span className="font-medium">{result.name}</span>
+                              </div>
+                              <p className="ml-6 text-gray-700 dark:text-gray-300">{result.message}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="flex justify-end mt-3">
                         <Button 
                           onClick={handleRunTests}
                           className="gap-2"
@@ -289,7 +319,7 @@ const AiTutorLisa = () => {
                       </div>
                     </TabsContent>
                     
-                    <TabsContent value="outputLogs" className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
+                    <TabsContent value="outputLogs" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
                       <div className="font-mono text-sm">
                         <p>[12:45:32] Running test case 1...</p>
                         <p>[12:45:33] Test passed: Expected "1, 1, false", got "1, 1, false"</p>
@@ -299,7 +329,7 @@ const AiTutorLisa = () => {
                       </div>
                     </TabsContent>
                     
-                    <TabsContent value="aiFeedback" className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
+                    <TabsContent value="aiFeedback" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
                       <p className="text-gray-800 dark:text-gray-200">
                         Your implementation of a queue using two stacks is correct. The amortized time complexity is O(1) for all operations.
                         Good job on implementing the helper method to transfer elements between stacks.
@@ -312,7 +342,7 @@ const AiTutorLisa = () => {
               {/* Right Panel - Problem Statement */}
               <div className="lg:col-span-4 flex flex-col">
                 <Card className="border border-gray-200 dark:border-gray-800 shadow-lg h-full overflow-hidden">
-                  <CardContent className="p-4 h-full">
+                  <CardContent className="p-3 h-full">
                     <ProblemStatementCard {...currentQuestion} showHints={true} />
                   </CardContent>
                 </Card>
@@ -321,9 +351,9 @@ const AiTutorLisa = () => {
           </div>
         </DashboardLayout>
       ) : (
-        <div className="container mx-auto px-4 py-6 animate-fade-in overflow-y-auto h-screen">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-3xl font-bold">Lisa</h1>
+        <div className="container mx-auto px-4 py-4 animate-fade-in overflow-y-auto h-screen">
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-2xl font-bold">Lisa</h1>
             <Button 
               onClick={handleEndSession}
               variant="default" 
@@ -334,7 +364,7 @@ const AiTutorLisa = () => {
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-140px)] overflow-y-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 h-[calc(100vh-140px)] overflow-y-auto">
             {/* Left Panel - Interviewer */}
             <div className="lg:col-span-3 flex flex-col">
               <InterviewerSection tutor="lisa" />
@@ -350,7 +380,7 @@ const AiTutorLisa = () => {
               />
 
               {/* Test Cases */}
-              <div className="mt-6">
+              <div className="mt-4">
                 <Tabs defaultValue="testCases" className="w-full">
                   <TabsList className="grid grid-cols-3 w-full">
                     <TabsTrigger value="testCases">Test Cases</TabsTrigger>
@@ -358,12 +388,12 @@ const AiTutorLisa = () => {
                     <TabsTrigger value="aiFeedback">AI Feedback</TabsTrigger>
                   </TabsList>
                   
-                  <TabsContent value="testCases" className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
+                  <TabsContent value="testCases" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
                     <div className="space-y-2">
                       <h3 className="font-medium">Test Cases</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         {currentQuestion.testCases.map((testCase, idx) => (
-                          <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-3">
+                          <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-2">
                             <div className="font-mono text-sm space-y-1">
                               <div><span className="font-semibold">Input:</span> {testCase.input}</div>
                               <div><span className="font-semibold">Output:</span> {testCase.output}</div>
@@ -374,7 +404,31 @@ const AiTutorLisa = () => {
                       </div>
                     </div>
 
-                    <div className="flex justify-end mt-4">
+                    <div className="mt-3 border-t pt-3">
+                      <h3 className="font-medium mb-2">Test Results</h3>
+                      <div className="space-y-2">
+                        {testResults.map((result) => (
+                          <div 
+                            key={result.id}
+                            className={`p-2 rounded-md text-sm ${
+                              result.passed 
+                                ? "bg-green-50 border border-green-200 dark:bg-green-900/20 dark:border-green-800" 
+                                : "bg-red-50 border border-red-200 dark:bg-red-900/20 dark:border-red-800"
+                            }`}
+                          >
+                            <div className="flex items-center">
+                              <span className={`mr-2 text-lg ${result.passed ? "text-green-500" : "text-red-500"}`}>
+                                {result.passed ? "✓" : "✗"}
+                              </span>
+                              <span className="font-medium">{result.name}</span>
+                            </div>
+                            <p className="ml-6 text-gray-700 dark:text-gray-300">{result.message}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex justify-end mt-3">
                       <Button 
                         onClick={handleRunTests}
                         className="gap-2"
@@ -386,7 +440,7 @@ const AiTutorLisa = () => {
                     </div>
                   </TabsContent>
                   
-                  <TabsContent value="outputLogs" className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
+                  <TabsContent value="outputLogs" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
                     <div className="font-mono text-sm">
                       <p>[12:45:32] Running test case 1...</p>
                       <p>[12:45:33] Test passed: Expected "1, 1, false", got "1, 1, false"</p>
@@ -396,7 +450,7 @@ const AiTutorLisa = () => {
                     </div>
                   </TabsContent>
                   
-                  <TabsContent value="aiFeedback" className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
+                  <TabsContent value="aiFeedback" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
                     <p className="text-gray-800 dark:text-gray-200">
                       Your implementation of a queue using two stacks is correct. The amortized time complexity is O(1) for all operations.
                       Good job on implementing the helper method to transfer elements between stacks.
@@ -409,7 +463,7 @@ const AiTutorLisa = () => {
             {/* Right Panel - Problem Statement */}
             <div className="lg:col-span-4 flex flex-col">
               <Card className="border border-gray-200 dark:border-gray-800 shadow-lg h-full overflow-hidden">
-                <CardContent className="p-4 h-full">
+                <CardContent className="p-3 h-full">
                   <ProblemStatementCard {...currentQuestion} showHints={true} />
                 </CardContent>
               </Card>

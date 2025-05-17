@@ -3,7 +3,7 @@ import { useLocation, Navigate } from "react-router-dom";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Download, FileText } from "lucide-react";
+import { ArrowLeft, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 import SessionHeader from "@/components/session-report/SessionHeader";
 import EmotionalAnalysisReport from "@/components/session-report/EmotionalAnalysisReport";
@@ -21,14 +21,14 @@ const SessionReport = () => {
     return <Navigate to="/dashboard" replace />;
   }
 
-  // Different report layout for each tutor
+  // Check which tutor's report this is
   const isSteveTutor = sessionData.tutor === "Steve";
 
   return (
     <DashboardLayout>
-      <div className="mb-6 flex justify-between items-center">
+      <div className="mb-5 flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold mb-2">Session Report</h1>
+          <h1 className="text-3xl font-bold mb-1">Session Report</h1>
           <p className="text-gray-600 dark:text-gray-400">
             Complete analysis of your practice session
           </p>
@@ -47,18 +47,18 @@ const SessionReport = () => {
         </div>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-5">
         <SessionHeader sessionData={sessionData} />
         
         {/* Code Complexity and Overall Assessment at the top */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <CodeComplexityReport codeData={sessionData.codeData} />
           <OverallAssessment assessment={sessionData.assessment} />
         </div>
         
-        {/* Emotional Analysis and Audio Analysis only for Lisa */}
-        {!isSteveTutor && sessionData.emotionData && sessionData.emotionData.length > 0 && sessionData.audioData && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* For Lisa: Emotional Analysis and Audio Analysis */}
+        {!isSteveTutor && sessionData.emotionData && sessionData.audioData && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <EmotionalAnalysisReport emotionData={sessionData.emotionData} />
             <AudioAnalysisReport audioData={sessionData.audioData} />
           </div>
@@ -67,30 +67,30 @@ const SessionReport = () => {
         {/* Test Cases Report */}
         <TestCasesReport testCases={sessionData.testCases} />
         
-        {/* Enhanced Answer Comparison for Steve */}
-        {isSteveTutor && (
+        {/* Enhanced Answer Comparison */}
+        {sessionData.userAnswer && sessionData.enhancedAnswer && (
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-lg">Enhanced Answer Comparison</CardTitle>
+              <CardTitle className="text-lg">Answer Comparison</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-6">
+              <div className="space-y-5">
                 <div>
                   <h3 className="text-sm font-medium mb-2">Your Response:</h3>
-                  <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
+                  <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-md">
                     <p className="whitespace-pre-wrap">{sessionData.userAnswer}</p>
                   </div>
                 </div>
                 
                 <div>
                   <h3 className="text-sm font-medium mb-2">Enhanced Response:</h3>
-                  <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-md border border-blue-100 dark:border-blue-900">
+                  <div className="bg-blue-50 dark:bg-blue-950/20 p-3 rounded-md border border-blue-100 dark:border-blue-900">
                     <p className="whitespace-pre-wrap">{sessionData.enhancedAnswer}</p>
                   </div>
                 </div>
                 
                 {sessionData.improvements && (
-                  <div className="pt-4 border-t border-gray-200 dark:border-gray-800">
+                  <div className="pt-3 border-t border-gray-200 dark:border-gray-800">
                     <h3 className="text-sm font-medium mb-2">Key Improvements:</h3>
                     <ul className="list-disc pl-5 space-y-1">
                       {sessionData.improvements?.map((improvement, i) => (

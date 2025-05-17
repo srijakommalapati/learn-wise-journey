@@ -16,26 +16,43 @@ import {
   Legend
 } from "recharts";
 
+interface EmotionData {
+  time: string;
+  emotion?: string;
+  confidence?: number;
+  frustration?: number;
+  excitement?: number;
+}
+
 interface EmotionalAnalysisReportProps {
-  emotionData: Array<{
-    time: string;
-    confidence: number;
-    frustration: number;
-    excitement: number;
-  }>;
+  emotionData: EmotionData[];
 }
 
 const EmotionalAnalysisReport = ({ emotionData }: EmotionalAnalysisReportProps) => {
-  // In case no data is provided, use sample data
-  const data = emotionData || [
-    { time: "00:00", confidence: 80, frustration: 20, excitement: 75 },
-    { time: "05:00", confidence: 75, frustration: 30, excitement: 70 },
-    { time: "10:00", confidence: 65, frustration: 50, excitement: 60 },
-    { time: "15:00", confidence: 70, frustration: 40, excitement: 65 },
-    { time: "20:00", confidence: 85, frustration: 15, excitement: 90 },
-    { time: "25:00", confidence: 90, frustration: 10, excitement: 95 },
-    { time: "30:00", confidence: 95, frustration: 5, excitement: 90 }
-  ];
+  // Transform the data if necessary to match chart format
+  const chartData = emotionData.map(item => {
+    // If emotion and confidence format
+    if (item.emotion && item.confidence !== undefined) {
+      // Map emotions to numerical values for charting
+      const confidence = item.confidence * 100;
+      const frustration = item.emotion === 'Frustrated' ? 70 : 
+                          item.emotion === 'Confused' ? 50 : 20;
+      const excitement = item.emotion === 'Excited' || 
+                         item.emotion === 'Confident' || 
+                         item.emotion === 'Satisfied' ? 80 : 50;
+      
+      return {
+        time: item.time,
+        confidence,
+        frustration,
+        excitement,
+        emotion: item.emotion
+      };
+    }
+    
+    // Already in the right format
+    return item;
+  });
   
   const chartConfig = {
     confidence: {
@@ -54,19 +71,19 @@ const EmotionalAnalysisReport = ({ emotionData }: EmotionalAnalysisReportProps) 
 
   return (
     <Card className="border border-gray-200 dark:border-gray-800">
-      <CardHeader>
-        <CardTitle className="flex items-center">
+      <CardHeader className="pb-2">
+        <CardTitle className="flex items-center text-lg">
           <span>Facial Emotion Analysis</span>
           <span className="ml-2 text-xs font-normal text-gray-500 dark:text-gray-400">
             (Detected from video)
           </span>
         </CardTitle>
       </CardHeader>
-      <CardContent className="pt-0">
-        <div className="h-[250px]">
+      <CardContent>
+        <div className="h-[220px]">
           <ChartContainer config={chartConfig}>
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={data}>
+              <LineChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="time" />
                 <YAxis unit="%" />
@@ -101,12 +118,12 @@ const EmotionalAnalysisReport = ({ emotionData }: EmotionalAnalysisReportProps) 
           </ChartContainer>
         </div>
         
-        <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-md">
-          <h4 className="text-sm font-medium mb-2">Analysis Highlights</h4>
+        <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-md">
+          <h4 className="text-sm font-medium mb-1">Analysis Highlights</h4>
           <ul className="space-y-1 text-sm">
-            <li>• You showed high confidence when discussing array manipulation</li>
+            <li>• You showed high confidence when discussing algorithms</li>
             <li>• Slight frustration noted when implementing edge cases</li>
-            <li>• Excitement peaked when you solved the final challenge</li>
+            <li>• Excitement peaked when you solved the problem</li>
           </ul>
         </div>
       </CardContent>

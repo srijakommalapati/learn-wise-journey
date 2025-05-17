@@ -217,8 +217,8 @@ const AiTutorSteve = () => {
       {showNavigation ? (
         <DashboardLayout>
           <div className="container mx-auto px-4 animate-fade-in">
-            <div className="flex items-center justify-between mb-6">
-              <h1 className="text-3xl font-bold">Steve</h1>
+            <div className="flex items-center justify-between mb-4">
+              <h1 className="text-2xl font-bold">Steve</h1>
               <Button 
                 onClick={handleEndSession}
                 variant="default" 
@@ -229,7 +229,7 @@ const AiTutorSteve = () => {
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-140px)] overflow-y-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 h-[calc(100vh-140px)] overflow-y-auto">
               {/* Left Panel - Interviewer */}
               <div className="lg:col-span-3 flex flex-col">
                 <InterviewerSection tutor="steve" />
@@ -245,7 +245,7 @@ const AiTutorSteve = () => {
                 />
                 
                 {/* Code Changes and Test Cases */}
-                <div className="mt-6">
+                <div className="mt-4">
                   <Tabs defaultValue="codeChanges" className="w-full">
                     <TabsList className="grid grid-cols-3 w-full">
                       <TabsTrigger value="codeChanges">Code Changes</TabsTrigger>
@@ -253,16 +253,16 @@ const AiTutorSteve = () => {
                       <TabsTrigger value="aiFeedback">AI Feedback</TabsTrigger>
                     </TabsList>
                     
-                    <TabsContent value="codeChanges" className="p-0">
+                    <TabsContent value="codeChanges" className="p-0 mt-2">
                       <CodeChangesEditor onAddToCode={handleAddToCode} />
                     </TabsContent>
                     
-                    <TabsContent value="testCases" className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
+                    <TabsContent value="testCases" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
                       <div className="space-y-2">
                         <h3 className="font-medium">Test Cases</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                           {currentQuestion.testCases.map((testCase, idx) => (
-                            <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-3">
+                            <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-2">
                               <div className="font-mono text-sm space-y-1">
                                 <div><span className="font-semibold">Input:</span> {testCase.input}</div>
                                 <div><span className="font-semibold">Output:</span> {testCase.output}</div>
@@ -272,7 +272,31 @@ const AiTutorSteve = () => {
                           ))}
                         </div>
                         
-                        <div className="flex justify-end mt-4">
+                        <div className="mt-3 border-t pt-3">
+                          <h3 className="font-medium mb-2">Test Results</h3>
+                          <div className="space-y-2">
+                            {testResults.map((result) => (
+                              <div 
+                                key={result.id}
+                                className={`p-2 rounded-md text-sm ${
+                                  result.passed 
+                                    ? "bg-green-50 border border-green-200 dark:bg-green-900/20 dark:border-green-800" 
+                                    : "bg-red-50 border border-red-200 dark:bg-red-900/20 dark:border-red-800"
+                                }`}
+                              >
+                                <div className="flex items-center">
+                                  <span className={`mr-2 text-lg ${result.passed ? "text-green-500" : "text-red-500"}`}>
+                                    {result.passed ? "✓" : "✗"}
+                                  </span>
+                                  <span className="font-medium">{result.name}</span>
+                                </div>
+                                <p className="ml-6 text-gray-700 dark:text-gray-300">{result.message}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        <div className="flex justify-end mt-3">
                           <Button 
                             onClick={handleRunTests}
                             className="gap-2"
@@ -285,7 +309,7 @@ const AiTutorSteve = () => {
                       </div>
                     </TabsContent>
                     
-                    <TabsContent value="aiFeedback" className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
+                    <TabsContent value="aiFeedback" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
                       <p className="text-gray-800 dark:text-gray-200">
                         Your solution has good time complexity (O(n)) and space complexity (O(1)).
                         Consider adding more comments to explain your approach and edge cases.
@@ -299,7 +323,7 @@ const AiTutorSteve = () => {
               {/* Right Panel - Problem Statement */}
               <div className="lg:col-span-4 flex flex-col">
                 <Card className="border border-gray-200 dark:border-gray-800 shadow-lg h-full overflow-hidden">
-                  <CardContent className="p-4 h-full">
+                  <CardContent className="p-3 h-full">
                     <ProblemStatementCard {...currentQuestion} showHints={true} />
                     
                     {/* Code Check Points */}
@@ -314,9 +338,9 @@ const AiTutorSteve = () => {
           </div>
         </DashboardLayout>
       ) : (
-        <div className="container mx-auto px-4 py-6 animate-fade-in overflow-y-auto h-screen">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-3xl font-bold">Steve</h1>
+        <div className="container mx-auto px-4 py-4 animate-fade-in overflow-y-auto h-screen">
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-2xl font-bold">Steve</h1>
             <Button 
               onClick={handleEndSession}
               variant="default" 
@@ -327,7 +351,7 @@ const AiTutorSteve = () => {
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-140px)] overflow-y-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 h-[calc(100vh-140px)] overflow-y-auto">
             {/* Left Panel - Interviewer */}
             <div className="lg:col-span-3 flex flex-col">
               <InterviewerSection tutor="steve" />
@@ -343,7 +367,7 @@ const AiTutorSteve = () => {
               />
               
               {/* Code Changes and Test Cases */}
-              <div className="mt-6">
+              <div className="mt-4">
                 <Tabs defaultValue="codeChanges" className="w-full">
                   <TabsList className="grid grid-cols-3 w-full">
                     <TabsTrigger value="codeChanges">Code Changes</TabsTrigger>
@@ -351,16 +375,16 @@ const AiTutorSteve = () => {
                     <TabsTrigger value="aiFeedback">AI Feedback</TabsTrigger>
                   </TabsList>
                   
-                  <TabsContent value="codeChanges" className="p-0">
+                  <TabsContent value="codeChanges" className="p-0 mt-2">
                     <CodeChangesEditor onAddToCode={handleAddToCode} />
                   </TabsContent>
                   
-                  <TabsContent value="testCases" className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
+                  <TabsContent value="testCases" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
                     <div className="space-y-2">
                       <h3 className="font-medium">Test Cases</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         {currentQuestion.testCases.map((testCase, idx) => (
-                          <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-3">
+                          <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-2">
                             <div className="font-mono text-sm space-y-1">
                               <div><span className="font-semibold">Input:</span> {testCase.input}</div>
                               <div><span className="font-semibold">Output:</span> {testCase.output}</div>
@@ -370,7 +394,31 @@ const AiTutorSteve = () => {
                         ))}
                       </div>
                       
-                      <div className="flex justify-end mt-4">
+                      <div className="mt-3 border-t pt-3">
+                        <h3 className="font-medium mb-2">Test Results</h3>
+                        <div className="space-y-2">
+                          {testResults.map((result) => (
+                            <div 
+                              key={result.id}
+                              className={`p-2 rounded-md text-sm ${
+                                result.passed 
+                                  ? "bg-green-50 border border-green-200 dark:bg-green-900/20 dark:border-green-800" 
+                                  : "bg-red-50 border border-red-200 dark:bg-red-900/20 dark:border-red-800"
+                              }`}
+                            >
+                              <div className="flex items-center">
+                                <span className={`mr-2 text-lg ${result.passed ? "text-green-500" : "text-red-500"}`}>
+                                  {result.passed ? "✓" : "✗"}
+                                </span>
+                                <span className="font-medium">{result.name}</span>
+                              </div>
+                              <p className="ml-6 text-gray-700 dark:text-gray-300">{result.message}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <div className="flex justify-end mt-3">
                         <Button 
                           onClick={handleRunTests}
                           className="gap-2"
@@ -383,7 +431,7 @@ const AiTutorSteve = () => {
                     </div>
                   </TabsContent>
                   
-                  <TabsContent value="aiFeedback" className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
+                  <TabsContent value="aiFeedback" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
                     <p className="text-gray-800 dark:text-gray-200">
                       Your solution has good time complexity (O(n)) and space complexity (O(1)).
                       Consider adding more comments to explain your approach and edge cases.
@@ -397,7 +445,7 @@ const AiTutorSteve = () => {
             {/* Right Panel - Problem Statement */}
             <div className="lg:col-span-4 flex flex-col">
               <Card className="border border-gray-200 dark:border-gray-800 shadow-lg h-full overflow-hidden">
-                <CardContent className="p-4 h-full">
+                <CardContent className="p-3 h-full">
                   <ProblemStatementCard {...currentQuestion} showHints={true} />
                   
                   {/* Code Check Points */}

@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Minus, Plus, CheckSquare, Square } from 'lucide-react';
+import { Minus, Plus, CheckCircle, Circle } from 'lucide-react';
 
 interface CodeCheckPoint {
   id: number;
@@ -17,7 +17,7 @@ const CodeCheckPoints = ({ checkPoints, onToggleCheckPoint }: CodeCheckPointsPro
   const [isExpanded, setIsExpanded] = useState(true);
 
   return (
-    <div className="border rounded-md p-2 bg-gray-50 dark:bg-gray-800/50 text-sm mt-4">
+    <div className="border rounded-md p-2 bg-gray-50 dark:bg-gray-800/50 text-sm mt-3">
       <div 
         className="flex items-center justify-between cursor-pointer p-2"
         onClick={() => setIsExpanded(!isExpanded)}
@@ -44,9 +44,9 @@ const CodeCheckPoints = ({ checkPoints, onToggleCheckPoint }: CodeCheckPointsPro
               onClick={() => onToggleCheckPoint(checkPoint.id)}
             >
               {checkPoint.completed ? (
-                <CheckSquare className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
               ) : (
-                <Square className="h-4 w-4 text-gray-400 mt-0.5 flex-shrink-0" />
+                <Circle className="h-4 w-4 text-gray-400 mt-0.5 flex-shrink-0" />
               )}
               <span className={`text-sm ${checkPoint.completed ? 'line-through text-gray-500 dark:text-gray-400' : ''}`}>
                 {checkPoint.text}

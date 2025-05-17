@@ -20,10 +20,11 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           className="flex-1 overflow-x-hidden"
           style={{
             marginLeft: isMobile ? 0 : (collapsed ? '70px' : '256px'),
-            transition: 'margin-left 0.3s'
+            transition: 'margin-left 0.3s',
+            width: isMobile ? '100%' : 'calc(100% - ' + (collapsed ? '70px' : '256px') + ')'
           }}
         >
-          <div className="container mx-auto px-4 py-6">
+          <div className="container mx-auto px-4 py-5">
             {children}
           </div>
           <FloatingAIAssistant />
