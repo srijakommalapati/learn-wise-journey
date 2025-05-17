@@ -23,6 +23,7 @@ import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
 import Calendar from "./pages/Calendar";
 import SessionReport from "./pages/SessionReport";
+import Profile from "./pages/Profile";
 
 import NotFound from "./pages/NotFound";
 
@@ -53,6 +54,7 @@ const App = () => (
           <Route path="/settings" element={<Settings />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/session-report" element={<SessionReport />} />
+          <Route path="/profile" element={<Profile />} />
           
           {/* Catch-all route */}
           <Route path="*" element={<NotFound />} />

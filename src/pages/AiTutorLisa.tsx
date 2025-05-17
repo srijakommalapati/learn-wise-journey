@@ -7,7 +7,6 @@ import { useToast } from "@/hooks/use-toast";
 import ProblemStatementCard from "@/components/ai-tutor/ProblemStatementCard";
 import InterviewerSection from "@/components/ai-tutor/InterviewerSection";
 import CodeEditorSection from "@/components/ai-tutor/CodeEditorSection";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 
 const AiTutorLisa = () => {
@@ -15,6 +14,7 @@ const AiTutorLisa = () => {
   const { toast } = useToast();
   const [language, setLanguage] = useState("javascript");
   const [showNavigation, setShowNavigation] = useState(false);
+  const [codeEditorValue, setCodeEditorValue] = useState('');
   
   const [currentQuestion] = useState({
     title: "Implement a Queue using Stacks",
@@ -51,29 +51,8 @@ const AiTutorLisa = () => {
       difficulty: "Medium",
       passRate: 0.9,
       tutor: "Lisa",
-      emotionData: [
-        { time: "00:00", confidence: 75, frustration: 15, excitement: 80 },
-        { time: "05:00", confidence: 70, frustration: 25, excitement: 75 },
-        { time: "10:00", confidence: 60, frustration: 35, excitement: 65 },
-        { time: "15:00", confidence: 65, frustration: 30, excitement: 70 },
-        { time: "20:00", confidence: 80, frustration: 10, excitement: 85 },
-        { time: "25:00", confidence: 85, frustration: 5, excitement: 90 },
-        { time: "30:00", confidence: 90, frustration: 5, excitement: 95 }
-      ],
-      audioData: {
-        confidenceScore: 78,
-        clarity: 82,
-        technicalAccuracy: 85,
-        pacingScore: 75,
-        detectedKeywords: [
-          "stack",
-          "queue",
-          "FIFO",
-          "data structure",
-          "amortized analysis",
-          "time complexity"
-        ]
-      },
+      emotionData: [],
+      audioData: {},
       testCases: [
         {
           id: 1,
@@ -198,15 +177,7 @@ const AiTutorLisa = () => {
           }
         ],
         nextSteps: "Work on more complex data structure implementations such as LRU Cache or Min Stack. Practice explaining the time complexity analysis in more detail."
-      },
-      userAnswer: "To implement a queue using two stacks, I'll use one stack for pushing elements and another for popping/peeking. Here's my approach:\n\n1. Create two stacks: stackPush and stackPop\n2. For push operation: Add element to stackPush\n3. For pop/peek: If stackPop is empty, transfer all elements from stackPush to stackPop by popping each element from stackPush and pushing it to stackPop, then perform the operation on stackPop\n4. This reverses the order, giving FIFO behavior\n\nThis approach has O(1) amortized time complexity for all operations, since each element is moved from stackPush to stackPop at most once.",
-      enhancedAnswer: "Queue Implementation Using Two Stacks\n\nA queue follows First-In-First-Out (FIFO) ordering, while stacks follow Last-In-First-Out (LIFO). The key insight is that we can reverse the order of elements by transferring them between stacks.\n\nApproach:\nI'll use two stacks with specialized roles:\n- Input Stack: For enqueue operations (push)\n- Output Stack: For dequeue operations (pop, peek)\n\nImplementation Details:\n\n1. push(x): Simply push the element onto the input stack - O(1) time\n2. pop() / peek(): \n   - If the output stack is empty: Transfer all elements from input to output stack\n   - This reverses their order, converting LIFO to FIFO\n   - Then pop/peek from the output stack\n3. empty(): Return true if both stacks are empty\n\nTime Complexity Analysis:\n- push: O(1) - constant time\n- pop/peek: \n   - Amortized O(1) time\n   - Worst case O(n) when we need to transfer elements\n   - But each element is transferred at most once between operations\n\nSpace Complexity:\n- O(n) where n is the number of elements in the queue\n\nThis implementation efficiently simulates queue behavior using only stack operations, preserving the FIFO ordering required for a queue.",
-      improvements: [
-        "Added clear section headings for improved readability",
-        "Provided more detailed explanation of the time complexity analysis",
-        "Included specific implementation details for each operation",
-        "Added explicit explanation of how LIFO to FIFO conversion works"
-      ]
+      }
     };
 
     setTimeout(() => {
@@ -215,7 +186,7 @@ const AiTutorLisa = () => {
   };
 
   return (
-    <div className={showNavigation ? "" : "h-screen w-screen overflow-hidden fixed top-0 left-0 bg-background"}>
+    <div className={showNavigation ? "" : "h-screen w-screen fixed top-0 left-0 bg-background overflow-y-auto"}>
       {showNavigation ? (
         <DashboardLayout>
           <div className="container mx-auto px-4 animate-fade-in">
@@ -247,6 +218,8 @@ const AiTutorLisa = () => {
                 <CodeEditorSection 
                   language={language}
                   onLanguageChange={setLanguage}
+                  value={codeEditorValue}
+                  onChange={setCodeEditorValue}
                 />
 
                 {/* Bottom Panel - Tabs for Test Cases, Output, etc. */}
@@ -332,7 +305,7 @@ const AiTutorLisa = () => {
           </div>
         </DashboardLayout>
       ) : (
-        <div className="container mx-auto px-4 py-6 animate-fade-in h-full">
+        <div className="container mx-auto px-4 py-6 animate-fade-in overflow-y-auto">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h1 className="text-3xl font-bold mb-2">Practice with Senior SDE</h1>
@@ -350,7 +323,7 @@ const AiTutorLisa = () => {
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-200px)]">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Left Panel - Interviewer */}
             <div className="lg:col-span-3 flex flex-col">
               <InterviewerSection tutor="lisa" />
@@ -361,6 +334,8 @@ const AiTutorLisa = () => {
               <CodeEditorSection 
                 language={language}
                 onLanguageChange={setLanguage}
+                value={codeEditorValue}
+                onChange={setCodeEditorValue}
               />
 
               {/* Bottom Panel - Tabs for Test Cases, Output, etc. */}

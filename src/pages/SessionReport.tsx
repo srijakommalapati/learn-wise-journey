@@ -21,6 +21,9 @@ const SessionReport = () => {
     return <Navigate to="/dashboard" replace />;
   }
 
+  // Different report layout for each tutor
+  const isSteveTutor = sessionData.tutor === "Steve";
+
   return (
     <DashboardLayout>
       <div className="mb-6 flex justify-between items-center">
@@ -53,47 +56,53 @@ const SessionReport = () => {
           <OverallAssessment assessment={sessionData.assessment} />
         </div>
         
-        {/* Emotional Analysis and Audio Analysis in the middle */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <EmotionalAnalysisReport emotionData={sessionData.emotionData} />
-          <AudioAnalysisReport audioData={sessionData.audioData} />
-        </div>
+        {/* Emotional Analysis and Audio Analysis only for Lisa */}
+        {!isSteveTutor && sessionData.emotionData && sessionData.emotionData.length > 0 && sessionData.audioData && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <EmotionalAnalysisReport emotionData={sessionData.emotionData} />
+            <AudioAnalysisReport audioData={sessionData.audioData} />
+          </div>
+        )}
         
         {/* Test Cases Report */}
         <TestCasesReport testCases={sessionData.testCases} />
         
-        {/* Answer Comparison */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Enhanced Answer Comparison</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-sm font-medium mb-2">Your Response:</h3>
-                <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
-                  <p className="whitespace-pre-wrap">{sessionData.userAnswer}</p>
+        {/* Enhanced Answer Comparison for Steve */}
+        {isSteveTutor && (
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg">Enhanced Answer Comparison</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-sm font-medium mb-2">Your Response:</h3>
+                  <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-md">
+                    <p className="whitespace-pre-wrap">{sessionData.userAnswer}</p>
+                  </div>
                 </div>
-              </div>
-              
-              <div>
-                <h3 className="text-sm font-medium mb-2">Enhanced Response:</h3>
-                <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-md border border-blue-100 dark:border-blue-900">
-                  <p className="whitespace-pre-wrap">{sessionData.enhancedAnswer}</p>
+                
+                <div>
+                  <h3 className="text-sm font-medium mb-2">Enhanced Response:</h3>
+                  <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-md border border-blue-100 dark:border-blue-900">
+                    <p className="whitespace-pre-wrap">{sessionData.enhancedAnswer}</p>
+                  </div>
                 </div>
+                
+                {sessionData.improvements && (
+                  <div className="pt-4 border-t border-gray-200 dark:border-gray-800">
+                    <h3 className="text-sm font-medium mb-2">Key Improvements:</h3>
+                    <ul className="list-disc pl-5 space-y-1">
+                      {sessionData.improvements?.map((improvement, i) => (
+                        <li key={i} className="text-sm">{improvement}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
-              
-              <div className="pt-4 border-t border-gray-200 dark:border-gray-800">
-                <h3 className="text-sm font-medium mb-2">Key Improvements:</h3>
-                <ul className="list-disc pl-5 space-y-1">
-                  {sessionData.improvements?.map((improvement: string, i: number) => (
-                    <li key={i} className="text-sm">{improvement}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </DashboardLayout>
   );

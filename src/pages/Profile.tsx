@@ -1,63 +1,185 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Book, Award, Star, Trophy, Code, Timer, Calendar, BarChart3, FileText, Briefcase, Building, GraduationCap, Phone, Mail } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/hooks/use-toast";
+import { 
+  User, 
+  Edit, 
+  LogOut, 
+  FileText, 
+  CheckCircle, 
+  Calendar, 
+  Clock,
+  Award,
+  Star,
+  Code
+} from "lucide-react";
 
 const Profile = () => {
-  const [activeTab, setActiveTab] = useState("overview");
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const [isEditing, setIsEditing] = useState(false);
+  
+  // Mock user data - in a real app, this would come from authentication context
+  const userData = {
+    name: "K Srija",
+    email: "srija@example.com",
+    role: "Frontend Developer",
+    joinedDate: "March 2024",
+    location: "Hyderabad, India",
+    avatar: "https://github.com/shadcn.png",
+    courseProgress: 65,
+    problemsSolved: 247,
+    rating: 4.8,
+    badges: 12
+  };
+  
+  // Mock session history
+  const sessionHistory = [
+    {
+      id: 1,
+      title: "Maximum Stock Profit",
+      tutor: "Steve",
+      date: "Apr 27, 2025",
+      duration: "45 minutes",
+      grade: "A-",
+      completed: true
+    },
+    {
+      id: 2,
+      title: "Implement a Queue using Stacks",
+      tutor: "Lisa",
+      date: "Apr 24, 2025",
+      duration: "38 minutes",
+      grade: "A",
+      completed: true
+    },
+    {
+      id: 3,
+      title: "Binary Search Implementation",
+      tutor: "Steve",
+      date: "Apr 20, 2025",
+      duration: "42 minutes",
+      grade: "B+",
+      completed: true
+    },
+    {
+      id: 4,
+      title: "Graph Traversal",
+      tutor: "Lisa",
+      date: "Apr 15, 2025",
+      duration: "50 minutes",
+      grade: "A-",
+      completed: true
+    },
+    {
+      id: 5,
+      title: "Sorting Algorithms",
+      tutor: "Steve",
+      scheduled: "Apr 30, 2025",
+      completed: false
+    }
+  ];
+
+  const handleViewReport = (sessionId) => {
+    // Mock session data - in a real app, this would be fetched from API
+    const sessionData = {
+      title: "Maximum Stock Profit",
+      date: "Apr 27, 2025",
+      duration: "45 minutes",
+      problemType: "Array",
+      difficulty: "Medium",
+      passRate: 0.85,
+      tutor: "Steve",
+      emotionData: [],
+      audioData: {},
+      testCases: [],
+      codeData: {},
+      assessment: {},
+      userAnswer: "",
+      enhancedAnswer: "",
+      improvements: []
+    };
+    
+    navigate("/session-report", { state: { sessionData } });
+  };
+
+  const handleLogout = () => {
+    // In a real app, this would call an auth logout function
+    toast({
+      title: "Logged out successfully!",
+      description: "You have been logged out of your account."
+    });
+    navigate("/login");
+  };
+
+  const handleSaveProfile = () => {
+    setIsEditing(false);
+    toast({
+      title: "Profile updated!",
+      description: "Your profile information has been updated successfully."
+    });
+  };
 
   return (
     <DashboardLayout>
       <div className="container mx-auto px-4 py-6 space-y-6 animate-fade-in">
-        <h1 className="text-3xl font-bold">Student Profile</h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold">My Profile</h1>
+          <Button variant="outline" onClick={handleLogout} className="gap-2">
+            <LogOut className="h-4 w-4" />
+            Logout
+          </Button>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {/* Profile Summary Card */}
           <Card className="md:col-span-1 border border-gray-200 dark:border-gray-800">
             <CardContent className="pt-6">
               <div className="flex flex-col items-center text-center">
-                <Avatar className="h-32 w-32 border-4 border-blue-accent">
-                  <AvatarImage src="https://github.com/shadcn.png" alt="K Srija" />
+                <Avatar className="h-32 w-32 border-4 border-blue-600">
+                  <AvatarImage src={userData.avatar} alt={userData.name} />
                   <AvatarFallback className="text-4xl">KS</AvatarFallback>
                 </Avatar>
                 
                 <div className="mt-4 space-y-2">
-                  <h2 className="text-2xl font-semibold">K Srija</h2>
-                  <p className="text-gray-500 dark:text-gray-400">Frontend Developer</p>
-                  <Badge className="bg-blue-accent hover:bg-blue-700">Pro Member</Badge>
+                  <h2 className="text-2xl font-semibold">{userData.name}</h2>
+                  <p className="text-gray-500 dark:text-gray-400">{userData.role}</p>
+                  <Badge className="bg-blue-600 hover:bg-blue-700">Pro Member</Badge>
                 </div>
                 
                 <div className="w-full mt-6 space-y-4">
                   <div>
                     <div className="flex justify-between mb-1 text-sm">
                       <span>Course Progress</span>
-                      <span>65%</span>
+                      <span>{userData.courseProgress}%</span>
                     </div>
-                    <Progress value={65} className="h-2" />
+                    <Progress value={userData.courseProgress} className="h-2" />
                   </div>
                   
                   <div className="grid grid-cols-3 gap-2 w-full">
                     <div className="flex flex-col items-center p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                      <Trophy className="h-5 w-5 text-blue-accent mb-1" />
-                      <span className="text-lg font-semibold">247</span>
+                      <Code className="h-5 w-5 text-blue-600 mb-1" />
+                      <span className="text-lg font-semibold">{userData.problemsSolved}</span>
                       <span className="text-xs text-gray-500 dark:text-gray-400">Problems</span>
                     </div>
                     <div className="flex flex-col items-center p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
                       <Star className="h-5 w-5 text-yellow-500 mb-1" />
-                      <span className="text-lg font-semibold">4.8</span>
+                      <span className="text-lg font-semibold">{userData.rating}</span>
                       <span className="text-xs text-gray-500 dark:text-gray-400">Rating</span>
                     </div>
                     <div className="flex flex-col items-center p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                      <Award className="h-5 w-5 text-blue-accent mb-1" />
-                      <span className="text-lg font-semibold">12</span>
+                      <Award className="h-5 w-5 text-blue-600 mb-1" />
+                      <span className="text-lg font-semibold">{userData.badges}</span>
                       <span className="text-xs text-gray-500 dark:text-gray-400">Badges</span>
                     </div>
                   </div>
@@ -68,19 +190,15 @@ const Profile = () => {
                   <div className="space-y-2 text-left text-sm">
                     <p className="flex justify-between">
                       <span className="text-gray-500 dark:text-gray-400">Email:</span>
-                      <span>srija@example.com</span>
-                    </p>
-                    <p className="flex justify-between">
-                      <span className="text-gray-500 dark:text-gray-400">Phone:</span>
-                      <span>+91 98765 43210</span>
+                      <span>{userData.email}</span>
                     </p>
                     <p className="flex justify-between">
                       <span className="text-gray-500 dark:text-gray-400">Joined:</span>
-                      <span>March 2024</span>
+                      <span>{userData.joinedDate}</span>
                     </p>
                     <p className="flex justify-between">
                       <span className="text-gray-500 dark:text-gray-400">Location:</span>
-                      <span>Hyderabad, India</span>
+                      <span>{userData.location}</span>
                     </p>
                   </div>
                 </div>
@@ -90,133 +208,137 @@ const Profile = () => {
 
           {/* Main Content Area */}
           <div className="md:col-span-3 space-y-6">
-            <Tabs defaultValue="overview" className="w-full" onValueChange={setActiveTab}>
-              <TabsList className="grid grid-cols-5 mb-6">
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="progress">Learning Progress</TabsTrigger>
-                <TabsTrigger value="education">Education</TabsTrigger>
-                <TabsTrigger value="work">Work Experience</TabsTrigger>
-                <TabsTrigger value="achievements">Achievements</TabsTrigger>
+            <Tabs defaultValue="sessions" className="w-full">
+              <TabsList className="grid grid-cols-3 mb-6">
+                <TabsTrigger value="sessions">Session History</TabsTrigger>
+                <TabsTrigger value="edit-profile">Edit Profile</TabsTrigger>
+                <TabsTrigger value="progress">Progress</TabsTrigger>
               </TabsList>
               
-              <TabsContent value="overview" className="space-y-6">
+              <TabsContent value="sessions" className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Learning Summary</CardTitle>
+                    <CardTitle>Recent Sessions</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                      <div className="flex items-center p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                        <Code className="h-8 w-8 text-blue-accent mr-4" />
-                        <div>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">Completed Problems</p>
-                          <p className="text-2xl font-bold">247</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                        <Timer className="h-8 w-8 text-blue-accent mr-4" />
-                        <div>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">Study Hours</p>
-                          <p className="text-2xl font-bold">156</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                        <Calendar className="h-8 w-8 text-blue-accent mr-4" />
-                        <div>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">Study Streak</p>
-                          <p className="text-2xl font-bold">28 days</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                        <BarChart3 className="h-8 w-8 text-blue-accent mr-4" />
-                        <div>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">Weekly Goal</p>
-                          <p className="text-2xl font-bold">85%</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="mt-6 space-y-4">
-                      <h3 className="font-medium">Recent Activity</h3>
-                      <ScrollArea className="h-[200px] rounded-md border p-4">
-                        <div className="space-y-4">
-                          {[1, 2, 3, 4, 5, 6].map((i) => (
-                            <div key={i} className="flex items-start border-b border-gray-200 dark:border-gray-700 pb-3 last:border-0">
-                              <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 mr-3">
-                                {i % 3 === 0 ? <FileText className="h-5 w-5" /> : 
-                                 i % 3 === 1 ? <Code className="h-5 w-5" /> : 
-                                 <Award className="h-5 w-5" />}
-                              </div>
-                              <div className="flex-1">
-                                <p className="font-medium">
-                                  {i % 3 === 0 ? "Completed a session with Steve" : 
-                                   i % 3 === 1 ? "Solved 'Maximum Profit' problem" : 
-                                   "Earned 'Algorithm Master' badge"}
-                                </p>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">{`${i} day${i === 1 ? '' : 's'} ago`}</p>
+                    <div className="space-y-4">
+                      {sessionHistory.map((session) => (
+                        <div key={session.id} className="flex items-center justify-between p-4 border rounded-lg">
+                          <div className="flex items-start gap-4">
+                            <Avatar className={`h-10 w-10 ${session.tutor === "Steve" ? "bg-blue-500" : "bg-purple-500"}`}>
+                              <AvatarFallback>{session.tutor[0]}</AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <h3 className="font-medium">{session.title}</h3>
+                              <div className="flex items-center gap-2 text-sm text-gray-500">
+                                <span>with {session.tutor}</span>
+                                <span>•</span>
+                                <span>{session.completed ? session.date : `Scheduled: ${session.scheduled}`}</span>
+                                {session.duration && (
+                                  <>
+                                    <span>•</span>
+                                    <span>{session.duration}</span>
+                                  </>
+                                )}
                               </div>
                             </div>
-                          ))}
+                          </div>
+                          <div className="flex items-center gap-3">
+                            {session.completed ? (
+                              <>
+                                <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800">
+                                  {session.grade}
+                                </Badge>
+                                <Button size="sm" onClick={() => handleViewReport(session.id)}>
+                                  <FileText className="h-4 w-4 mr-2" />
+                                  View Report
+                                </Button>
+                              </>
+                            ) : (
+                              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800">
+                                Upcoming
+                              </Badge>
+                            )}
+                          </div>
                         </div>
-                      </ScrollArea>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>
-
+              </TabsContent>
+              
+              <TabsContent value="edit-profile" className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Career Path</CardTitle>
+                    <CardTitle>Edit Profile Information</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex items-center mb-4">
-                      <Briefcase className="h-8 w-8 text-blue-accent mr-4" />
-                      <div>
-                        <h3 className="font-medium">Frontend Developer Track</h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Advanced Level - Estimated completion: 3 months</p>
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <label htmlFor="fullName" className="text-sm font-medium">Full Name</label>
+                          <Input id="fullName" defaultValue={userData.name} />
+                        </div>
+                        <div className="space-y-2">
+                          <label htmlFor="email" className="text-sm font-medium">Email</label>
+                          <Input id="email" type="email" defaultValue={userData.email} />
+                        </div>
+                        <div className="space-y-2">
+                          <label htmlFor="role" className="text-sm font-medium">Role</label>
+                          <Input id="role" defaultValue={userData.role} />
+                        </div>
+                        <div className="space-y-2">
+                          <label htmlFor="location" className="text-sm font-medium">Location</label>
+                          <Input id="location" defaultValue={userData.location} />
+                        </div>
+                      </div>
+                      
+                      <div className="pt-4 flex justify-end">
+                        <Button onClick={handleSaveProfile} className="bg-blue-600 hover:bg-blue-700">
+                          <CheckCircle className="h-4 w-4 mr-2" />
+                          Save Changes
+                        </Button>
                       </div>
                     </div>
-
-                    <div className="space-y-3">
-                      <div>
-                        <div className="flex justify-between mb-1 text-sm">
-                          <span>React & Redux</span>
-                          <span>85%</span>
-                        </div>
-                        <Progress value={85} className="h-2" />
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Change Password</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <label htmlFor="currentPassword" className="text-sm font-medium">Current Password</label>
+                        <Input id="currentPassword" type="password" />
                       </div>
-                      <div>
-                        <div className="flex justify-between mb-1 text-sm">
-                          <span>UI/UX Design</span>
-                          <span>60%</span>
-                        </div>
-                        <Progress value={60} className="h-2" />
+                      <div className="space-y-2">
+                        <label htmlFor="newPassword" className="text-sm font-medium">New Password</label>
+                        <Input id="newPassword" type="password" />
                       </div>
-                      <div>
-                        <div className="flex justify-between mb-1 text-sm">
-                          <span>TypeScript</span>
-                          <span>75%</span>
-                        </div>
-                        <Progress value={75} className="h-2" />
+                      <div className="space-y-2">
+                        <label htmlFor="confirmPassword" className="text-sm font-medium">Confirm New Password</label>
+                        <Input id="confirmPassword" type="password" />
                       </div>
-                      <div>
-                        <div className="flex justify-between mb-1 text-sm">
-                          <span>Testing</span>
-                          <span>50%</span>
-                        </div>
-                        <Progress value={50} className="h-2" />
+                      
+                      <div className="pt-4 flex justify-end">
+                        <Button variant="outline" className="gap-2">
+                          Change Password
+                        </Button>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
               </TabsContent>
               
-              <TabsContent value="progress">
+              <TabsContent value="progress" className="space-y-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Learning Progress</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-8">
+                    <div className="space-y-6">
                       <div>
                         <h3 className="font-medium mb-4">Topic Proficiency</h3>
                         <div className="space-y-4">
@@ -231,6 +353,8 @@ const Profile = () => {
                           ))}
                         </div>
                       </div>
+                      
+                      <Separator />
                       
                       <div>
                         <h3 className="font-medium mb-4">Problem Difficulty Breakdown</h3>
@@ -249,240 +373,28 @@ const Profile = () => {
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-              
-              <TabsContent value="education">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Educational Background</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-6">
-                      <div className="border-b border-gray-200 dark:border-gray-700 pb-6 space-y-4">
-                        <div className="flex items-start">
-                          <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 mr-4">
-                            <GraduationCap className="h-6 w-6" />
-                          </div>
-                          <div>
-                            <h3 className="font-medium">Bachelor of Technology - Computer Science</h3>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">IIT Hyderabad</p>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">2020 - 2024</p>
-                            <div className="mt-2">
-                              <span className="px-2 py-1 text-xs rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">GPA: 3.8/4.0</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                       
-                      <div className="border-b border-gray-200 dark:border-gray-700 pb-6 space-y-4">
-                        <div className="flex items-start">
-                          <div className="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 mr-4">
-                            <Building className="h-6 w-6" />
-                          </div>
-                          <div>
-                            <h3 className="font-medium">Higher Secondary Education</h3>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">Delhi Public School, Hyderabad</p>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">2018 - 2020</p>
-                            <div className="mt-2">
-                              <span className="px-2 py-1 text-xs rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">92.8%</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      <Separator />
                       
-                      <div className="space-y-4">
-                        <div className="flex items-start">
-                          <div className="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400 mr-4">
-                            <Building className="h-6 w-6" />
-                          </div>
-                          <div>
-                            <h3 className="font-medium">Secondary Education</h3>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">Delhi Public School, Hyderabad</p>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">2016 - 2018</p>
-                            <div className="mt-2">
-                              <span className="px-2 py-1 text-xs rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300">94.2%</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                <Card className="mt-6">
-                  <CardHeader>
-                    <CardTitle>Certifications</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      {["AWS Cloud Practitioner", "React Advanced Certification", "Data Structures & Algorithms", "Machine Learning Basics"].map((cert, i) => (
-                        <div key={cert} className="flex items-center p-4 rounded-lg border border-gray-200 dark:border-gray-800">
-                          <div className="w-10 h-10 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-amber-600 dark:text-amber-400 mr-4">
-                            <Award className="h-5 w-5" />
-                          </div>
-                          <div>
-                            <h3 className="font-medium">{cert}</h3>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                              {["Amazon Web Services", "Meta", "Stanford Online", "Google"][i]} • {["Feb 2024", "Dec 2023", "Aug 2023", "May 2023"][i]}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-              
-              <TabsContent value="work">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Work Experience</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-6">
-                      <div className="border-b border-gray-200 dark:border-gray-700 pb-6 space-y-4">
-                        <div className="flex items-start">
-                          <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 mr-4">
-                            <Briefcase className="h-6 w-6" />
-                          </div>
-                          <div>
-                            <h3 className="font-medium">Frontend Developer Intern</h3>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">TechCorp Solutions, Hyderabad</p>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">Jun 2023 - Aug 2023</p>
-                            <div className="mt-2 text-sm">
-                              <ul className="list-disc pl-5 space-y-1">
-                                <li>Implemented responsive UI components using React and Tailwind CSS</li>
-                                <li>Collaborated with backend developers to integrate API services</li>
-                                <li>Participated in daily stand-up meetings and sprint planning</li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="space-y-4">
-                        <div className="flex items-start">
-                          <div className="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400 mr-4">
-                            <Briefcase className="h-6 w-6" />
-                          </div>
-                          <div>
-                            <h3 className="font-medium">Web Development Volunteer</h3>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">College Tech Fest</p>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">Sep 2022 - Oct 2022</p>
-                            <div className="mt-2 text-sm">
-                              <ul className="list-disc pl-5 space-y-1">
-                                <li>Designed and developed the tech fest website</li>
-                                <li>Implemented event registration and payment system</li>
-                                <li>Ensured cross-browser compatibility and mobile responsiveness</li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                <Card className="mt-6">
-                  <CardHeader>
-                    <CardTitle>Skills</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <h3 className="text-sm font-medium mb-3">Programming Languages</h3>
-                        <div className="flex flex-wrap gap-2">
-                          {["JavaScript", "TypeScript", "Python", "Java", "C++"].map((skill) => (
-                            <span key={skill} className="px-2 py-1 text-xs rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">
-                              {skill}
-                            </span>
+                        <h3 className="font-medium mb-4">Weekly Activity</h3>
+                        <div className="grid grid-cols-7 gap-2">
+                          {Array(28).fill(0).map((_, i) => (
+                            <div 
+                              key={i} 
+                              className={`h-8 w-full rounded-sm ${
+                                Math.random() > 0.5 
+                                  ? `bg-blue-${100 + Math.floor(Math.random() * 5) * 100} dark:bg-blue-${900 - Math.floor(Math.random() * 3) * 100}/30`
+                                  : "bg-gray-100 dark:bg-gray-800"
+                              }`}
+                            />
                           ))}
                         </div>
-                      </div>
-                      <div>
-                        <h3 className="text-sm font-medium mb-3">Frameworks & Libraries</h3>
-                        <div className="flex flex-wrap gap-2">
-                          {["React", "Next.js", "Tailwind CSS", "Node.js", "Express"].map((skill) => (
-                            <span key={skill} className="px-2 py-1 text-xs rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">
-                              {skill}
-                            </span>
-                          ))}
+                        <div className="flex justify-between text-xs text-gray-500 mt-2">
+                          <span>4 Weeks Ago</span>
+                          <span>Today</span>
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-              
-              <TabsContent value="achievements">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Achievements & Badges</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-                      {Array(12).fill(0).map((_, i) => (
-                        <div key={i} className="flex flex-col items-center text-center space-y-2">
-                          <div className={`w-16 h-16 rounded-full flex items-center justify-center 
-                            ${i % 4 === 0 ? "bg-gradient-to-br from-blue-400 to-blue-600" :
-                              i % 4 === 1 ? "bg-gradient-to-br from-purple-400 to-purple-600" :
-                              i % 4 === 2 ? "bg-gradient-to-br from-green-400 to-green-600" :
-                              "bg-gradient-to-br from-yellow-400 to-yellow-600"} text-white`}>
-                            <Award className="h-8 w-8" />
-                          </div>
-                          <span className="font-medium text-sm">
-                            {["Algorithm Master", "100 Day Streak", "Problem Solver", "Speed Coder", 
-                              "Team Player", "Mentor", "Early Bird", "Night Owl",
-                              "Fast Learner", "Code Reviewer", "Bug Hunter", "Full Stack"][i]}
-                          </span>
-                          <span className="text-xs text-gray-500 dark:text-gray-400">
-                            {i < 8 ? "Earned" : "Locked"}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-              
-              <TabsContent value="sessions">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Recent Tutoring Sessions</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-6">
-                      {Array(5).fill(0).map((_, i) => (
-                        <div key={i} className="flex flex-col md:flex-row md:items-center justify-between p-4 rounded-lg border border-gray-200 dark:border-gray-800">
-                          <div className="flex items-center mb-3 md:mb-0">
-                            <Avatar className={`h-10 w-10 mr-3 ${i % 2 === 0 ? "bg-blue-500" : "bg-purple-500"}`}>
-                              <AvatarFallback>{i % 2 === 0 ? "S" : "L"}</AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <h4 className="font-medium">{i % 2 === 0 ? "Maximum Stock Profit" : "Implement a Queue using Stacks"}</h4>
-                              <p className="text-sm text-gray-500 dark:text-gray-400">With {i % 2 === 0 ? "Steve" : "Lisa"} • {40 - i * 5} min</p>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-4">
-                            <Badge variant={i < 3 ? "default" : "outline"}>
-                              {i < 3 ? "Completed" : "In Progress"}
-                            </Badge>
-                            <Badge variant="outline" className="bg-gray-100 dark:bg-gray-800">
-                              {["Array", "Data Structure", "Graph", "String", "Tree"][i]}
-                            </Badge>
-                            <Badge variant="outline" className={`
-                              ${i % 3 === 0 ? "text-yellow-600 bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800" : 
-                                i % 3 === 1 ? "text-green-600 bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800" :
-                                "text-red-600 bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800"}
-                            `}>
-                              {i % 3 === 0 ? "Medium" : i % 3 === 1 ? "Easy" : "Hard"}
-                            </Badge>
-                          </div>
-                        </div>
-                      ))}
                     </div>
                   </CardContent>
                 </Card>
