@@ -25,7 +25,6 @@ const CodeEditorSection = ({ language, onLanguageChange, value = '', onChange }:
       <CardContent className="p-4 h-full">
         <CodeEditor 
           language={language} 
-          onLanguageChange={onLanguageChange} 
           value={value !== internalValue ? value : internalValue}
           onChange={handleCodeChange}
         />

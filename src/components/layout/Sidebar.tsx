@@ -1,8 +1,7 @@
-
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { useMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   LayoutDashboard,
   BookOpen,
@@ -21,7 +20,7 @@ interface SidebarProps {
 
 const Sidebar = ({ collapsed, setCollapsed }: SidebarProps) => {
   const location = useLocation();
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
   
   const isActive = (href: string) => {
     return location.pathname === href;
