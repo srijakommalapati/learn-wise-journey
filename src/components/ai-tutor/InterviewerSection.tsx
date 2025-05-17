@@ -9,9 +9,9 @@ interface InterviewerSectionProps {
 
 const InterviewerSection = ({ tutor }: InterviewerSectionProps) => {
   return (
-    <div className="flex flex-col h-full space-y-2">
+    <div className="flex flex-col h-full space-y-4">
       <Card className="border border-gray-200 dark:border-gray-800 shadow-lg flex-shrink-0">
-        <CardContent className="p-2">
+        <CardContent className="p-3">
           <TutorVideo tutor={tutor} />
         </CardContent>
       </Card>

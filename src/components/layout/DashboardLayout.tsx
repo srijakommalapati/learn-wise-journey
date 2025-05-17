@@ -13,21 +13,23 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const isMobile = useIsMobile();
   
   return (
-    <div className="flex min-h-screen w-full">
-      <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
-      <main 
-        className="flex-1 overflow-x-hidden"
-        style={{
-          marginLeft: isMobile ? 0 : (collapsed ? '70px' : '256px'),
-          transition: 'margin-left 0.3s',
-          width: isMobile ? '100%' : 'calc(100% - ' + (collapsed ? '70px' : '256px') + ')'
-        }}
-      >
-        <div className="container mx-auto px-2 py-3 pb-0">
-          {children}
-        </div>
-        <FloatingAIAssistant />
-      </main>
+    <div className="flex flex-col min-h-screen">
+      <div className="flex flex-1">
+        <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
+        <main 
+          className="flex-1 overflow-x-hidden"
+          style={{
+            marginLeft: isMobile ? 0 : (collapsed ? '70px' : '256px'),
+            transition: 'margin-left 0.3s',
+            width: isMobile ? '100%' : 'calc(100% - ' + (collapsed ? '70px' : '256px') + ')'
+          }}
+        >
+          <div className="container mx-auto px-4 py-5">
+            {children}
+          </div>
+          <FloatingAIAssistant />
+        </main>
+      </div>
     </div>
   );
 };

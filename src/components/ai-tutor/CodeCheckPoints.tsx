@@ -17,9 +17,9 @@ const CodeCheckPoints = ({ checkPoints, onToggleCheckPoint }: CodeCheckPointsPro
   const [isExpanded, setIsExpanded] = useState(true);
 
   return (
-    <div className="border rounded-md p-2 bg-gray-50 dark:bg-gray-800/50 text-sm mt-2">
+    <div className="border rounded-md p-2 bg-gray-50 dark:bg-gray-800/50 text-sm mt-3">
       <div 
-        className="flex items-center justify-between cursor-pointer p-1"
+        className="flex items-center justify-between cursor-pointer p-2"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <h3 className="font-medium flex items-center">
@@ -36,7 +36,7 @@ const CodeCheckPoints = ({ checkPoints, onToggleCheckPoint }: CodeCheckPointsPro
       </div>
       
       {isExpanded && (
-        <ul className="mt-1 space-y-1 px-1">
+        <ul className="mt-2 space-y-1.5 px-2">
           {checkPoints.map((checkPoint) => (
             <li 
               key={checkPoint.id}

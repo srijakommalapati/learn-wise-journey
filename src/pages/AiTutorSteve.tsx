@@ -1,8 +1,9 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
-import { FileHeart } from "lucide-react";
+import { FileHeart, Play, RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ProblemStatementCard from "@/components/ai-tutor/ProblemStatementCard";
 import InterviewerSection from "@/components/ai-tutor/InterviewerSection";
@@ -198,7 +199,7 @@ const AiTutorSteve = () => {
     };
 
     setTimeout(() => {
-      navigate("/reports", { state: { sessionData } });
+      navigate("/session-report", { state: { sessionData } });
     }, 1500);
   };
 
@@ -211,129 +212,251 @@ const AiTutorSteve = () => {
     }, 1000);
   };
 
-  const renderContent = () => (
-    <>
-      <div className="flex items-center justify-between mb-2">
-        <h1 className="text-2xl font-bold">Steve</h1>
-        <Button 
-          onClick={handleEndSession}
-          variant="default" 
-          className="gap-2 bg-blue-600 hover:bg-blue-700"
-        >
-          <FileHeart className="h-4 w-4" />
-          End Session
-        </Button>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 h-[calc(100vh-100px)] overflow-y-auto pb-0">
-        {/* Left Panel - Interviewer */}
-        <div className="lg:col-span-3 flex flex-col">
-          <InterviewerSection tutor="steve" />
-        </div>
-
-        {/* Center Panel - Code Area */}
-        <div className="lg:col-span-5 flex flex-col">
-          <CodeEditorSection 
-            language={language}
-            onLanguageChange={setLanguage}
-            value={codeEditorValue}
-            onChange={setCodeEditorValue}
-          />
-          
-          {/* Code Changes and Test Cases */}
-          <div className="mt-3">
-            <Tabs defaultValue="codeChanges" className="w-full">
-              <TabsList className="grid grid-cols-3 w-full">
-                <TabsTrigger value="codeChanges">Code Changes</TabsTrigger>
-                <TabsTrigger value="testCases">Test Cases</TabsTrigger>
-                <TabsTrigger value="aiFeedback">AI Feedback</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="codeChanges" className="p-0 mt-2">
-                <CodeChangesEditor onAddToCode={handleAddToCode} />
-              </TabsContent>
-              
-              <TabsContent value="testCases" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
-                <div className="space-y-2">
-                  <h3 className="font-medium">Test Cases</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {currentQuestion.testCases.map((testCase, idx) => (
-                      <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-2">
-                        <div className="font-mono text-sm space-y-1">
-                          <div><span className="font-semibold">Input:</span> {testCase.input}</div>
-                          <div><span className="font-semibold">Output:</span> {testCase.output}</div>
-                          <div className="text-green-500">✓ Passed</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <div className="mt-3 border-t pt-2">
-                    <h3 className="font-medium mb-2">Test Results</h3>
-                    <div className="space-y-2">
-                      {testResults.map((result) => (
-                        <div 
-                          key={result.id}
-                          className={`p-2 rounded-md text-sm ${
-                            result.passed 
-                              ? "bg-green-50 border border-green-200 dark:bg-green-900/20 dark:border-green-800" 
-                              : "bg-red-50 border border-red-200 dark:bg-red-900/20 dark:border-red-800"
-                          }`}
-                        >
-                          <div className="flex items-center">
-                            <span className={`mr-2 text-lg ${result.passed ? "text-green-500" : "text-red-500"}`}>
-                              {result.passed ? "✓" : "✗"}
-                            </span>
-                            <span className="font-medium">{result.name}</span>
-                          </div>
-                          <p className="ml-6 text-gray-700 dark:text-gray-300">{result.message}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="aiFeedback" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
-                <p className="text-gray-800 dark:text-gray-200">
-                  Your solution has good time complexity (O(n)) and space complexity (O(1)).
-                  Consider adding more comments to explain your approach and edge cases.
-                  The code follows best practices, but you could make the variable names even clearer.
-                </p>
-              </TabsContent>
-            </Tabs>
-          </div>
-        </div>
-
-        {/* Right Panel - Problem Statement */}
-        <div className="lg:col-span-4 flex flex-col">
-          <Card className="border border-gray-200 dark:border-gray-800 shadow-lg h-full overflow-hidden">
-            <CardContent className="p-2 h-full">
-              <ProblemStatementCard {...currentQuestion} showHints={true} />
-              
-              {/* Code Check Points */}
-              <CodeCheckPoints 
-                checkPoints={checkPoints}
-                onToggleCheckPoint={handleToggleCheckPoint}
-              />
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    </>
-  );
-
   return (
     <div className={showNavigation ? "" : "h-screen w-screen fixed top-0 left-0 bg-background overflow-y-auto"}>
       {showNavigation ? (
         <DashboardLayout>
-          <div className="animate-fade-in">
-            {renderContent()}
+          <div className="container mx-auto px-4 animate-fade-in">
+            <div className="flex items-center justify-between mb-4">
+              <h1 className="text-2xl font-bold">Steve</h1>
+              <Button 
+                onClick={handleEndSession}
+                variant="default" 
+                className="gap-2 bg-blue-600 hover:bg-blue-700"
+              >
+                <FileHeart className="h-4 w-4" />
+                End Session
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 h-[calc(100vh-140px)] overflow-y-auto">
+              {/* Left Panel - Interviewer */}
+              <div className="lg:col-span-3 flex flex-col">
+                <InterviewerSection tutor="steve" />
+              </div>
+
+              {/* Center Panel - Code Area */}
+              <div className="lg:col-span-5 flex flex-col">
+                <CodeEditorSection 
+                  language={language}
+                  onLanguageChange={setLanguage}
+                  value={codeEditorValue}
+                  onChange={setCodeEditorValue}
+                />
+                
+                {/* Code Changes and Test Cases */}
+                <div className="mt-4">
+                  <Tabs defaultValue="codeChanges" className="w-full">
+                    <TabsList className="grid grid-cols-3 w-full">
+                      <TabsTrigger value="codeChanges">Code Changes</TabsTrigger>
+                      <TabsTrigger value="testCases">Test Cases</TabsTrigger>
+                      <TabsTrigger value="aiFeedback">AI Feedback</TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="codeChanges" className="p-0 mt-2">
+                      <CodeChangesEditor onAddToCode={handleAddToCode} />
+                    </TabsContent>
+                    
+                    <TabsContent value="testCases" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
+                      <div className="space-y-2">
+                        <h3 className="font-medium">Test Cases</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {currentQuestion.testCases.map((testCase, idx) => (
+                            <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-2">
+                              <div className="font-mono text-sm space-y-1">
+                                <div><span className="font-semibold">Input:</span> {testCase.input}</div>
+                                <div><span className="font-semibold">Output:</span> {testCase.output}</div>
+                                <div className="text-green-500">✓ Passed</div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        
+                        <div className="mt-3 border-t pt-3">
+                          <h3 className="font-medium mb-2">Test Results</h3>
+                          <div className="space-y-2">
+                            {testResults.map((result) => (
+                              <div 
+                                key={result.id}
+                                className={`p-2 rounded-md text-sm ${
+                                  result.passed 
+                                    ? "bg-green-50 border border-green-200 dark:bg-green-900/20 dark:border-green-800" 
+                                    : "bg-red-50 border border-red-200 dark:bg-red-900/20 dark:border-red-800"
+                                }`}
+                              >
+                                <div className="flex items-center">
+                                  <span className={`mr-2 text-lg ${result.passed ? "text-green-500" : "text-red-500"}`}>
+                                    {result.passed ? "✓" : "✗"}
+                                  </span>
+                                  <span className="font-medium">{result.name}</span>
+                                </div>
+                                <p className="ml-6 text-gray-700 dark:text-gray-300">{result.message}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        <div className="flex justify-end mt-3">
+                          <Button 
+                            onClick={handleRunTests}
+                            className="gap-2"
+                            disabled={isRunning}
+                          >
+                            {isRunning ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
+                            {isRunning ? "Running Tests..." : "Run Tests"}
+                          </Button>
+                        </div>
+                      </div>
+                    </TabsContent>
+                    
+                    <TabsContent value="aiFeedback" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
+                      <p className="text-gray-800 dark:text-gray-200">
+                        Your solution has good time complexity (O(n)) and space complexity (O(1)).
+                        Consider adding more comments to explain your approach and edge cases.
+                        The code follows best practices, but you could make the variable names even clearer.
+                      </p>
+                    </TabsContent>
+                  </Tabs>
+                </div>
+              </div>
+
+              {/* Right Panel - Problem Statement */}
+              <div className="lg:col-span-4 flex flex-col">
+                <Card className="border border-gray-200 dark:border-gray-800 shadow-lg h-full overflow-hidden">
+                  <CardContent className="p-3 h-full">
+                    <ProblemStatementCard {...currentQuestion} showHints={true} />
+                    
+                    {/* Code Check Points */}
+                    <CodeCheckPoints 
+                      checkPoints={checkPoints}
+                      onToggleCheckPoint={handleToggleCheckPoint}
+                    />
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
           </div>
         </DashboardLayout>
       ) : (
-        <div className="container mx-auto px-2 py-2 animate-fade-in overflow-y-auto h-screen">
-          {renderContent()}
+        <div className="container mx-auto px-4 py-4 animate-fade-in overflow-y-auto h-screen">
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-2xl font-bold">Steve</h1>
+            <Button 
+              onClick={handleEndSession}
+              variant="default" 
+              className="gap-2 bg-blue-600 hover:bg-blue-700"
+            >
+              <FileHeart className="h-4 w-4" />
+              End Session
+            </Button>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 h-[calc(100vh-140px)] overflow-y-auto">
+            {/* Left Panel - Interviewer */}
+            <div className="lg:col-span-3 flex flex-col">
+              <InterviewerSection tutor="steve" />
+            </div>
+
+            {/* Center Panel - Code Area */}
+            <div className="lg:col-span-5 flex flex-col">
+              <CodeEditorSection 
+                language={language}
+                onLanguageChange={setLanguage}
+                value={codeEditorValue}
+                onChange={setCodeEditorValue}
+              />
+              
+              {/* Code Changes and Test Cases */}
+              <div className="mt-4">
+                <Tabs defaultValue="codeChanges" className="w-full">
+                  <TabsList className="grid grid-cols-3 w-full">
+                    <TabsTrigger value="codeChanges">Code Changes</TabsTrigger>
+                    <TabsTrigger value="testCases">Test Cases</TabsTrigger>
+                    <TabsTrigger value="aiFeedback">AI Feedback</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="codeChanges" className="p-0 mt-2">
+                    <CodeChangesEditor onAddToCode={handleAddToCode} />
+                  </TabsContent>
+                  
+                  <TabsContent value="testCases" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
+                    <div className="space-y-2">
+                      <h3 className="font-medium">Test Cases</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {currentQuestion.testCases.map((testCase, idx) => (
+                          <div key={idx} className="border border-gray-200 dark:border-gray-700 rounded-md p-2">
+                            <div className="font-mono text-sm space-y-1">
+                              <div><span className="font-semibold">Input:</span> {testCase.input}</div>
+                              <div><span className="font-semibold">Output:</span> {testCase.output}</div>
+                              <div className="text-green-500">✓ Passed</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      
+                      <div className="mt-3 border-t pt-3">
+                        <h3 className="font-medium mb-2">Test Results</h3>
+                        <div className="space-y-2">
+                          {testResults.map((result) => (
+                            <div 
+                              key={result.id}
+                              className={`p-2 rounded-md text-sm ${
+                                result.passed 
+                                  ? "bg-green-50 border border-green-200 dark:bg-green-900/20 dark:border-green-800" 
+                                  : "bg-red-50 border border-red-200 dark:bg-red-900/20 dark:border-red-800"
+                              }`}
+                            >
+                              <div className="flex items-center">
+                                <span className={`mr-2 text-lg ${result.passed ? "text-green-500" : "text-red-500"}`}>
+                                  {result.passed ? "✓" : "✗"}
+                                </span>
+                                <span className="font-medium">{result.name}</span>
+                              </div>
+                              <p className="ml-6 text-gray-700 dark:text-gray-300">{result.message}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <div className="flex justify-end mt-3">
+                        <Button 
+                          onClick={handleRunTests}
+                          className="gap-2"
+                          disabled={isRunning}
+                        >
+                          {isRunning ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
+                          {isRunning ? "Running Tests..." : "Run Tests"}
+                        </Button>
+                      </div>
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="aiFeedback" className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border mt-2">
+                    <p className="text-gray-800 dark:text-gray-200">
+                      Your solution has good time complexity (O(n)) and space complexity (O(1)).
+                      Consider adding more comments to explain your approach and edge cases.
+                      The code follows best practices, but you could make the variable names even clearer.
+                    </p>
+                  </TabsContent>
+                </Tabs>
+              </div>
+            </div>
+
+            {/* Right Panel - Problem Statement */}
+            <div className="lg:col-span-4 flex flex-col">
+              <Card className="border border-gray-200 dark:border-gray-800 shadow-lg h-full overflow-hidden">
+                <CardContent className="p-3 h-full">
+                  <ProblemStatementCard {...currentQuestion} showHints={true} />
+                  
+                  {/* Code Check Points */}
+                  <CodeCheckPoints 
+                    checkPoints={checkPoints}
+                    onToggleCheckPoint={handleToggleCheckPoint}
+                  />
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </div>
       )}
     </div>
